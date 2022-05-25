@@ -1,0 +1,24 @@
+applications:
+  - name: ((name))
+    memory: ((memory))M
+    disk_quota: ((disk))M
+    instances: ((instances))
+    buildpacks:
+      - nodejs_buildpack
+    env:
+      OPTIMIZE_MEMORY: true
+      EASEY_API_GATEWAY_HOST: ((apiHost))
+      EASEY_STREAMING_SERVICES_TITLE: ((title))
+      EASEY_STREAMING_SERVICES_HOST: ((host))
+      EASEY_STREAMING_SERVICES_PORT: ((port))
+      EASEY_STREAMING_SERVICES_PATH: ((path))
+      EASEY_STREAMING_SERVICES_ENV: ((environment))
+      EASEY_STREAMING_SERVICES_BATCH_SIZE: 50000
+      EASEY_STREAMING_SERVICES_ENABLE_CORS: true
+      EASEY_STREAMING_SERVICES_ENABLE_API_KEY: true
+      EASEY_STREAMING_SERVICES_ENABLE_AUTH_TOKEN: false
+      EASEY_STREAMING_SERVICES_ENABLE_GLOBAL_VALIDATION_PIPE: true
+    routes:
+      - route: ((host))/((path))
+    services:
+      - camd-pg-db

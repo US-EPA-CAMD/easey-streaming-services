@@ -1,0 +1,153 @@
+import { EntityRepository, Repository } from 'typeorm';
+
+import { Regex } from '@us-epa-camd/easey-common/utilities';
+
+import { FacilityUnitAttributes } from '../entities/vw-facility-unit-attributes.entity';
+import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
+
+@EntityRepository(FacilityUnitAttributes)
+export class FacilityUnitAttributesRepository extends Repository<
+  FacilityUnitAttributes
+> {
+  async buildQuery(
+    columns: any[],
+    params: StreamFacilityAttributesParamsDTO,
+  ): Promise<[string, any[]]> {
+    let query = this.createQueryBuilder('fua').select(
+      columns.map(col => {
+        if (col.value === 'ownDisplay') {
+          return `${col.value} AS "ownerOperator"`;
+        }
+        if (col.value === 'generatorId') {
+          return `${col.value} AS "associatedGeneratorsAndNameplateCapacity"`;
+        }
+        return `fua.${col.value} AS "${col.value}"`
+      })
+    );
+
+    if (params.unitFuelType) {
+      let string = '(';
+
+      for (let i = 0; i < params.unitFuelType.length; i++) {
+        const regex = Regex.commaDelimited(
+          params.unitFuelType[i].toUpperCase(),
+        );
+
+        if (i === 0) {
+          string += `(UPPER(fua.primaryFuelInfo) ~* ${regex}) `;
+        } else {
+          string += `OR (UPPER(fua.primaryFuelInfo) ~* ${regex}) `;
+        }
+
+        string += `OR (UPPER(fua.secondaryFuelInfo) ~* ${regex}) `;
+      }
+
+      string += ')';
+      query.andWhere(string);
+    }
+
+    if (params.programCodeInfo) {
+      let string = '(';
+
+      for (let i = 0; i < params.programCodeInfo.length; i++) {
+        const regex = Regex.commaDelimited(
+          params.programCodeInfo[i].toUpperCase(),
+        );
+
+        if (i === 0) {
+          string += `(UPPER(fua.programCodeInfo) ~* ${regex}) `;
+        } else {
+          string += `OR (UPPER(fua.programCodeInfo) ~* ${regex}) `;
+        }
+      }
+
+      string += ')';
+      query.andWhere(string);
+    }
+
+    if (params.sourceCategory) {
+      query.andWhere(`UPPER(fua.sourceCategory) IN (:...sourceCategories)`, {
+        sourceCategories: params.sourceCategory.map(sourceCategories => {
+          return sourceCategories.toUpperCase();
+        }),
+      });
+    }
+
+    if (params.year) {
+      query.andWhere(`fua.year IN (:...years)`, {
+        years: params.year,
+      });
+    }
+
+    if (params.facilityId) {
+      query.andWhere(`fua.facilityId IN (:...facilityIds)`, {
+        facilityIds: params.facilityId,
+      });
+    }
+
+    if (params.stateCode) {
+      query.andWhere(`fua.stateCode IN (:...states)`, {
+        states: params.stateCode.map(states => {
+          return states.toUpperCase();
+        }),
+      });
+    }
+
+    if (params.unitType) {
+      let string = '(';
+
+      for (let i = 0; i < params.unitType.length; i++) {
+        const regex = Regex.commaDelimited(params.unitType[i].toUpperCase());
+
+        if (i === 0) {
+          string += `(UPPER(fua.unitType) ~* ${regex}) `;
+        } else {
+          string += `OR (UPPER(fua.unitType) ~* ${regex}) `;
+        }
+      }
+
+      string += ')';
+      query.andWhere(string);
+    }
+
+    if (params.controlTechnologies) {
+      let string = '(';
+
+      for (let i = 0; i < params.controlTechnologies.length; i++) {
+        const regex = Regex.commaDelimited(
+          params.controlTechnologies[i].toUpperCase(),
+        );
+
+        if (i === 0) {
+          string += `(UPPER (fua.so2ControlInfo) ~* ${regex}) `;
+        } else {
+          string += `OR (UPPER(fua.so2ControlInfo) ~* ${regex}) `;
+        }
+
+        string += `OR (UPPER(fua.noxControlInfo) ~* ${regex}) `;
+
+        string += `OR (UPPER(fua.pmControlInfo) ~* ${regex}) `;
+
+        string += `OR (UPPER(fua.hgControlInfo) ~* ${regex}) `;
+      }
+
+      string += ')';
+
+      query.andWhere(string);
+    }
+
+    query
+      .orderBy('fua.facilityId')
+      .addOrderBy('fua.unitId')
+      .addOrderBy('fua.year');
+
+    return query.getQueryAndParameters();
+  }
+
+  async lastArchivedYear(): Promise<number> {
+    const result = await this.query(
+      'SELECT MAX(op_year) AS "year" FROM camddmw_arch.annual_unit_data_a;',
+    );
+    return result[0].year;
+  }
+}
