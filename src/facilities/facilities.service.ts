@@ -116,10 +116,14 @@ export class FacilitiesService {
       },
     });
 
+<<<<<<< HEAD
     const [sql, values] = await this.repository.buildQuery(
       fieldMappingsList,
       params,
     );
+=======
+    const [sql, values] = await this.repository.buildQuery(params);
+>>>>>>> 632dc81f6e135a7719dcbd880f5a12bf85eaefaf
 
     return this.streamingService.getStream(
       req,
