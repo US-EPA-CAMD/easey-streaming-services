@@ -7,10 +7,7 @@ import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
 import { QuarterlyApportionedEmissionsService } from './quarterly-apportioned-emissions.service';
 import { QuarterlyApportionedEmissionsController } from './quarterly-apportioned-emissions.controller';
 
-import {
-  QuarterlyApportionedEmissionsParamsDTO,
-  PaginatedQuarterlyApportionedEmissionsParamsDTO,
-} from '../../dto/quarterly-apportioned-emissions.params.dto';
+import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
@@ -45,17 +42,6 @@ describe('-- Quarterly Apportioned Emissions Controller --', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-  });
-
-  describe('* getEmissions', () => {
-    it('should return test 1', async () => {
-      const expectedResult: QuarterUnitDataView[] = [];
-      const paramsDto = new PaginatedQuarterlyApportionedEmissionsParamsDTO();
-      jest.spyOn(service, 'getEmissions').mockResolvedValue(expectedResult);
-      expect(await controller.getEmissions(req, paramsDto)).toBe(
-        expectedResult,
-      );
-    });
   });
 
   describe('* streamEmissions', () => {

@@ -6,10 +6,7 @@ import { OzoneUnitDataView } from '../../entities/vw-ozone-unit-data.entity';
 import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 import { OzoneApportionedEmissionsService } from './ozone-apportioned-emissions.service';
 
-import {
-  OzoneApportionedEmissionsParamsDTO,
-  PaginatedOzoneApportionedEmissionsParamsDTO,
-} from '../../dto/ozone-apportioned-emissions.params.dto';
+import { OzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 import { StreamModule, StreamService } from '@us-epa-camd/easey-common/stream';
 import { ConfigService } from '@nestjs/config';
 
@@ -70,16 +67,6 @@ describe('-- Ozone Apportioned Emissions Service --', () => {
     req.res.setHeader.mockReturnValue();
     service = module.get(OzoneApportionedEmissionsService);
     repository = module.get(OzoneUnitDataRepository);
-  });
-
-  describe('getEmissions', () => {
-    it('calls OzoneUnitDataRepository.getEmissions() and gets all emissions from the repository', async () => {
-      const expected = OzoneUnitDataView[0];
-      repository.getEmissions.mockResolvedValue(expected);
-      let filters = new PaginatedOzoneApportionedEmissionsParamsDTO();
-      let result = await service.getEmissions(req, filters);
-      expect(result).toEqual(expected);
-    });
   });
 
   describe('streamEmissions', () => {

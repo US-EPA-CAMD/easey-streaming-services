@@ -6,10 +6,7 @@ import { QuarterUnitDataView } from '../../entities/vw-quarter-unit-data.entity'
 import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
 import { QuarterlyApportionedEmissionsService } from './quarterly-apportioned-emissions.service';
 
-import {
-  QuarterlyApportionedEmissionsParamsDTO,
-  PaginatedQuarterlyApportionedEmissionsParamsDTO,
-} from '../../dto/quarterly-apportioned-emissions.params.dto';
+import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { StreamModule, StreamService } from '@us-epa-camd/easey-common/stream';
 import { ConfigService } from '@nestjs/config';
 
@@ -70,16 +67,6 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
     req.res.setHeader.mockReturnValue();
     service = module.get(QuarterlyApportionedEmissionsService);
     repository = module.get(QuarterUnitDataRepository);
-  });
-
-  describe('getEmissions', () => {
-    it('calls QuarterUnitDataRepository.getEmissions() and gets all emissions from the repository', async () => {
-      const expected = QuarterUnitDataView[0];
-      repository.getEmissions.mockResolvedValue(expected);
-      let filters = new PaginatedQuarterlyApportionedEmissionsParamsDTO();
-      let result = await service.getEmissions(req, filters);
-      expect(result).toEqual(expected);
-    });
   });
 
   describe('streamEmissions', () => {

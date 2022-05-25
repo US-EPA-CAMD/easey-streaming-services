@@ -2,13 +2,11 @@ import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
-import { DayUnitDataView } from '../../entities/vw-day-unit-data.entity';
 import { DayUnitDataRepository } from './day-unit-data.repository';
 import { DailyApportionedEmissionsService } from './daily-apportioned-emissions.service';
 
 import {
   DailyApportionedEmissionsParamsDTO,
-  PaginatedDailyApportionedEmissionsParamsDTO,
 } from '../../dto/daily-apportioned-emissions.params.dto';
 import { StreamModule, StreamService } from '@us-epa-camd/easey-common/stream';
 import { ConfigService } from '@nestjs/config';
@@ -70,16 +68,6 @@ describe('-- Daily Apportioned Emissions Service --', () => {
     req.res.setHeader.mockReturnValue();
     service = module.get(DailyApportionedEmissionsService);
     repository = module.get(DayUnitDataRepository);
-  });
-
-  describe('getEmissions', () => {
-    it('calls DayUnitDataRepository.getEmissions() and gets all emissions from the repository', async () => {
-      const expected = DayUnitDataView[0];
-      repository.getEmissions.mockResolvedValue(expected);
-      let filters = new PaginatedDailyApportionedEmissionsParamsDTO();
-      let result = await service.getEmissions(req, filters);
-      expect(result).toEqual(expected);
-    });
   });
 
   describe('streamEmissions', () => {

@@ -15,7 +15,7 @@ import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 
-jest.mock('../../utils/query-builder.helper');
+jest.mock('../../utils/emissions-query-builder');
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
