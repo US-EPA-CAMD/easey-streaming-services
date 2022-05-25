@@ -4,10 +4,7 @@ import { Transform } from 'stream';
 import { plainToClass } from 'class-transformer';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import {
-  Injectable,
-  StreamableFile,
-} from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
@@ -21,7 +18,6 @@ import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-pa
 
 @Injectable()
 export class FacilitiesService {
-
   constructor(
     private readonly logger: Logger,
     private readonly streamingService: StreamingService,
@@ -120,7 +116,10 @@ export class FacilitiesService {
       },
     });
 
-    const [sql, values] = await this.repository.buildQuery(fieldMappingsList, params);
+    const [sql, values] = await this.repository.buildQuery(
+      fieldMappingsList,
+      params,
+    );
 
     return this.streamingService.getStream(
       req,
