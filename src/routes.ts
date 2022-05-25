@@ -14,6 +14,7 @@ import { QuarterlyApportionedEmissionsModule } from './apportioned-emissions/qua
 import { AnnualApportionedEmissionsModule } from './apportioned-emissions/annual/annual-apportioned-emissions.module';
 import { OzoneApportionedEmissionsModule } from './apportioned-emissions/ozone/ozone-apportioned-emissions.module';
 import { EmissionsComplianceModule } from './emissions-compliance/emissions-compliance.module';
+import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
 
 const routes: Routes = [
   {
@@ -32,18 +33,14 @@ const routes: Routes = [
   //   path: '/allowance-holdings',
   //   module: AllowanceHoldingsModule,
   // },
-  // {
-  //   path: '/allowance-transactions',
-  //   module: AllowanceTransactionsModule,
-  // },
+  {
+    path: '/allowance-transactions',
+    module: AllowanceTransactionsModule,
+  },
   {
     path: '/allowance-compliance',
     module: AllowanceComplianceModule,
   },
-  // {
-  //   path: '/emissions-compliance',
-  //   module: EmissionsComplianceModule,
-  // },
   {
     path: '/apportioned',
     module: ApportionedEmissionsModule,
