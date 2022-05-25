@@ -9,6 +9,7 @@ import { QuarterlyApportionedEmissionsService } from './quarterly-apportioned-em
 import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { StreamModule, StreamService } from '@us-epa-camd/easey-common/stream';
 import { ConfigService } from '@nestjs/config';
+import { StreamingService } from '../../streaming/streaming.service';
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -48,7 +49,7 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
       providers: [
         ConfigService,
         {
-          provide: StreamService,
+          provide: StreamingService,
           useFactory: () => ({
             getStream: () => {
               return mockStream;

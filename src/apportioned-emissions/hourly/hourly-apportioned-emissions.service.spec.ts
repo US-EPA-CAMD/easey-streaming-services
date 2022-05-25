@@ -7,8 +7,8 @@ import { HourUnitDataRepository } from './hour-unit-data.repository';
 import { HourlyApportionedEmissionsService } from './hourly-apportioned-emissions.service';
 
 import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
-import { StreamModule, StreamService } from '@us-epa-camd/easey-common/stream';
 import { ConfigService } from '@nestjs/config';
+import { StreamingService } from '../../streaming/streaming.service';
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -47,7 +47,7 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
       imports: [LoggerModule],
       providers: [
         {
-          provide: StreamService,
+          provide: StreamingService,
           useFactory: () => ({
             getStream: () => {
               return mockStream;

@@ -14,6 +14,7 @@ import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
+import { StreamingService } from '../../streaming/streaming.service';
 
 jest.mock('../../utils/emissions-query-builder');
 
@@ -73,6 +74,7 @@ describe('OzoneUnitDataRepository', () => {
     const module = await Test.createTestingModule({
       providers: [
         OzoneUnitDataRepository,
+        StreamingService,
         {
           provide: SelectQueryBuilder,
           useFactory: mockQueryBuilder,

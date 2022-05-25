@@ -75,7 +75,7 @@ describe('-- Facilities Service --', () => {
 
   describe('streamAttributes', () => {
     it('streams all facility unit attributes', async () => {
-      facilityUnitAttributesRepository.buildQuery.mockResolvedValue([], '');
+      // facilityUnitAttributesRepository.buildQuery.mockResolvedValue([], '');
 
       let filters = new StreamFacilityAttributesParamsDTO();
 

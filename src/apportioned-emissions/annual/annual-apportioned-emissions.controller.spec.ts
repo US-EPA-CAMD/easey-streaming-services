@@ -8,6 +8,7 @@ import { AnnualApportionedEmissionsController } from './annual-apportioned-emiss
 
 import { AnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
 import { StreamModule } from '@us-epa-camd/easey-common/stream';
+import { StreamingService } from '../../streaming/streaming.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -27,7 +28,7 @@ describe('-- Annual Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamModule],
       controllers: [AnnualApportionedEmissionsController],
-      providers: [AnnualApportionedEmissionsService, AnnualUnitDataRepository],
+      providers: [AnnualApportionedEmissionsService, AnnualUnitDataRepository, StreamingService],
     }).compile();
 
     controller = module.get(AnnualApportionedEmissionsController);

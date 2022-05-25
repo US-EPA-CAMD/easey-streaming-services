@@ -9,6 +9,7 @@ import { DailyApportionedEmissionsController } from './daily-apportioned-emissio
 
 import { DailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-emissions.params.dto';
 import { StreamModule } from '@us-epa-camd/easey-common/stream';
+import { StreamingService } from '../../streaming/streaming.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -28,7 +29,7 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamModule],
       controllers: [DailyApportionedEmissionsController],
-      providers: [DayUnitDataRepository, DailyApportionedEmissionsService],
+      providers: [DayUnitDataRepository, DailyApportionedEmissionsService, StreamingService],
     }).compile();
 
     controller = module.get(DailyApportionedEmissionsController);

@@ -9,6 +9,7 @@ import { OzoneApportionedEmissionsController } from './ozone-apportioned-emissio
 
 import { OzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 import { StreamModule } from '@us-epa-camd/easey-common/stream';
+import { StreamingService } from '../../streaming/streaming.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -28,7 +29,7 @@ describe('-- Ozone Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamModule],
       controllers: [OzoneApportionedEmissionsController],
-      providers: [OzoneApportionedEmissionsService, OzoneUnitDataRepository],
+      providers: [OzoneApportionedEmissionsService, OzoneUnitDataRepository, StreamingService],
     }).compile();
 
     controller = module.get(OzoneApportionedEmissionsController);

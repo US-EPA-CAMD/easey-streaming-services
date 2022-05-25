@@ -9,6 +9,7 @@ import { QuarterlyApportionedEmissionsController } from './quarterly-apportioned
 
 import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { StreamModule } from '@us-epa-camd/easey-common/stream';
+import { StreamingService } from '../../streaming/streaming.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -31,6 +32,7 @@ describe('-- Quarterly Apportioned Emissions Controller --', () => {
       providers: [
         QuarterlyApportionedEmissionsService,
         QuarterUnitDataRepository,
+        StreamingService
       ],
     }).compile();
 

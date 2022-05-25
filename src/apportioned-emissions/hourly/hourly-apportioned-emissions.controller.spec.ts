@@ -7,6 +7,7 @@ import { HourUnitDataRepository } from './hour-unit-data.repository';
 import { HourlyApportionedEmissionsService } from './hourly-apportioned-emissions.service';
 import { HourlyApportionedEmissionsController } from './hourly-apportioned-emissions.controller';
 import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { StreamingService } from '../../streaming/streaming.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -26,7 +27,7 @@ describe('-- Hourly Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [HourlyApportionedEmissionsController],
-      providers: [HourlyApportionedEmissionsService, HourUnitDataRepository],
+      providers: [HourlyApportionedEmissionsService, HourUnitDataRepository, StreamingService],
     }).compile();
 
     controller = module.get(HourlyApportionedEmissionsController);

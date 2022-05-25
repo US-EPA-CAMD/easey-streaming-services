@@ -10,7 +10,7 @@ import {
   AnnualApportionedEmissionsParamsDTO,
 } from '../../dto/annual-apportioned-emissions.params.dto';
 import { ConfigService } from '@nestjs/config';
-import { StreamModule, StreamService } from '@us-epa-camd/easey-common/stream';
+import { StreamingService } from '../../streaming/streaming.service';
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -51,7 +51,7 @@ describe('-- Annual Apportioned Emissions Service --', () => {
         ConfigService,
         AnnualApportionedEmissionsService,
         {
-          provide: StreamService,
+          provide: StreamingService,
           useFactory: () => ({
             getStream: () => {
               return mockStream;
