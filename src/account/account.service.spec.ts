@@ -78,7 +78,7 @@ describe('-- Account Service --', () => {
 
   describe('streamAccountAttributes', () => {
     it('streams all account attributes', async () => {
-      accountFactRepository.buildQuery.mockResolvedValue('');
+      // accountFactRepository.buildQuery.mockResolvedValue('');
 
       let filters = new StreamAccountAttributesParamsDTO();
 
