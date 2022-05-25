@@ -3,14 +3,12 @@ import { Request } from 'express';
 import {
   ApiTags,
   ApiSecurity,
+  ApiOkResponse,
+  getSchemaPath,
+  ApiExtraModels,
 } from '@nestjs/swagger';
 
-import {
-  Get,
-  Controller,
-  Req,
-  StreamableFile,
-} from '@nestjs/common';
+import { Get, Controller, Req, StreamableFile, Query } from '@nestjs/common';
 
 import {
   BadRequestResponse,
@@ -20,44 +18,44 @@ import {
 } from '../utils/swagger-decorator.const';
 
 import { AccountService } from './account.service';
+import { AccountAttributesDTO } from '../dto/account-attributes.dto';
+import { fieldMappings } from '../constants/account-field-mappings';
+import { StreamAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Accounts')
+@ApiExtraModels(AccountAttributesDTO)
 export class AccountController {
-  constructor(
-    private readonly accountService: AccountService
-  ) {}
+  constructor(private readonly accountService: AccountService) {}
 
   @Get('attributes')
-  // @ApiOkResponse({
-  //   description: 'Streams All Valid Account Attributes',
-  //   content: {
-  //     'application/json': {
-  //       schema: {
-  //         $ref: getSchemaPath(AccountAttributesDTO),
-  //       },
-  //     },
-  //     'text/csv': {
-  //       schema: {
-  //         type: 'string',
-  //         example: fieldMappings.allowances.accountAttributes.data
-  //           .map(i => i.label)
-  //           .join(','),
-  //       },
-  //     },
-  //   },
-  // })
+  @ApiOkResponse({
+    description: 'Streams All Valid Account Attributes',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AccountAttributesDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.allowances.accountAttributes.data
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
   @BadRequestResponse()
   @NotFoundResponse()
   @ApiQueryAccountMultiSelect()
   @ExcludeQuery()
-  streamAccountAttributes(
+  async streamAllAccountAttributes(
     @Req() req: Request,
-    //@Query() params: StreamAccountAttributesParamsDTO,
+    @Query() params: StreamAccountAttributesParamsDTO,
   ): Promise<StreamableFile> {
-    return; //this.service.streamAccountAttributes(req, params);
+    return this.accountService.streamAllAccountAttributes(req, params);
   }
 }
-
-export default AccountController;
