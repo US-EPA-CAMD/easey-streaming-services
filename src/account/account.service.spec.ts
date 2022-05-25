@@ -8,8 +8,10 @@ import { StreamableFile } from '@nestjs/common';
 import { StreamingService } from '../streaming/streaming.service';
 
 const mockAccountFactRepository = () => ({
-  buildQuery: jest.fn(),
-});
+  getAllAccounts: jest.fn(),
+  getAllAccountAttributes: jest.fn(),
+  getAllApplicableAccountAttributes: jest.fn(),
+  getStreamQuery: jest.fn(),});
 
 const mockAccountMap = () => ({
   many: jest.fn(),
