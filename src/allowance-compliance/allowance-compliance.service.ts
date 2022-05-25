@@ -42,8 +42,6 @@ export class AllowanceComplianceService {
       ? fieldMapping.filter(item => !params.exclude.includes(item.value))
       : fieldMapping;
 
-    const [sql, values] = await this.repository.buildQuery(params);
-
     const json2Dto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
@@ -62,6 +60,8 @@ export class AllowanceComplianceService {
         callback(null, dto);
       },
     });
+
+    const [sql, values] = await this.repository.buildQuery(params);
 
     return this.streamingService.getStream(
       req,

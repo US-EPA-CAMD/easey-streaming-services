@@ -10,52 +10,45 @@ export class AccountComplianceDimRepository extends Repository<
   AccountComplianceDim
 > {
   private getColumns(isOTCNBP: boolean): string[] {
-    let columns;
+    let columns = [];
+
+    columns.push(
+      'acd.programCodeInfo',
+      'acd.year',
+      'acd.accountNumber',
+      'af.accountName',
+      'af.facilityName',
+      'af.facilityId',
+      'acd.unitsAffected',
+      'acd.allocated',
+    );
+
     if (isOTCNBP) {
-      columns = [
-        'acd.programCodeInfo',
-        'acd.year',
-        'acd.accountNumber',
-        'af.accountName',
-        'af.facilityName',
-        'af.facilityId',
-        'acd.unitsAffected',
-        'acd.allocated',
-        'acd.bankedHeld',
-        'acd.currentHeld',
-        'acd.totalAllowancesHeld',
-        'acd.complianceYearEmissions',
-        'acd.otherDeductions',
+      columns.push('acd.bankedHeld', 'acd.currentHeld');
+    }
+
+    columns.push(
+      'acd.totalAllowancesHeld',
+      'acd.complianceYearEmissions',
+      'acd.otherDeductions',
+    );
+
+    if (isOTCNBP) {
+      columns.push(
         'acd.totalRequiredDeductions',
         'acd.currentDeductions',
         'acd.deductOneToOne',
         'acd.deductTwoToOne',
-        'acd.totalAllowancesDeducted',
-        'acd.carriedOver',
-        'acd.excessEmissions',
-        'af.ownerOperator',
-        'af.stateCode',
-      ];
-    } else {
-      columns = [
-        'acd.programCodeInfo',
-        'acd.year',
-        'acd.accountNumber',
-        'af.accountName',
-        'af.facilityName',
-        'af.facilityId',
-        'acd.unitsAffected',
-        'acd.allocated',
-        'acd.totalAllowancesHeld',
-        'acd.complianceYearEmissions',
-        'acd.otherDeductions',
-        'acd.totalAllowancesDeducted',
-        'acd.carriedOver',
-        'acd.excessEmissions',
-        'af.ownerOperator',
-        'af.stateCode',
-      ];
+      );
     }
+
+    columns.push(
+      'acd.totalAllowancesDeducted',
+      'acd.carriedOver',
+      'acd.excessEmissions',
+      'af.ownerOperator',
+      'af.stateCode',
+    );
 
     return columns.map(col => {
       return `${col} AS "${col.split('.')[1]}"`;

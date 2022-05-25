@@ -6,6 +6,7 @@ import {
   ApiOkResponse,
   getSchemaPath,
   ApiQuery,
+  ApiExtraModels,
 } from '@nestjs/swagger';
 
 import { Get, Controller, Req, StreamableFile, Query } from '@nestjs/common';
@@ -48,6 +49,7 @@ export class AllowanceComplianceController {
     },
   })
   @BadRequestResponse()
+  @ApiExtraModels(AllowanceComplianceDTO)
   @NotFoundResponse()
   @ApiQueryComplianceMultiSelect()
   @ApiQuery({
@@ -57,7 +59,7 @@ export class AllowanceComplianceController {
     explode: false,
   })
   @ExcludeQuery()
-  streamAllowanceCompliance(
+  async streamAllowanceCompliance(
     @Req() req: Request,
     @Query() params: StreamAllowanceComplianceParamsDTO,
   ): Promise<StreamableFile> {
