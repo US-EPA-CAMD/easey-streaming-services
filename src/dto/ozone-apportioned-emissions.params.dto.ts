@@ -1,10 +1,7 @@
 import { IsDefined, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsInEnum,
-  IsInResponse,
-} from '@us-epa-camd/easey-common/pipes';
+import { IsInEnum, IsInResponse } from '@us-epa-camd/easey-common/pipes';
 
 import {
   propertyMetadata,

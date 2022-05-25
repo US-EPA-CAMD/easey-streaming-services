@@ -8,7 +8,7 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { CorsOptionsModule } from '@us-epa-camd/easey-common/cors-options';
 
 import { AccountModule } from './account/account.module';
-import { FacilitiesModule } from "./facilities/facilities.module";
+import { FacilitiesModule } from './facilities/facilities.module';
 // import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings.module';
 // import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
 import { AllowanceComplianceModule } from './allowance-compliance/allowance-compliance.module';
@@ -18,6 +18,7 @@ import { ApportionedEmissionsModule } from './apportioned-emissions/apportioned-
 import routes from './routes';
 import appConfig from './config/app.config';
 import { TypeOrmConfigService } from './config/typeorm.config';
+import { EmissionsComplianceModule } from './emissions-compliance/emissions-compliance.module';
 
 @Module({
   imports: [
@@ -33,10 +34,11 @@ import { TypeOrmConfigService } from './config/typeorm.config';
     CorsOptionsModule,
     FacilitiesModule,
     AccountModule,
+    EmissionsComplianceModule,
     //AllowanceHoldingsModule,
     //AllowanceTransactionsModule,
     AllowanceComplianceModule,
-    //EmissionsComplianceModule,    
+    //EmissionsComplianceModule,
     ApportionedEmissionsModule,
   ],
 })
