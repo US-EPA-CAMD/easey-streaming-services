@@ -120,7 +120,7 @@ export class FacilitiesService {
       },
     });
 
-    const [sql, values] = await this.repository.buildQuery(fieldMappingsList, params);
+    const [sql, values] = await this.repository.buildQuery(params);
 
     return this.streamingService.getStream(
       req,

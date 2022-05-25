@@ -9,21 +9,60 @@ import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-pa
 export class FacilityUnitAttributesRepository extends Repository<
   FacilityUnitAttributes
 > {
+
+  private getColumns(): string[] {
+    const columns = [
+      'fua.id',
+      'fua.stateCode',
+      'fua.facilityName',
+      'fua.facilityId',
+      'fua.unitId',
+      'fua.associatedStacks',
+      'fua.year',
+      'fua.programCodeInfo',
+      'fua.epaRegion',
+      'fua.nercRegion',
+      'fua.county',
+      'fua.countyCode',
+      'fua.fipsCode',
+      'fua.sourceCategory',
+      'fua.latitude',
+      'fua.longitude',
+      'fua.ownDisplay',
+      'fua.oprDisplay',
+      'fua.so2Phase',
+      'fua.noxPhase',
+      'fua.unitType',
+      'fua.primaryFuelInfo',
+      'fua.secondaryFuelInfo',
+      'fua.so2ControlInfo',
+      'fua.noxControlInfo',
+      'fua.pmControlInfo',
+      'fua.hgControlInfo',
+      'fua.commercialOperationDate',
+      'fua.operatingStatus',
+      'fua.maxHourlyHIRate',
+      'fua.generatorId',
+      'fua.arpNameplateCapacity',
+      'fua.otherNameplateCapacity',
+    ];
+
+    return columns.map(col => {
+      if (col === 'fua.ownDisplay') {
+        return `${col} AS "ownerOperator"`;
+      }
+      if (col === 'fua.generatorId') {
+        return `${col} AS "associatedGeneratorsAndNameplateCapacity"`;
+      }
+      return `${col} AS "${col.split('.')[1]}"`;
+    });
+  }
+
   async buildQuery(
-    columns: any[],
     params: StreamFacilityAttributesParamsDTO,
   ): Promise<[string, any[]]> {
-    let query = this.createQueryBuilder('fua').select(
-      columns.map(col => {
-        if (col.value === 'ownDisplay') {
-          return `${col.value} AS "ownerOperator"`;
-        }
-        if (col.value === 'generatorId') {
-          return `${col.value} AS "associatedGeneratorsAndNameplateCapacity"`;
-        }
-        return `fua.${col.value} AS "${col.value}"`
-      })
-    );
+    let query = this.createQueryBuilder('fua')
+      .select(this.getColumns());
 
     if (params.unitFuelType) {
       let string = '(';
