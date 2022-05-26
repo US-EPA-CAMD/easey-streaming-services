@@ -2,13 +2,11 @@ import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
-import { HourUnitDataView } from '../../entities/vw-hour-unit-data.entity';
 import { HourUnitDataRepository } from './hour-unit-data.repository';
 import { HourlyApportionedEmissionsService } from './hourly-apportioned-emissions.service';
 
 import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 import { ConfigService } from '@nestjs/config';
-import { StreamingService } from '../../streaming/streaming.service';
 import { StreamService } from '@us-epa-camd/easey-common/stream';
 
 jest.mock('uuid', () => {

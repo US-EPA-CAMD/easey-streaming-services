@@ -9,9 +9,6 @@ import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-pa
 import { FacilityUnitAttributesRepository } from './facility-unit-attributes.repository';
 
 import { StreamingModule } from '../streaming/streaming.module';
-import { StreamingService } from '../streaming/streaming.service';
-import { ConfigService } from '@nestjs/config';
-
 const mockRequest = (url: string) => {
   return {
     url,
@@ -33,8 +30,6 @@ describe('-- Facilities Controller --', () => {
       providers: [
         FacilitiesService,
         FacilityUnitAttributesRepository,
-        StreamingService,
-        ConfigService
       ],
     }).compile();
 

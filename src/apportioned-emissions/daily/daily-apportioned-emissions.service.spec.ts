@@ -9,7 +9,6 @@ import {
   DailyApportionedEmissionsParamsDTO,
 } from '../../dto/daily-apportioned-emissions.params.dto';
 import { ConfigService } from '@nestjs/config';
-import { StreamingService } from '../../streaming/streaming.service';
 import { StreamService } from '@us-epa-camd/easey-common/stream';
 
 jest.mock('uuid', () => {

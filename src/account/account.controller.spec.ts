@@ -6,8 +6,6 @@ import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
 import { StreamAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { StreamingService } from '../streaming/streaming.service';
-import { ConfigService } from '@nestjs/config';
 
 const mockRequest = (url: string) => {
   return {

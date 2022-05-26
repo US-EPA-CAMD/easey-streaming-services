@@ -8,7 +8,6 @@ import { AnnualApportionedEmissionsController } from './annual-apportioned-emiss
 
 import { AnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
 import { StreamModule } from '@us-epa-camd/easey-common/stream';
-import { StreamingService } from '../../streaming/streaming.service';
 
 const mockRequest = (url: string) => {
   return {
