@@ -6,9 +6,9 @@ import { Injectable, StreamableFile } from '@nestjs/common';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 
 import { StreamingService } from '../streaming/streaming.service';
-import { fieldMappings } from 'src/constants/account-field-mappings';
+import { fieldMappings } from '../constants/account-field-mappings';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
-import { StreamAllowanceComplianceParamsDTO } from 'src/dto/allowance-compliance.params.dto';
+import { StreamAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
 import { Transform } from 'stream';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
 import { ExcludeAllowanceCompliance } from '@us-epa-camd/easey-common/enums';

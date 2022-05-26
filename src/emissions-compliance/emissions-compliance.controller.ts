@@ -20,7 +20,7 @@ import {
 import { fieldMappings } from '../constants/account-field-mappings';
 import { EmissionsComplianceService } from './emissions-compliance.service';
 import { EmissionsComplianceDTO } from '../dto/emissions-compliance.dto';
-import { StreamEmissionsComplianceParamsDTO } from 'src/dto/emissions-compliance.params.dto';
+import { StreamEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
