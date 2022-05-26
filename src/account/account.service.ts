@@ -47,10 +47,7 @@ export class AccountService {
       },
     });
 
-    const [sql, values] = await this.repository.buildQuery(
-      fieldMappingsList,
-      params,
-    );
+    const [sql, values] = await this.repository.buildQuery(params);
 
     return this.streamService.getStream(
       req,

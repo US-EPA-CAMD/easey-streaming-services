@@ -1,4 +1,4 @@
-import { UnitComplianceDim } from 'src/entities/unit-compliance-dim.entity';
+import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
 import { StreamEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
