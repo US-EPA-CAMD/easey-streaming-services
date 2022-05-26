@@ -17,7 +17,10 @@ import {
 } from '@us-epa-camd/easey-common/enums';
 
 import { AllowanceParamsDTO } from './allowance.params.dto';
-import { BeginDate, EndDate } from '../utils/validator.const';
+import {
+  TransactionBeginDate,
+  TransactionEndDate,
+} from '../utils/validator.const';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
 import { IsYearGreater } from '../pipes/is-year-greater.pipe';
@@ -52,13 +55,13 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   @ApiProperty({
     description: propertyMetadata.transactionBeginDate.description,
   })
-  @BeginDate()
+  @TransactionBeginDate()
   transactionBeginDate: Date;
 
   @ApiProperty({
     description: propertyMetadata.transactionEndDate.description,
   })
-  @EndDate()
+  @TransactionEndDate()
   transactionEndDate: Date;
 
   @ApiProperty({
