@@ -6,12 +6,34 @@ import { AccountQueryBuilder } from '../utils/account-query-builder';
 
 @EntityRepository(AccountFact)
 export class AccountFactRepository extends Repository<AccountFact> {
+  private getColumns(): string[] {
+    const columns = [
+      'af.accountNumber',
+      'af.accountName',
+      'af.programCodeInfo',
+      'atc.accountTypeDescription',
+      'af.facilityId',
+      'af.unitId',
+      'af.ownerOperator',
+      'af.stateCode',
+      'af.epaRegion',
+      'af.nercRegion',
+    ];
+
+    return columns.map(col => {
+      if (col === 'atc.accountTypeDescription') {
+        return `${col} AS "accountType"`;
+      } else {
+        return `${col} AS "${col.split('.')[1]}"`;
+      }
+    });
+  }
+
   async buildQuery(
-    columns: any[],
     params: AccountAttributesParamsDTO,
   ): Promise<[string, any[]]> {
     let query = this.createQueryBuilder('af')
-      .select(columns.map(col => `af.${col.value} AS "${col.value}"`))
+      .select(this.getColumns())
       .innerJoin('af.accountTypeCd', 'atc');
 
     query = AccountQueryBuilder.createAccountQuery(

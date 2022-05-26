@@ -18,6 +18,7 @@ import { ApportionedEmissionsModule } from './apportioned-emissions/apportioned-
 import routes from './routes';
 import appConfig from './config/app.config';
 import { TypeOrmConfigService } from './config/typeorm.config';
+import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings.module';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { TypeOrmConfigService } from './config/typeorm.config';
     CorsOptionsModule,
     FacilitiesModule,
     AccountModule,
-    //AllowanceHoldingsModule,
+    AllowanceHoldingsModule,
     //AllowanceTransactionsModule,
     AllowanceComplianceModule,
     //EmissionsComplianceModule,    

@@ -13,6 +13,7 @@ import { MonthlyApportionedEmissionsModule } from './apportioned-emissions/month
 import { QuarterlyApportionedEmissionsModule } from './apportioned-emissions/quarterly/quarterly-apportioned-emissions.module';
 import { AnnualApportionedEmissionsModule } from './apportioned-emissions/annual/annual-apportioned-emissions.module';
 import { OzoneApportionedEmissionsModule } from './apportioned-emissions/ozone/ozone-apportioned-emissions.module';
+import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings.module';
 
 const routes: Routes = [
   {
@@ -23,10 +24,10 @@ const routes: Routes = [
     path: '/accounts',
     module: AccountModule,
   },
-  // {
-  //   path: '/allowance-holdings',
-  //   module: AllowanceHoldingsModule,
-  // },
+  {
+    path: '/allowance-holdings',
+    module: AllowanceHoldingsModule,
+  },
   // {
   //   path: '/allowance-transactions',
   //   module: AllowanceTransactionsModule,
