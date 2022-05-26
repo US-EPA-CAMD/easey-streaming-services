@@ -4,18 +4,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AllowanceHoldingsController } from './allowance-holdings.controller';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
-import { HttpModule } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 import { StreamingService } from '../streaming/streaming.service';
+import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { StreamingModule } from 'src/streaming/streaming.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([AllowanceHoldingDimRepository]),
-    HttpModule,
-    StreamModule,
+    LoggerModule,
+    StreamingModule,
   ],
   controllers: [AllowanceHoldingsController],
-  providers: [AllowanceHoldingsService, ConfigService, StreamingService],
+  providers: [AllowanceHoldingsService, StreamingService],
 })
 export class AllowanceHoldingsModule {}
