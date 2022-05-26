@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryColumn,
 } from 'typeorm';
 
@@ -10,6 +11,7 @@ import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
 
 import { HourUnitMatsData } from './hour-unit-mats-data.entity';
 import { HourUnitMatsDataArch } from './hour-unit-mats-data-arch.entity';
+import { UnitComplianceDim } from './unit-compliance-dim.entity';
 
 @Entity({ name: 'camddmw.unit_fact' })
 export class UnitFact extends BaseEntity {
@@ -149,6 +151,12 @@ export class UnitFact extends BaseEntity {
     transformer: new NumericColumnTransformer(),
   })
   maxHourlyHIRate: number;
+
+  @OneToOne(
+    () => UnitComplianceDim,
+    ucd => ucd.unitFact,
+  )
+  unitComplianceDim: UnitComplianceDim;
 
   @OneToMany(
     () => HourUnitMatsData,

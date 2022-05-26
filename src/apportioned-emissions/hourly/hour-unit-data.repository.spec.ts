@@ -116,4 +116,12 @@ describe('HourUnitDataRepository', () => {
       expect(result).toEqual('mockEmissions');
     });
   });
+
+  // describe('streamEmissionsFacilityAggregation', () => {
+  //   it('calls streamEmissions and streams HourUnitData aggregated by facility from the repository', async () => {
+  //     const result = repository.getFacilityStreamQuery(streamFilters);
+
+  //     expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+  //   });
+  // });
 });

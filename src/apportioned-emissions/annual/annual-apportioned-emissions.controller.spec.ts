@@ -1,13 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
+
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
+import { StreamingModule } from '../../streaming/streaming.module';
 import { AnnualUnitDataRepository } from './annual-unit-data.repository';
 import { AnnualApportionedEmissionsService } from './annual-apportioned-emissions.service';
 import { AnnualApportionedEmissionsController } from './annual-apportioned-emissions.controller';
-
 import { AnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -25,7 +25,7 @@ describe('-- Annual Apportioned Emissions Controller --', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, StreamModule],
+      imports: [LoggerModule, StreamingModule],
       controllers: [AnnualApportionedEmissionsController],
       providers: [AnnualApportionedEmissionsService, AnnualUnitDataRepository],
     }).compile();

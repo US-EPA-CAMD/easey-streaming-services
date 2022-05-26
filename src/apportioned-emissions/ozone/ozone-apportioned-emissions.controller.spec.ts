@@ -1,13 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
+
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
+import { StreamingModule } from '../../streaming/streaming.module';
 import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 import { OzoneApportionedEmissionsService } from './ozone-apportioned-emissions.service';
 import { OzoneApportionedEmissionsController } from './ozone-apportioned-emissions.controller';
-
 import { OzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -25,7 +25,7 @@ describe('-- Ozone Apportioned Emissions Controller --', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, StreamModule],
+      imports: [LoggerModule, StreamingModule],
       controllers: [OzoneApportionedEmissionsController],
       providers: [OzoneApportionedEmissionsService, OzoneUnitDataRepository],
     }).compile();

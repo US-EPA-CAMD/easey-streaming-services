@@ -1,22 +1,19 @@
 import { Test } from '@nestjs/testing';
+import { ConfigService } from '@nestjs/config';
 import { StreamableFile } from '@nestjs/common';
+
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
+import { StreamingService } from '../../streaming/streaming.service';
 import { AnnualUnitDataRepository } from './annual-unit-data.repository';
 import { AnnualApportionedEmissionsService } from './annual-apportioned-emissions.service';
-
-import {
-  AnnualApportionedEmissionsParamsDTO,
-} from '../../dto/annual-apportioned-emissions.params.dto';
-import { ConfigService } from '@nestjs/config';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
+import { AnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
 });
 
 const mockRepository = () => ({
-  getEmissions: jest.fn(),
   getStreamQuery: jest.fn(),
 });
 
@@ -38,11 +35,11 @@ const mockStream = {
   }),
 };
 
-let service: AnnualApportionedEmissionsService;
-let repository: any;
-let req: any;
-
 describe('-- Annual Apportioned Emissions Service --', () => {
+  let service: AnnualApportionedEmissionsService;
+  let repository: any;
+  let req: any;
+
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule],
@@ -50,7 +47,7 @@ describe('-- Annual Apportioned Emissions Service --', () => {
         ConfigService,
         AnnualApportionedEmissionsService,
         {
-          provide: StreamService,
+          provide: StreamingService,
           useFactory: () => ({
             getStream: () => {
               return mockStream;
@@ -88,4 +85,26 @@ describe('-- Annual Apportioned Emissions Service --', () => {
       );
     });
   });
+
+  // describe('streamEmissionsFacilityAggregation', () => {
+  //   it('calls AnnualUnitDataRepository.getFacilityStreamQuery() and streams all emissions from the repository', async () => {
+  //     repository.getFacilityStreamQuery.mockResolvedValue('');
+
+  //     let filters = new AnnualApportionedEmissionsParamsDTO();
+
+  //     req.headers.accept = '';
+
+  //     let result = await service.streamEmissionsFacilityAggregation(
+  //       req,
+  //       filters,
+  //     );
+
+  //     expect(result).toEqual(
+  //       new StreamableFile(Buffer.from('stream'), {
+  //         type: req.headers.accept,
+  //         disposition: `attachment; filename="annual-emissions-facility-aggregation-${0}.json"`,
+  //       }),
+  //     );
+  //   });
+  // });
 });

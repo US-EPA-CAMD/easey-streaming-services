@@ -8,16 +8,15 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { CorsOptionsModule } from '@us-epa-camd/easey-common/cors-options';
 
 import { AccountModule } from './account/account.module';
-import { FacilitiesModule } from "./facilities/facilities.module";
-// import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings.module';
-// import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
+import { FacilitiesModule } from './facilities/facilities.module';
 import { AllowanceComplianceModule } from './allowance-compliance/allowance-compliance.module';
-// import { EmissionsComplianceModule } from './emissions-compliance/emissions-compliance.module';
 import { ApportionedEmissionsModule } from './apportioned-emissions/apportioned-emissions.module';
 
 import routes from './routes';
 import appConfig from './config/app.config';
 import { TypeOrmConfigService } from './config/typeorm.config';
+import { EmissionsComplianceModule } from './emissions-compliance/emissions-compliance.module';
+import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
 import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings.module';
 
 @Module({
@@ -33,11 +32,11 @@ import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings
     LoggerModule,
     CorsOptionsModule,
     FacilitiesModule,
-    AccountModule,
     AllowanceHoldingsModule,
-    //AllowanceTransactionsModule,
+    AllowanceTransactionsModule,
+    AccountModule,
     AllowanceComplianceModule,
-    //EmissionsComplianceModule,    
+    EmissionsComplianceModule,
     ApportionedEmissionsModule,
   ],
 })

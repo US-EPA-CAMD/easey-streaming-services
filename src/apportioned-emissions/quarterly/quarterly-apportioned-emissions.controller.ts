@@ -36,7 +36,9 @@ import { StreamQuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterl
 @ApiExtraModels(QuarterlyApportionedEmissionsDTO)
 export class QuarterlyApportionedEmissionsController {
   
-  constructor(private readonly service: QuarterlyApportionedEmissionsService) { }
+  constructor(
+    private readonly service: QuarterlyApportionedEmissionsService
+  ) { }
 
   @Get()
   @ApiOkResponse({
