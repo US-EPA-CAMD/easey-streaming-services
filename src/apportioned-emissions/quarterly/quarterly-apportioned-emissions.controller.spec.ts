@@ -32,7 +32,6 @@ describe('-- Quarterly Apportioned Emissions Controller --', () => {
       providers: [
         QuarterlyApportionedEmissionsService,
         QuarterUnitDataRepository,
-        StreamingService
       ],
     }).compile();
 

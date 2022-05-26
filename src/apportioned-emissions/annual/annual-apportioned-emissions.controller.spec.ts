@@ -28,7 +28,7 @@ describe('-- Annual Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamModule],
       controllers: [AnnualApportionedEmissionsController],
-      providers: [AnnualApportionedEmissionsService, AnnualUnitDataRepository, StreamingService],
+      providers: [AnnualApportionedEmissionsService, AnnualUnitDataRepository],
     }).compile();
 
     controller = module.get(AnnualApportionedEmissionsController);

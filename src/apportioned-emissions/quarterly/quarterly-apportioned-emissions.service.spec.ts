@@ -49,7 +49,7 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
       providers: [
         ConfigService,
         {
-          provide: StreamingService,
+          provide: StreamService,
           useFactory: () => ({
             getStream: () => {
               return mockStream;

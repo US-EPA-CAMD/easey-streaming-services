@@ -5,13 +5,11 @@ import { AccountFactRepository } from './account-fact.repository';
 import { AccountService } from './account.service';
 import { StreamAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { StreamableFile } from '@nestjs/common';
-import { StreamingService } from '../streaming/streaming.service';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
 
 const mockAccountFactRepository = () => ({
-  getAllAccounts: jest.fn(),
-  getAllAccountAttributes: jest.fn(),
-  getAllApplicableAccountAttributes: jest.fn(),
-  getStreamQuery: jest.fn(),});
+  buildQuery: jest.fn(),
+});
 
 const mockAccountMap = () => ({
   many: jest.fn(),
@@ -60,7 +58,7 @@ describe('-- Account Service --', () => {
           useFactory: mockAccountFactRepository,
         },
         {
-          provide: StreamingService,
+          provide: StreamService,
           useFactory: () => ({
             getStream: () => {
               return mockStream;
@@ -78,7 +76,7 @@ describe('-- Account Service --', () => {
 
   describe('streamAccountAttributes', () => {
     it('streams all account attributes', async () => {
-      // accountFactRepository.buildQuery.mockResolvedValue('');
+      accountFactRepository.buildQuery.mockResolvedValue('');
 
       let filters = new StreamAccountAttributesParamsDTO();
 

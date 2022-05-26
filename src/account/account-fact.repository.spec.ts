@@ -4,6 +4,7 @@ import { SelectQueryBuilder } from 'typeorm';
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountFact } from '../entities/account-fact.entity';
 import { StreamAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { fieldMappings } from '../constants/account-field-mappings';
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
@@ -73,6 +74,7 @@ describe('AccountFactRepository', () => {
   describe('streamAccountAttributes', () => {
     it('streams all account attributes', async () => {
       const result = accountFactRepository.buildQuery(
+        fieldMappings.allowances.accountAttributes.data,
         new StreamAccountAttributesParamsDTO(),
       );
 

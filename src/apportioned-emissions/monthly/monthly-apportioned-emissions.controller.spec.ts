@@ -29,7 +29,7 @@ describe('-- Monthly Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamModule],
       controllers: [MonthlyApportionedEmissionsController],
-      providers: [MonthlyApportionedEmissionsService, MonthUnitDataRepository, StreamingService],
+      providers: [MonthlyApportionedEmissionsService, MonthUnitDataRepository],
     }).compile();
 
     controller = module.get(MonthlyApportionedEmissionsController);

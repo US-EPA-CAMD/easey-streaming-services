@@ -8,6 +8,7 @@ import { MonthlyApportionedEmissionsService } from './monthly-apportioned-emissi
 import { MonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
 import { ConfigService } from '@nestjs/config';
 import { StreamingService } from '../../streaming/streaming.service';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -46,7 +47,7 @@ describe('-- Monthly Apportioned Emissions Service --', () => {
       imports: [LoggerModule],
       providers: [
         {
-          provide: StreamingService,
+          provide: StreamService,
           useFactory: () => ({
             getStream: () => {
               return mockStream;

@@ -29,7 +29,7 @@ describe('-- Ozone Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamModule],
       controllers: [OzoneApportionedEmissionsController],
-      providers: [OzoneApportionedEmissionsService, OzoneUnitDataRepository, StreamingService],
+      providers: [OzoneApportionedEmissionsService, OzoneUnitDataRepository],
     }).compile();
 
     controller = module.get(OzoneApportionedEmissionsController);

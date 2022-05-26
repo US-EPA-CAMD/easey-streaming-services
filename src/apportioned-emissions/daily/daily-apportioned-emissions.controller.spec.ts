@@ -29,7 +29,7 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamModule],
       controllers: [DailyApportionedEmissionsController],
-      providers: [DayUnitDataRepository, DailyApportionedEmissionsService, StreamingService],
+      providers: [DayUnitDataRepository, DailyApportionedEmissionsService],
     }).compile();
 
     controller = module.get(DailyApportionedEmissionsController);

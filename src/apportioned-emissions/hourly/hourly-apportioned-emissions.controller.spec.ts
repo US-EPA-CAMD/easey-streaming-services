@@ -27,7 +27,7 @@ describe('-- Hourly Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [HourlyApportionedEmissionsController],
-      providers: [HourlyApportionedEmissionsService, HourUnitDataRepository, StreamingService],
+      providers: [HourlyApportionedEmissionsService, HourUnitDataRepository],
     }).compile();
 
     controller = module.get(HourlyApportionedEmissionsController);

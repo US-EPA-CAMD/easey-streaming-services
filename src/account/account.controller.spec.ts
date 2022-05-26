@@ -24,7 +24,7 @@ describe('-- Account Controller --', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, ConfigService, StreamingService],
+      imports: [LoggerModule],
       controllers: [AccountController],
       providers: [AccountService, AccountFactRepository],
     }).compile();
