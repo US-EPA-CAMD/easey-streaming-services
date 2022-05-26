@@ -2,15 +2,11 @@ import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
-import { AnnualUnitDataView } from '../../entities/vw-annual-unit-data.entity';
 import { AnnualUnitDataRepository } from './annual-unit-data.repository';
 import { AnnualApportionedEmissionsService } from './annual-apportioned-emissions.service';
 import { AnnualApportionedEmissionsController } from './annual-apportioned-emissions.controller';
 
-import {
-  AnnualApportionedEmissionsParamsDTO,
-  PaginatedAnnualApportionedEmissionsParamsDTO,
-} from '../../dto/annual-apportioned-emissions.params.dto';
+import { AnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
 import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
@@ -42,17 +38,6 @@ describe('-- Annual Apportioned Emissions Controller --', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-  });
-
-  describe('* getEmissions', () => {
-    it('should return test 1', async () => {
-      const expectedResult: AnnualUnitDataView[] = [];
-      const paramsDto = new PaginatedAnnualApportionedEmissionsParamsDTO();
-      jest.spyOn(service, 'getEmissions').mockResolvedValue(expectedResult);
-      expect(await controller.getEmissions(req, paramsDto)).toBe(
-        expectedResult,
-      );
-    });
   });
 
   describe('* streamEmissions', () => {

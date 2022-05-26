@@ -2,16 +2,12 @@ import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
-import { MonthUnitDataView } from '../../entities/vw-month-unit-data.entity';
 import { MonthUnitDataRepository } from './month-unit-data.repository';
 import { MonthlyApportionedEmissionsService } from './monthly-apportioned-emissions.service';
 
-import {
-  MonthlyApportionedEmissionsParamsDTO,
-  PaginatedMonthlyApportionedEmissionsParamsDTO,
-} from '../../dto/monthly-apportioned-emissions.params.dto';
-import { StreamModule, StreamService } from '@us-epa-camd/easey-common/stream';
+import { MonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
 import { ConfigService } from '@nestjs/config';
+import { StreamService } from '@us-epa-camd/easey-common/stream';
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -70,16 +66,6 @@ describe('-- Monthly Apportioned Emissions Service --', () => {
     req.res.setHeader.mockReturnValue();
     service = module.get(MonthlyApportionedEmissionsService);
     repository = module.get(MonthUnitDataRepository);
-  });
-
-  describe('getEmissions', () => {
-    it('calls MonthUnitDataRepository.getEmissions() and gets all emissions from the repository', async () => {
-      const expected = MonthUnitDataView[0];
-      repository.getEmissions.mockResolvedValue(expected);
-      let filters = new PaginatedMonthlyApportionedEmissionsParamsDTO();
-      let result = await service.getEmissions(req, filters);
-      expect(result).toEqual(expected);
-    });
   });
 
   describe('streamEmissions', () => {
