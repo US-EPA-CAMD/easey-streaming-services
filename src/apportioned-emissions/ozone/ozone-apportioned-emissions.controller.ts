@@ -36,7 +36,9 @@ import { StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apport
 @ApiExtraModels(OzoneApportionedEmissionsDTO)
 export class OzoneApportionedEmissionsController {
   
-  constructor(private readonly service: OzoneApportionedEmissionsService) { }
+  constructor(
+    private readonly service: OzoneApportionedEmissionsService
+  ) { }
 
   @Get()
   @ApiOkResponse({

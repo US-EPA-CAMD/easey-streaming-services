@@ -1,13 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
+
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
+import { StreamingModule } from '../../streaming/streaming.module';
 import { DayUnitDataRepository } from './day-unit-data.repository';
 import { DailyApportionedEmissionsService } from './daily-apportioned-emissions.service';
 import { DailyApportionedEmissionsController } from './daily-apportioned-emissions.controller';
-
 import { DailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-emissions.params.dto';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
   return {
@@ -25,7 +25,7 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, StreamModule],
+      imports: [LoggerModule, StreamingModule],
       controllers: [DailyApportionedEmissionsController],
       providers: [DayUnitDataRepository, DailyApportionedEmissionsService],
     }).compile();

@@ -21,6 +21,7 @@ import { StreamQuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterl
 
 @Injectable()
 export class QuarterlyApportionedEmissionsService {
+  
   constructor(
     private readonly logger: Logger,
     private readonly streamService: StreamingService,

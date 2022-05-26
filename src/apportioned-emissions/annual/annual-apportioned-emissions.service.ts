@@ -21,6 +21,7 @@ import { StreamAnnualApportionedEmissionsParamsDTO } from '../../dto/annual-appo
 
 @Injectable()
 export class AnnualApportionedEmissionsService {
+  
   constructor(
     private readonly logger: Logger,
     private readonly streamService: StreamingService,
@@ -62,4 +63,58 @@ export class AnnualApportionedEmissionsService {
       fieldMappingsList,
     );
   }
+
+  // async streamEmissionsFacilityAggregation(
+  //   req: Request,
+  //   params: AnnualApportionedEmissionsParamsDTO,
+  // ): Promise<StreamableFile> {
+  //   try {
+  //     const query = this.repository.getFacilityStreamQuery(params);
+  //     const stream: ReadStream = await this.streamService.getStream(query);
+
+  //     req.on('close', () => {
+  //       stream.emit('end');
+  //     });
+
+  //     req.res.setHeader(
+  //       fieldMappingHeader,
+  //       JSON.stringify(
+  //         fieldMappings.emissions.annual.data.aggregation.facility,
+  //       ),
+  //     );
+
+  //     const toDto = new Transform({
+  //       objectMode: true,
+  //       transform(data, _enc, callback) {
+  //         const dto = plainToClass(
+  //           AnnualApportionedEmissionsFacilityAggregationDTO,
+  //           data,
+  //           {
+  //             enableImplicitConversion: true,
+  //           },
+  //         );
+  //         callback(null, dto);
+  //       },
+  //     });
+
+  //     if (req.headers.accept === 'text/csv') {
+  //       const toCSV = new PlainToCSV(
+  //         fieldMappings.emissions.annual.data.aggregation.facility,
+  //       );
+  //       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
+  //         type: req.headers.accept,
+  //         disposition: `attachment; filename="annual-emissions-facility-aggregation-${uuid()}.csv"`,
+  //       });
+  //     }
+
+  //     const objToString = new PlainToJSON();
+  //     return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
+  //       type: req.headers.accept,
+  //       disposition: `attachment; filename="annual-emissions-facility-aggregation-${uuid()}.json"`,
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //     return null;
+  //   }
+  // }
 }
