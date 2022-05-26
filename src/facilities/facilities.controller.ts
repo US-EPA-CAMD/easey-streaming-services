@@ -8,13 +8,7 @@ import {
   ApiExtraModels,
 } from '@nestjs/swagger';
 
-import {
-  Get,
-  Controller,
-  Req,
-  Query,
-  StreamableFile,
-} from '@nestjs/common';
+import { Get, Controller, Req, Query, StreamableFile } from '@nestjs/common';
 
 import {
   ApiQueryFacilityMultiSelect,
@@ -23,18 +17,16 @@ import {
   ExcludeQuery,
 } from '../utils/swagger-decorator.const';
 
-import { fieldMappings } from 'src/constants/facility-attributes-field-mappings';
+import { fieldMappings } from '../constants/facility-attributes-field-mappings';
 import { FacilitiesService } from './facilities.service';
 import { FacilityAttributesDTO } from './../dto/facility-attributes.dto';
-import { StreamFacilityAttributesParamsDTO } from 'src/dto/facility-attributes-params.dto';
+import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Facilities')
 export class FacilitiesController {
-  constructor(
-    private readonly service: FacilitiesService
-  ) {}
+  constructor(private readonly service: FacilitiesService) {}
 
   @Get('/attributes')
   @ApiOkResponse({

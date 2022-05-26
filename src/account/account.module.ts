@@ -8,21 +8,15 @@ import { StreamingService } from './../streaming/streaming.service';
 
 import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
+import { AccountFactRepository } from './account-fact.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-
-    ]),
+    TypeOrmModule.forFeature([AccountFactRepository]),
     LoggerModule,
     StreamingModule,
   ],
-  controllers: [
-    AccountController
-  ],
-  providers: [
-    StreamingService,
-    AccountService,
-  ],
+  controllers: [AccountController],
+  providers: [StreamingService, AccountService],
 })
 export class AccountModule {}

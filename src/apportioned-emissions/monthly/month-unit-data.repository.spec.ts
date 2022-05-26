@@ -15,7 +15,7 @@ import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { MonthUnitDataRepository } from './month-unit-data.repository';
 import { StreamMonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
 
-jest.mock('../../utils/query-builder.helper');
+jest.mock('../../utils/emissions-query-builder');
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {

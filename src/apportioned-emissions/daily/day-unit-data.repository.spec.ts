@@ -15,7 +15,7 @@ import { DayUnitDataRepository } from './day-unit-data.repository';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { StreamDailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-emissions.params.dto';
 
-jest.mock('../../utils/query-builder.helper');
+jest.mock('../../utils/emissions-query-builder');
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
@@ -109,7 +109,8 @@ describe('DayUnitDataRepository', () => {
     it('calls streamEmissions and streams DayUnitData from the repository', async () => {
       const result = await repository.buildQuery(
         fieldMappings.emissions.daily,
-        streamFilters);
+        streamFilters,
+      );
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
       expect(result).toEqual('mockEmissions');

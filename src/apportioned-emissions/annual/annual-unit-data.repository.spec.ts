@@ -15,7 +15,7 @@ import { AnnualUnitDataRepository } from './annual-unit-data.repository';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { StreamAnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
 
-jest.mock('../../utils/query-builder.helper');
+jest.mock('../../utils/emissions-query-builder');
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
