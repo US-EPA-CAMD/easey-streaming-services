@@ -16,4 +16,14 @@ export class ProgramCode extends BaseEntity {
     name: 'emissions_ui_filter',
   })
   emissionsUIFilter: number;
+
+  @Column({
+    name: 'allowance_ui_filter',
+  })
+  allowanceUIFilter: number;
+
+  @Column({
+    name: 'trading_end_date',
+  })
+  tradingEndDate: Date;
 }
