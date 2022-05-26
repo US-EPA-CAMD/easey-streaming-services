@@ -36,7 +36,9 @@ import { StreamAnnualApportionedEmissionsParamsDTO } from '../../dto/annual-appo
 @ApiExtraModels(AnnualApportionedEmissionsDTO)
 export class AnnualApportionedEmissionsController {
   
-  constructor(private readonly service: AnnualApportionedEmissionsService) { }
+  constructor(
+    private readonly service: AnnualApportionedEmissionsService
+  ) { }
 
   @Get()
   @ApiOkResponse({
@@ -67,4 +69,36 @@ export class AnnualApportionedEmissionsController {
   ): Promise<StreamableFile> {
     return this.service.streamEmissions(req, params);
   }
+
+  // @Get('by-facility')
+  // @ApiOkResponse({
+  //   description:
+  //     'Streams Annual Apportioned Emissions data per filter criteria aggregated by facility',
+  //   content: {
+  //     'application/json': {
+  //       schema: {
+  //         $ref: getSchemaPath(AnnualApportionedEmissionsFacilityAggregationDTO),
+  //       },
+  //     },
+  //     'text/csv': {
+  //       schema: {
+  //         type: 'string',
+  //         example: fieldMappings.emissions.annual.data.aggregation.facility
+  //           .map(i => i.label)
+  //           .join(','),
+  //       },
+  //     },
+  //   },
+  // })
+  // @BadRequestResponse()
+  // @NotFoundResponse()
+  // @ApiQueryMultiSelect()
+  // @ApiProgramQuery()
+  // @ApiQueryAnnually()
+  // streamEmissionsFacilityAggregation(
+  //   @Req() req: Request,
+  //   @Query() params: AnnualApportionedEmissionsParamsDTO,
+  // ): Promise<StreamableFile> {
+  //   return this.service.streamEmissionsFacilityAggregation(req, params);
+  // }  
 }

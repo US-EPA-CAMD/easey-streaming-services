@@ -42,7 +42,7 @@ const routes: Routes = [
     module: AllowanceComplianceModule,
   },
   {
-    path: '/apportioned',
+    path: 'emissions/apportioned',
     module: ApportionedEmissionsModule,
     children: [
       {

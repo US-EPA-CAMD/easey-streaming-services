@@ -1,15 +1,13 @@
 import { Test } from '@nestjs/testing';
+import { ConfigService } from '@nestjs/config';
 import { StreamableFile } from '@nestjs/common';
+
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
+import { StreamingService } from '../../streaming/streaming.service';
 import { DayUnitDataRepository } from './day-unit-data.repository';
 import { DailyApportionedEmissionsService } from './daily-apportioned-emissions.service';
-
-import {
-  DailyApportionedEmissionsParamsDTO,
-} from '../../dto/daily-apportioned-emissions.params.dto';
-import { ConfigService } from '@nestjs/config';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
+import { DailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-emissions.params.dto';
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -48,7 +46,7 @@ describe('-- Daily Apportioned Emissions Service --', () => {
       imports: [LoggerModule],
       providers: [
         {
-          provide: StreamService,
+          provide: StreamingService,
           useFactory: () => ({
             getStream: () => {
               return mockStream;
@@ -88,4 +86,61 @@ describe('-- Daily Apportioned Emissions Service --', () => {
       );
     });
   });
+
+  // describe('streamEmissionsFacilityAggregation', () => {
+  //   it('calls DailyUnitDataRepository.getFacilityStreamQuery() and streams all emissions from the repository', async () => {
+  //     repository.getFacilityStreamQuery.mockResolvedValue('');
+
+  //     let filters = new DailyApportionedEmissionsParamsDTO();
+
+  //     req.headers.accept = '';
+
+  //     let result = await service.streamEmissionsFacilityAggregation(req, filters);
+
+  //     expect(result).toEqual(
+  //       new StreamableFile(Buffer.from('stream'), {
+  //         type: req.headers.accept,
+  //         disposition: `attachment; filename="daily-emissions-facility-aggregation-${0}.json"`,
+  //       }),
+  //     );
+  //   });
+  // });
+
+  // describe('streamEmissionsStateAggregation', () => {
+  //   it('calls DailyUnitDataRepository.getStateStreamQuery() and streams all emissions from the repository', async () => {
+  //     repository.getStateStreamQuery.mockResolvedValue('');
+
+  //     let filters = new DailyApportionedEmissionsParamsDTO();
+
+  //     req.headers.accept = '';
+
+  //     let result = await service.streamEmissionsStateAggregation(req, filters);
+
+  //     expect(result).toEqual(
+  //       new StreamableFile(Buffer.from('stream'), {
+  //         type: req.headers.accept,
+  //         disposition: `attachment; filename="daily-emissions-state-aggregation-${0}.json"`,
+  //       }),
+  //     );
+  //   });
+  // });
+
+  // describe('streamEmissionsNationalAggregation', () => {
+  //   it('calls DailyUnitDataRepository.getNationalStreamQuery() and streams all emissions from the repository', async () => {
+  //     repository.getNationalStreamQuery.mockResolvedValue('');
+
+  //     let filters = new DailyApportionedEmissionsParamsDTO();
+
+  //     req.headers.accept = '';
+
+  //     let result = await service.streamEmissionsNationalAggregation(req, filters);
+
+  //     expect(result).toEqual(
+  //       new StreamableFile(Buffer.from('stream'), {
+  //         type: req.headers.accept,
+  //         disposition: `attachment; filename="daily-emissions-national-aggregation-${0}.json"`,
+  //       }),
+  //     );
+  //   });
+  // });
 });

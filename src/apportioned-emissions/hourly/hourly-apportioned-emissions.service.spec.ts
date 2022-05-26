@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
+
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 import { HourUnitDataRepository } from './hour-unit-data.repository';
@@ -86,4 +87,61 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
       );
     });
   });
+
+  // describe('streamEmissionsFacilityAggregation', () => {
+  //   it('calls HourlyUnitDataRepository.getFacilityStreamQuery() and streams all emissions from the repository', async () => {
+  //     repository.getFacilityStreamQuery.mockResolvedValue('');
+
+  //     let filters = new HourlyApportionedEmissionsParamsDTO();
+
+  //     req.headers.accept = '';
+
+  //     let result = await service.streamEmissionsFacilityAggregation(req, filters);
+
+  //     expect(result).toEqual(
+  //       new StreamableFile(Buffer.from('stream'), {
+  //         type: req.headers.accept,
+  //         disposition: `attachment; filename="hourly-emissions-facility-aggregation-${0}.json"`,
+  //       }),
+  //     );
+  //   });
+  // });
+
+  // describe('streamEmissionsStateAggregation', () => {
+  //   it('calls HourlyUnitDataRepository.getStateStreamQuery() and streams all emissions from the repository', async () => {
+  //     repository.getStateStreamQuery.mockResolvedValue('');
+
+  //     let filters = new HourlyApportionedEmissionsParamsDTO();
+
+  //     req.headers.accept = '';
+
+  //     let result = await service.streamEmissionsStateAggregation(req, filters);
+
+  //     expect(result).toEqual(
+  //       new StreamableFile(Buffer.from('stream'), {
+  //         type: req.headers.accept,
+  //         disposition: `attachment; filename="hourly-emissions-state-aggregation-${0}.json"`,
+  //       }),
+  //     );
+  //   });
+  // });
+
+  // describe('streamEmissionsNationalAggregation', () => {
+  //   it('calls HourlyUnitDataRepository.getNationalStreamQuery() and streams all emissions from the repository', async () => {
+  //     repository.getNationalStreamQuery.mockResolvedValue('');
+
+  //     let filters = new HourlyApportionedEmissionsParamsDTO();
+
+  //     req.headers.accept = '';
+
+  //     let result = await service.streamEmissionsNationalAggregation(req, filters);
+
+  //     expect(result).toEqual(
+  //       new StreamableFile(Buffer.from('stream'), {
+  //         type: req.headers.accept,
+  //         disposition: `attachment; filename="hourly-emissions-national-aggregation-${0}.json"`,
+  //       }),
+  //     );
+  //   });
+  // });
 });

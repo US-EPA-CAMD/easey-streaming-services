@@ -39,4 +39,99 @@ export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
 
     return query.getQueryAndParameters();
   }
+
+  // private buildFacilityAggregationQuery(
+  //   params: MonthlyApportionedEmissionsParamsDTO,
+  // ): SelectQueryBuilder<MonthUnitDataView> {
+  //   let query = this.createQueryBuilder('mud').select(
+  //     [
+  //       'mud.stateCode',
+  //       'mud.facilityName',
+  //       'mud.facilityId',
+  //       'mud.year',
+  //       'mud.month',
+  //     ].map(col => {
+  //       return `${col} AS "${col.split('.')[1]}"`;
+  //     }),
+  //   );
+  //   query = this.buildAggregationQuery(query, params);
+  //   query
+  //     .addGroupBy('mud.stateCode')
+  //     .addGroupBy('mud.facilityName')
+  //     .addGroupBy('mud.facilityId')
+  //     .addGroupBy('mud.year')
+  //     .addGroupBy('mud.month');
+
+  //   query
+  //     .orderBy('mud.facilityId')
+  //     .addOrderBy('mud.year')
+  //     .addOrderBy('mud.month');
+
+  //   return query;
+  // }
+
+  // private buildStateAggregationQuery(
+  //   params: MonthlyApportionedEmissionsParamsDTO,
+  // ): SelectQueryBuilder<MonthUnitDataView> {
+  //   let query = this.createQueryBuilder('mud').select(
+  //     ['mud.stateCode', 'mud.year', 'mud.month'].map(col => {
+  //       return `${col} AS "${col.split('.')[1]}"`;
+  //     }),
+  //   );
+  //   query = this.buildAggregationQuery(query, params);
+  //   query
+  //     .addGroupBy('mud.stateCode')
+  //     .addGroupBy('mud.year')
+  //     .addGroupBy('mud.month');
+
+  //   query
+  //     .orderBy('mud.stateCode')
+  //     .addOrderBy('mud.year')
+  //     .addOrderBy('mud.month');
+
+  //   return query;
+  // }
+
+  // private buildNationalAggregationQuery(
+  //   params: MonthlyApportionedEmissionsParamsDTO,
+  // ): SelectQueryBuilder<MonthUnitDataView> {
+  //   let query = this.createQueryBuilder('mud').select(
+  //     ['mud.year', 'mud.month'].map(col => {
+  //       return `${col} AS "${col.split('.')[1]}"`;
+  //     }),
+  //   );
+  //   query = this.buildAggregationQuery(query, params);
+  //   query.addGroupBy('mud.year').addGroupBy('mud.month');
+  //   query.addOrderBy('mud.year').addOrderBy('mud.month');
+
+  //   return query;
+  // }
+
+  // private buildAggregationQuery(query, params): SelectQueryBuilder<MonthUnitDataView> {
+  //   query
+  //     .addSelect('SUM(mud.grossLoad)', 'grossLoad')
+  //     .addSelect('SUM(mud.steamLoad)', 'steamLoad')
+  //     .addSelect('SUM(mud.so2Mass)', 'so2Mass')
+  //     .addSelect('SUM(mud.co2Mass)', 'co2Mass')
+  //     .addSelect('SUM(mud.noxMass)', 'noxMass')
+  //     .addSelect('SUM(mud.heatInput)', 'heatInput');
+
+  //   query = EmissionsQueryBuilder.createEmissionsQuery(
+  //     query,
+  //     params,
+  //     [
+  //       'year',
+  //       'month',
+  //       'stateCode',
+  //       'facilityId',
+  //       'unitType',
+  //       'controlTechnologies',
+  //       'unitFuelType',
+  //       'programCodeInfo',
+  //     ],
+  //     'mud',
+  //   );
+
+  //   return query;
+  // }
 }
