@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { IsDefined } from 'class-validator';
+import { IsDefined, IsNotEmpty } from 'class-validator';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 import {
   IsInDateRange,
@@ -7,7 +7,79 @@ import {
   IsIsoFormat,
   IsDateGreaterThanEqualTo,
   IsYearFormat,
+  IsDateInRangeLimit,
 } from '@us-epa-camd/easey-common/pipes';
+
+import { TRANSACTION_DATE_LIMIT_YEARS } from '../config/app.config';
+
+export function TransactionBeginDate() {
+  return applyDecorators(
+    IsInDateRange(
+      [new Date('1993-03-23'), 'currentDate'],
+      false,
+      false,
+      false,
+      {
+        message: ErrorMessages.DateRange(
+          'transactionBeginDate',
+          false,
+          `a date between 03/23/1993 and the current date`,
+        ),
+      },
+    ),
+    IsValidDate({
+      message: ErrorMessages.DateValidity(),
+    }),
+    IsIsoFormat({
+      message: ErrorMessages.SingleFormat(
+        'transactionBeginDate',
+        'YYYY-MM-DD format',
+      ),
+    }),
+    IsNotEmpty({ message: ErrorMessages.RequiredProperty() }),
+  );
+}
+
+export function TransactionEndDate() {
+  return applyDecorators(
+    IsDateGreaterThanEqualTo('transactionBeginDate', {
+      message: ErrorMessages.BeginEndDate('transactionBeginDate'),
+    }),
+    IsDateInRangeLimit(
+      'transactionBeginDate',
+      Number(TRANSACTION_DATE_LIMIT_YEARS),
+      {
+        message: ErrorMessages.DateRangeLimit(
+          'transactionBeginDate',
+          Number(TRANSACTION_DATE_LIMIT_YEARS),
+        ),
+      },
+    ),
+    IsInDateRange(
+      [new Date('1993-03-23'), 'currentDate'],
+      false,
+      false,
+      false,
+      {
+        message: ErrorMessages.DateRange(
+          'transactionEndDate',
+          false,
+          `a date between 03/23/1993 and the current date`,
+        ),
+      },
+    ),
+    IsValidDate({
+      message: ErrorMessages.DateValidity(),
+    }),
+    IsIsoFormat({
+      message: ErrorMessages.SingleFormat(
+        'transactionEndDate',
+        'YYYY-MM-DD format',
+      ),
+    }),
+    IsNotEmpty({ message: ErrorMessages.RequiredProperty() }),
+  );
+}
 
 export function BeginDate(isMats = false) {
   let date;

@@ -6,6 +6,9 @@ const path = process.env.EASEY_STREAMING_SERVICES_PATH || 'streaming-services';
 const host = process.env.EASEY_STREAMING_SERVICES_HOST || 'localhost';
 const port = +process.env.EASEY_STREAMING_SERVICES_PORT || 8080;
 
+export const TRANSACTION_DATE_LIMIT_YEARS =
+  +process.env.EASEY_STREAMING_SERVICES_TRANSACTION_DATE_LIMIT_YEARS || 2;
+
 let uri = `https://${host}/${path}`;
 
 if (host === 'localhost') {
@@ -21,16 +24,13 @@ export default registerAs('app', () => ({
   port,
   uri,
   env: process.env.EASEY_STREAMING_SERVICES_ENV || 'local-dev',
-  enableCors: parseBool(
-    process.env.EASEY_STREAMING_SERVICES_ENABLE_CORS,
-    true
-  ),
+  enableCors: parseBool(process.env.EASEY_STREAMING_SERVICES_ENABLE_CORS, true),
   enableApiKey: parseBool(
     process.env.EASEY_STREAMING_SERVICES_ENABLE_API_KEY,
-    true
+    true,
   ),
   enableAuthToken: parseBool(
-    process.env.EASEY_STREAMING_SERVICES_ENABLE_AUTH_TOKEN
+    process.env.EASEY_STREAMING_SERVICES_ENABLE_AUTH_TOKEN,
   ),
   enableGlobalValidationPipes: parseBool(
     process.env.EASEY_STREAMING_SERVICES_ENABLE_GLOBAL_VALIDATION_PIPE,
@@ -38,5 +38,6 @@ export default registerAs('app', () => ({
   ),
   version: process.env.EASEY_STREAMING_SERVICES_VERSION || 'v0.0.0',
   published: process.env.EASEY_STREAMING_SERVICES_PUBLISHED || 'local',
-  streamBatchSize: +process.env.EASEY_STREAMING_SERVICES_STREAM_BATCH_SIZE || 20000,
+  streamBatchSize:
+    +process.env.EASEY_STREAMING_SERVICES_STREAM_BATCH_SIZE || 20000,
 }));
