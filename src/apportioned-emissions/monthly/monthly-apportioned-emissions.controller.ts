@@ -36,7 +36,9 @@ import { StreamMonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-ap
 @ApiExtraModels(MonthlyApportionedEmissionsDTO)
 export class MonthlyApportionedEmissionsController {
   
-  constructor(private readonly service: MonthlyApportionedEmissionsService) { }
+  constructor(
+    private readonly service: MonthlyApportionedEmissionsService
+  ) { }
 
   @Get()
   @ApiOkResponse({
@@ -67,4 +69,104 @@ export class MonthlyApportionedEmissionsController {
   ): Promise<StreamableFile> {
     return this.service.streamEmissions(req, params);
   }
+
+  // @Get('by-facility')
+  // @ApiOkResponse({
+  //   description:
+  //     'Streams Monthly Apportioned Emissions data per filter criteria aggregated by facility',
+  //   content: {
+  //     'application/json': {
+  //       schema: {
+  //         $ref: getSchemaPath(
+  //           MonthlyApportionedEmissionsFacilityAggregationDTO,
+  //         ),
+  //       },
+  //     },
+  //     'text/csv': {
+  //       schema: {
+  //         type: 'string',
+  //         example: fieldMappings.emissions.monthly.data.aggregation.facility
+  //           .map(i => i.label)
+  //           .join(','),
+  //       },
+  //     },
+  //   },
+  // })
+  // @BadRequestResponse()
+  // @NotFoundResponse()
+  // @ApiQueryMultiSelect()
+  // @ApiQueryMonthly()
+  // @ApiProgramQuery()
+  // streamEmissionsFacilityAggregation(
+  //   @Req() req: Request,
+  //   @Query() params: MonthlyApportionedEmissionsParamsDTO,
+  // ): Promise<StreamableFile> {
+  //   return this.service.streamEmissionsFacilityAggregation(req, params);
+  // }
+
+  // @Get('by-state')
+  // @ApiOkResponse({
+  //   description:
+  //     'Streams Monthly Apportioned Emissions data per filter criteria aggregated by state',
+  //   content: {
+  //     'application/json': {
+  //       schema: {
+  //         $ref: getSchemaPath(MonthlyApportionedEmissionsStateAggregationDTO),
+  //       },
+  //     },
+  //     'text/csv': {
+  //       schema: {
+  //         type: 'string',
+  //         example: fieldMappings.emissions.monthly.data.aggregation.state
+  //           .map(i => i.label)
+  //           .join(','),
+  //       },
+  //     },
+  //   },
+  // })
+  // @BadRequestResponse()
+  // @NotFoundResponse()
+  // @ApiQueryMultiSelect()
+  // @ApiQueryMonthly()
+  // @ApiProgramQuery()
+  // streamEmissionsStateAggregation(
+  //   @Req() req: Request,
+  //   @Query() params: MonthlyApportionedEmissionsParamsDTO,
+  // ): Promise<StreamableFile> {
+  //   return this.service.streamEmissionsStateAggregation(req, params);
+  // }
+
+  // @Get('nationally')
+  // @ApiOkResponse({
+  //   description:
+  //     'Streams Monthly Apportioned Emissions data per filter criteria aggregated nationally',
+  //   content: {
+  //     'application/json': {
+  //       schema: {
+  //         $ref: getSchemaPath(
+  //           MonthlyApportionedEmissionsNationalAggregationDTO,
+  //         ),
+  //       },
+  //     },
+  //     'text/csv': {
+  //       schema: {
+  //         type: 'string',
+  //         example: fieldMappings.emissions.monthly.data.aggregation.national
+  //           .map(i => i.label)
+  //           .join(','),
+  //       },
+  //     },
+  //   },
+  // })
+  // @BadRequestResponse()
+  // @NotFoundResponse()
+  // @ApiQueryMultiSelect()
+  // @ApiQueryMonthly()
+  // @ApiProgramQuery()
+  // streamEmissionsNationalAggregation(
+  //   @Req() req: Request,
+  //   @Query() params: MonthlyApportionedEmissionsParamsDTO,
+  // ): Promise<StreamableFile> {
+  //   return this.service.streamEmissionsNationalAggregation(req, params);
+  // }
 }

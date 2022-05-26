@@ -21,6 +21,7 @@ import { StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apport
 
 @Injectable()
 export class OzoneApportionedEmissionsService {
+  
   constructor(
     private readonly logger: Logger,
     private readonly streamService: StreamingService,
