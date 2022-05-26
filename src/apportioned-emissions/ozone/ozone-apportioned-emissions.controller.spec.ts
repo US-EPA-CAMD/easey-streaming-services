@@ -2,15 +2,11 @@ import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
-import { OzoneUnitDataView } from '../../entities/vw-ozone-unit-data.entity';
 import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 import { OzoneApportionedEmissionsService } from './ozone-apportioned-emissions.service';
 import { OzoneApportionedEmissionsController } from './ozone-apportioned-emissions.controller';
 
-import {
-  OzoneApportionedEmissionsParamsDTO,
-  PaginatedOzoneApportionedEmissionsParamsDTO,
-} from '../../dto/ozone-apportioned-emissions.params.dto';
+import { OzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 import { StreamModule } from '@us-epa-camd/easey-common/stream';
 
 const mockRequest = (url: string) => {
@@ -42,17 +38,6 @@ describe('-- Ozone Apportioned Emissions Controller --', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-  });
-
-  describe('* getEmissions', () => {
-    it('should return test 1', async () => {
-      const expectedResult: OzoneUnitDataView[] = [];
-      const paramsDto = new PaginatedOzoneApportionedEmissionsParamsDTO();
-      jest.spyOn(service, 'getEmissions').mockResolvedValue(expectedResult);
-      expect(await controller.getEmissions(req, paramsDto)).toBe(
-        expectedResult,
-      );
-    });
   });
 
   describe('* streamEmissions', () => {

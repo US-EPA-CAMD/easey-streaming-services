@@ -9,7 +9,6 @@ import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-pa
 import { FacilityUnitAttributesRepository } from './facility-unit-attributes.repository';
 
 import { StreamingModule } from '../streaming/streaming.module';
-
 const mockRequest = (url: string) => {
   return {
     url,

@@ -15,7 +15,7 @@ import { HourUnitDataRepository } from './hour-unit-data.repository';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 
-jest.mock('../../utils/query-builder.helper');
+jest.mock('../../utils/emissions-query-builder');
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
