@@ -52,7 +52,7 @@ export class HourlyApportionedEmissionsController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.emissions.hourly.map(i => i.label).join(','),
+          example: fieldMappings.emissions.hourly.data.aggregation.unit.map(i => i.label).join(','),
         },
       },
     },

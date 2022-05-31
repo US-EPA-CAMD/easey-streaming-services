@@ -7,10 +7,10 @@ import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportione
 @EntityRepository(HourUnitDataView)
 export class HourUnitDataRepository extends Repository<HourUnitDataView> {
 
-  async buildQuery(
+  buildQuery(
     columns: any[],
     params: HourlyApportionedEmissionsParamsDTO,
-  ): Promise<[string, any[]]> {
+  ): [string, any[]] {
     let query = this.createQueryBuilder('hud').select(
       columns.map(col => `hud.${col.value} AS "${col.value}"`),
     );
@@ -41,7 +41,7 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     return query.getQueryAndParameters();
   }
 
-  getFacilityStreamQuery(params: HourlyApportionedEmissionsParamsDTO) {
+  getFacilityStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
     return this.buildFacilityAggregationQuery(params).getQueryAndParameters();
   }
 

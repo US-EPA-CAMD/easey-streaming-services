@@ -17,7 +17,9 @@ import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { StreamingService } from '../../streaming/streaming.service';
 import { HourUnitDataRepository } from './hour-unit-data.repository';
 import { HourlyApportionedEmissionsDTO } from '../../dto/hourly-apportioned-emissions.dto';
-import { StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { HourlyApportionedEmissionsParamsDTO, StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { ReadStream } from 'fs';
+import { HourlyApportionedEmissionsFacilityAggregationDTO } from 'src/dto/hourly-apportioned-emissions-facility-aggregation.dto';
 
 @Injectable()
 export class HourlyApportionedEmissionsService {
@@ -28,18 +30,18 @@ export class HourlyApportionedEmissionsService {
     @InjectRepository(HourUnitDataRepository)
     private readonly repository: HourUnitDataRepository,
   ) {}
-
-  async streamEmissions(
+  
+  streamEmissions(
     req: Request,
     params: StreamHourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
     const disposition = `attachment; filename="hourly-emissions-${uuid()}`;
 
     const fieldMappingsList = params.exclude
-      ? fieldMappings.emissions.hourly.filter(
+      ? fieldMappings.emissions.hourly.data.aggregation.unit.filter(
           item => !params.exclude.includes(item.value),
         )
-      : fieldMappings.emissions.hourly;
+      : fieldMappings.emissions.hourly.data.aggregation.unit;
 
     const json2Dto = new Transform({
       objectMode: true,
@@ -54,7 +56,7 @@ export class HourlyApportionedEmissionsService {
       },
     });
 
-    const [sql, values] = await this.repository.buildQuery(fieldMappingsList, params);
+    const [sql, values] = this.repository.buildQuery(fieldMappingsList, params);
 
     return this.streamService.getStream(
       req,
@@ -66,60 +68,37 @@ export class HourlyApportionedEmissionsService {
     );
   }
 
-  async streamEmissionsFacilityAggregation(
+  streamEmissionsFacilityAggregation(
     req: Request,
-    params: HourlyApportionedEmissionsParamsDTO,
+    params: StreamHourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
-    try {
-      const query = this.repository.getFacilityStreamQuery(params);
-      let stream: ReadStream = await this.streamService.getStream(query);
+    const disposition = `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}.json"`
+    const [sql, values] = this.repository.getFacilityStreamQuery(params);
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        data = exclude(data, params, ExcludeApportionedEmissions);
 
-      req.on('close', () => {
-        stream.emit('end');
-      });
-
-      req.res.setHeader(
-        fieldMappingHeader,
-        JSON.stringify(
-          fieldMappings.emissions.hourly.data.aggregation.facility,
-        ),
-      );
-
-      const toDto = new Transform({
-        objectMode: true,
-        transform(data, _enc, callback) {
-          const dto = plainToClass(
-            HourlyApportionedEmissionsFacilityAggregationDTO,
-            data,
-            {
-              enableImplicitConversion: true,
-            },
-          );
-          const date = new Date(dto.date);
-          dto.date = date.toISOString().split('T')[0];
-          callback(null, dto);
-        },
-      });
-
-      if (req.headers.accept === 'text/csv') {
-        const toCSV = new PlainToCSV(
-          fieldMappings.emissions.hourly.data.aggregation.facility,
+        const dto = plainToClass(
+          HourlyApportionedEmissionsFacilityAggregationDTO,
+          data, 
+          {
+            enableImplicitConversion: true,
+          },
         );
-        return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}.csv"`,
-        });
-      }
+        const date = new Date(dto.date);
+        dto.date = date.toISOString().split('T')[0];
+        callback(null, dto);
+      },
+    });
 
-      const objToString = new PlainToJSON();
-      return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
-        type: req.headers.accept,
-        disposition: `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}.json"`,
-      });
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+    const fieldMappingsList = params.exclude
+    ? fieldMappings.emissions.hourly.data.aggregation.facility.filter(
+        item => !params.exclude.includes(item.value),
+      )
+    : fieldMappings.emissions.hourly.data.aggregation.facility;
+
+    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList)
   }
 
   // async streamEmissionsStateAggregation(
