@@ -15,16 +15,16 @@ const commonCharacteristics = [
 ];
 
 const commonEmissions = [
-  { ...propertyMetadata.sumOpTime.fieldLabels },
   { ...propertyMetadata.countOpTime.fieldLabels },
+  { ...propertyMetadata.sumOpTime.fieldLabels },
   { ...propertyMetadata.grossLoad.fieldLabels },
   { ...propertyMetadata.steamLoad.fieldLabels },
   { ...propertyMetadata.so2Mass.fieldLabels },
   { ...propertyMetadata.so2Rate.fieldLabels },
-  { ...propertyMetadata.noxMass.fieldLabels },
-  { ...propertyMetadata.noxRate.fieldLabels },
   { ...propertyMetadata.co2Mass.fieldLabels },
   { ...propertyMetadata.co2Rate.fieldLabels },
+  { ...propertyMetadata.noxMass.fieldLabels },
+  { ...propertyMetadata.noxRate.fieldLabels },
   { ...propertyMetadata.heatInput.fieldLabels },
 ];
 
@@ -36,8 +36,8 @@ const unitCharacteristics = [
 
 const controlInfoCharacteristics = [
   { ...propertyMetadata.so2ControlInfo.fieldLabels },
-  { ...propertyMetadata.pmControlInfo.fieldLabels },
   { ...propertyMetadata.noxControlInfo.fieldLabels },
+  { ...propertyMetadata.pmControlInfo.fieldLabels },
   { ...propertyMetadata.hgControlInfo.fieldLabels },
   { ...propertyMetadata.programCodeInfo.fieldLabels },
 ];
@@ -79,6 +79,7 @@ daily.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
 monthly.push(
   ...commonCharacteristics,
   { ...propertyMetadata.associatedStacks.fieldLabels },
@@ -88,6 +89,7 @@ monthly.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
 quarterly.push(
   ...commonCharacteristics,
   { ...propertyMetadata.associatedStacks.fieldLabels },
@@ -97,6 +99,7 @@ quarterly.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
 annual.push(
   ...commonCharacteristics,
   { ...propertyMetadata.associatedStacks.fieldLabels },
@@ -105,6 +108,7 @@ annual.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
 hourlyMats.push(
   ...commonCharacteristics,
   ...hourlyCharacteristics,
