@@ -1,6 +1,10 @@
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 const hourly = [];
+const hourlyFacilityAggregation = [];
+const hourlyStateAggregation = [];
+const hourlyNationalAggregation = [];
+
 const daily = [];
 const monthly = [];
 const quarterly = [];
@@ -48,6 +52,23 @@ const hourlyCharacteristics = [
   { ...propertyMetadata.opTime.fieldLabels },
 ];
 
+const facilityAggregationData = [
+  { ...propertyMetadata.stateCode.fieldLabels },
+  { ...propertyMetadata.facilityName.fieldLabels },
+  { ...propertyMetadata.facilityId.fieldLabels },
+];
+
+const hourlyAggregationData = [
+  { ...propertyMetadata.date.fieldLabels },
+  { ...propertyMetadata.hour.fieldLabels },
+  { ...propertyMetadata.grossLoadHourly.fieldLabels },
+  { ...propertyMetadata.steamLoadHourly.fieldLabels },
+  { ...propertyMetadata.so2MassHourly.fieldLabels },
+  { ...propertyMetadata.co2Mass.fieldLabels },
+  { ...propertyMetadata.noxMassHourly.fieldLabels },
+  { ...propertyMetadata.heatInput.fieldLabels },
+];
+
 hourly.push(
   ...commonCharacteristics,
   { ...propertyMetadata.associatedStacks.fieldLabels },
@@ -70,6 +91,18 @@ hourly.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
+hourlyFacilityAggregation.push(
+  ...facilityAggregationData,
+  ...hourlyAggregationData,
+);
+
+hourlyStateAggregation.push(
+  { ...propertyMetadata.stateCode.fieldLabels },
+  ...hourlyAggregationData,
+);
+
+hourlyNationalAggregation.push(...hourlyAggregationData);
 
 daily.push(
   ...commonCharacteristics,
@@ -133,7 +166,16 @@ hourlyMats.push(
 
 export const fieldMappings = {
   emissions: {
-    hourly: hourly,
+    hourly: {
+      data: {
+        aggregation: {
+          unit: hourly,
+          facility: hourlyFacilityAggregation,
+          state: hourlyStateAggregation,
+          national: hourlyNationalAggregation,
+        },
+      }
+    },
     daily: daily,
     monthly: monthly,
     quarterly: quarterly,

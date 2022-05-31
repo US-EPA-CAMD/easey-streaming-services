@@ -27,7 +27,8 @@ import {
 import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { HourlyApportionedEmissionsDTO } from '../../dto/hourly-apportioned-emissions.dto';
 import { HourlyApportionedEmissionsService } from './hourly-apportioned-emissions.service';
-import { StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { HourlyApportionedEmissionsParamsDTO, StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { HourlyApportionedEmissionsFacilityAggregationDTO } from 'src/dto/hourly-apportioned-emissions-facility-aggregation.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -68,36 +69,36 @@ export class HourlyApportionedEmissionsController {
     return this.service.streamEmissions(req, params);
   }
 
-  // @Get('by-facility')
-  // @ApiOkResponse({
-  //   description:
-  //     'Streams Hourly Apportioned Emissions data per filter criteria aggregated by facility',
-  //   content: {
-  //     'application/json': {
-  //       schema: {
-  //         $ref: getSchemaPath(HourlyApportionedEmissionsFacilityAggregationDTO),
-  //       },
-  //     },
-  //     'text/csv': {
-  //       schema: {
-  //         type: 'string',
-  //         example: fieldMappings.emissions.hourly.data.aggregation.facility
-  //           .map(i => i.label)
-  //           .join(','),
-  //       },
-  //     },
-  //   },
-  // })
-  // @BadRequestResponse()
-  // @NotFoundResponse()
-  // @ApiQueryMultiSelect()
-  // @ApiProgramQuery()
-  // streamEmissionsFacilityAggregation(
-  //   @Req() req: Request,
-  //   @Query() params: HourlyApportionedEmissionsParamsDTO,
-  // ): Promise<StreamableFile> {
-  //   return this.service.streamEmissionsFacilityAggregation(req, params);
-  // }
+  @Get('by-facility')
+  @ApiOkResponse({
+    description:
+      'Streams Hourly Apportioned Emissions data per filter criteria aggregated by facility',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(HourlyApportionedEmissionsFacilityAggregationDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.emissions.hourly.data.aggregation.facility
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryEmissionsMultiSelect()
+  @ApiProgramQuery()
+  streamEmissionsFacilityAggregation(
+    @Req() req: Request,
+    @Query() params: HourlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.service.streamEmissionsFacilityAggregation(req, params);
+  }
 
   // @Get('by-state')
   // @ApiOkResponse({

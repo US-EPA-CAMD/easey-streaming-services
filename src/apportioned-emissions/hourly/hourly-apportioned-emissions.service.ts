@@ -66,61 +66,61 @@ export class HourlyApportionedEmissionsService {
     );
   }
 
-  // async streamEmissionsFacilityAggregation(
-  //   req: Request,
-  //   params: HourlyApportionedEmissionsParamsDTO,
-  // ): Promise<StreamableFile> {
-  //   try {
-  //     const query = this.repository.getFacilityStreamQuery(params);
-  //     let stream: ReadStream = await this.streamService.getStream(query);
+  async streamEmissionsFacilityAggregation(
+    req: Request,
+    params: HourlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    try {
+      const query = this.repository.getFacilityStreamQuery(params);
+      let stream: ReadStream = await this.streamService.getStream(query);
 
-  //     req.on('close', () => {
-  //       stream.emit('end');
-  //     });
+      req.on('close', () => {
+        stream.emit('end');
+      });
 
-  //     req.res.setHeader(
-  //       fieldMappingHeader,
-  //       JSON.stringify(
-  //         fieldMappings.emissions.hourly.data.aggregation.facility,
-  //       ),
-  //     );
+      req.res.setHeader(
+        fieldMappingHeader,
+        JSON.stringify(
+          fieldMappings.emissions.hourly.data.aggregation.facility,
+        ),
+      );
 
-  //     const toDto = new Transform({
-  //       objectMode: true,
-  //       transform(data, _enc, callback) {
-  //         const dto = plainToClass(
-  //           HourlyApportionedEmissionsFacilityAggregationDTO,
-  //           data,
-  //           {
-  //             enableImplicitConversion: true,
-  //           },
-  //         );
-  //         const date = new Date(dto.date);
-  //         dto.date = date.toISOString().split('T')[0];
-  //         callback(null, dto);
-  //       },
-  //     });
+      const toDto = new Transform({
+        objectMode: true,
+        transform(data, _enc, callback) {
+          const dto = plainToClass(
+            HourlyApportionedEmissionsFacilityAggregationDTO,
+            data,
+            {
+              enableImplicitConversion: true,
+            },
+          );
+          const date = new Date(dto.date);
+          dto.date = date.toISOString().split('T')[0];
+          callback(null, dto);
+        },
+      });
 
-  //     if (req.headers.accept === 'text/csv') {
-  //       const toCSV = new PlainToCSV(
-  //         fieldMappings.emissions.hourly.data.aggregation.facility,
-  //       );
-  //       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
-  //         type: req.headers.accept,
-  //         disposition: `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}.csv"`,
-  //       });
-  //     }
+      if (req.headers.accept === 'text/csv') {
+        const toCSV = new PlainToCSV(
+          fieldMappings.emissions.hourly.data.aggregation.facility,
+        );
+        return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
+          type: req.headers.accept,
+          disposition: `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}.csv"`,
+        });
+      }
 
-  //     const objToString = new PlainToJSON();
-  //     return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
-  //       type: req.headers.accept,
-  //       disposition: `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}.json"`,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //     return null;
-  //   }
-  // }
+      const objToString = new PlainToJSON();
+      return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
+        type: req.headers.accept,
+        disposition: `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}.json"`,
+      });
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
 
   // async streamEmissionsStateAggregation(
   //   req: Request,
