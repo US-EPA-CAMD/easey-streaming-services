@@ -45,6 +45,11 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     return this.buildFacilityAggregationQuery(params).getQueryAndParameters();
   }
 
+  getStateStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
+    return this.buildStateAggregationQuery(params).getQueryAndParameters();
+  }
+
+
   private buildFacilityAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): SelectQueryBuilder<HourUnitDataView> {
@@ -75,27 +80,27 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     return query;
   }
 
-  // private buildStateAggregationQuery(
-  //   params: HourlyApportionedEmissionsParamsDTO,
-  // ): SelectQueryBuilder<HourUnitDataView> {
-  //   let query = this.createQueryBuilder('hud').select(
-  //     ['hud.stateCode', 'hud.date', 'hud.hour'].map(col => {
-  //       return `${col} AS "${col.split('.')[1]}"`;
-  //     }),
-  //   );
-  //   query = this.buildAggregationQuery(query, params);
-  //   query
-  //     .addGroupBy('hud.stateCode')
-  //     .addGroupBy('hud.date')
-  //     .addGroupBy('hud.hour');
+  private buildStateAggregationQuery(
+    params: HourlyApportionedEmissionsParamsDTO,
+  ): SelectQueryBuilder<HourUnitDataView> {
+    let query = this.createQueryBuilder('hud').select(
+      ['hud.stateCode', 'hud.date', 'hud.hour'].map(col => {
+        return `${col} AS "${col.split('.')[1]}"`;
+      }),
+    );
+    query = this.buildAggregationQuery(query, params);
+    query
+      .addGroupBy('hud.stateCode')
+      .addGroupBy('hud.date')
+      .addGroupBy('hud.hour');
 
-  //   query
-  //     .orderBy('hud.stateCode')
-  //     .addOrderBy('hud.date')
-  //     .addOrderBy('hud.hour');
+    query
+      .orderBy('hud.stateCode')
+      .addOrderBy('hud.date')
+      .addOrderBy('hud.hour');
 
-  //   return query;
-  // }
+    return query;
+  }
 
   // private buildNationalAggregationQuery(
   //   params: HourlyApportionedEmissionsParamsDTO,
@@ -140,4 +145,6 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
 
     return query;
   }
+
+
 }

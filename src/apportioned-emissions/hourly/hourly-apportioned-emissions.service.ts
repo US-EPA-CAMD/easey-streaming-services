@@ -20,6 +20,7 @@ import { HourlyApportionedEmissionsDTO } from '../../dto/hourly-apportioned-emis
 import { HourlyApportionedEmissionsParamsDTO, StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 import { ReadStream } from 'fs';
 import { HourlyApportionedEmissionsFacilityAggregationDTO } from 'src/dto/hourly-apportioned-emissions-facility-aggregation.dto';
+import { HourlyApportionedEmissionsStateAggregationDTO } from 'src/dto/hourly-apportioned-emissions-state-aggregation.dto';
 
 @Injectable()
 export class HourlyApportionedEmissionsService {
@@ -72,7 +73,7 @@ export class HourlyApportionedEmissionsService {
     req: Request,
     params: StreamHourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
-    const disposition = `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}.json"`
+    const disposition = `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}"`
     const [sql, values] = this.repository.getFacilityStreamQuery(params);
     const toDto = new Transform({
       objectMode: true,
@@ -101,59 +102,38 @@ export class HourlyApportionedEmissionsService {
     return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList)
   }
 
-  // async streamEmissionsStateAggregation(
-  //   req: Request,
-  //   params: HourlyApportionedEmissionsParamsDTO,
-  // ): Promise<StreamableFile> {
-  //   try {
-  //     const query = this.repository.getStateStreamQuery(params);
-  //     let stream: ReadStream = await this.streamService.getStream(query);
+  streamEmissionsStateAggregation(
+    req: Request,
+    params: StreamHourlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    const disposition = `attachment; filename="hourly-emissions-state-aggregation-${uuid()}"`;
 
-  //     req.on('close', () => {
-  //       stream.emit('end');
-  //     });
+    const [sql, values] = this.repository.getStateStreamQuery(params);
+    
+    const fieldMappingsList = params.exclude
+    ? fieldMappings.emissions.hourly.data.aggregation.state.filter(
+        item => !params.exclude.includes(item.value),
+      )
+    : fieldMappings.emissions.hourly.data.aggregation.facility;
 
-  //     req.res.setHeader(
-  //       fieldMappingHeader,
-  //       JSON.stringify(fieldMappings.emissions.hourly.data.aggregation.state),
-  //     );
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          HourlyApportionedEmissionsStateAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        const date = new Date(dto.date);
+        dto.date = date.toISOString().split('T')[0];
+        callback(null, dto);
+      },
+    });
 
-  //     const toDto = new Transform({
-  //       objectMode: true,
-  //       transform(data, _enc, callback) {
-  //         const dto = plainToClass(
-  //           HourlyApportionedEmissionsStateAggregationDTO,
-  //           data,
-  //           {
-  //             enableImplicitConversion: true,
-  //           },
-  //         );
-  //         const date = new Date(dto.date);
-  //         dto.date = date.toISOString().split('T')[0];
-  //         callback(null, dto);
-  //       },
-  //     });
-
-  //     if (req.headers.accept === 'text/csv') {
-  //       const toCSV = new PlainToCSV(
-  //         fieldMappings.emissions.hourly.data.aggregation.state,
-  //       );
-  //       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
-  //         type: req.headers.accept,
-  //         disposition: `attachment; filename="hourly-emissions-state-aggregation-${uuid()}.csv"`,
-  //       });
-  //     }
-
-  //     const objToString = new PlainToJSON();
-  //     return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
-  //       type: req.headers.accept,
-  //       disposition: `attachment; filename="hourly-emissions-state-aggregation-${uuid()}.json"`,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //     return null;
-  //   }
-  // }
+    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList);
+  }
 
   // async streamEmissionsNationalAggregation(
   //   req: Request,
