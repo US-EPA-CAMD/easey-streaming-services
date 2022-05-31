@@ -49,6 +49,9 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     return this.buildStateAggregationQuery(params).getQueryAndParameters();
   }
 
+  getNationalStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
+    return this.buildNationalAggregationQuery(params).getQueryAndParameters();
+  }
 
   private buildFacilityAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
@@ -102,20 +105,20 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     return query;
   }
 
-  // private buildNationalAggregationQuery(
-  //   params: HourlyApportionedEmissionsParamsDTO,
-  // ): SelectQueryBuilder<HourUnitDataView> {
-  //   let query = this.createQueryBuilder('hud').select(
-  //     ['hud.date', 'hud.hour'].map(col => {
-  //       return `${col} AS "${col.split('.')[1]}"`;
-  //     }),
-  //   );
-  //   query = this.buildAggregationQuery(query, params);
-  //   query.addGroupBy('hud.date').addGroupBy('hud.hour');
-  //   query.addOrderBy('hud.date').addOrderBy('hud.hour');
+  private buildNationalAggregationQuery(
+    params: HourlyApportionedEmissionsParamsDTO,
+  ): SelectQueryBuilder<HourUnitDataView> {
+    let query = this.createQueryBuilder('hud').select(
+      ['hud.date', 'hud.hour'].map(col => {
+        return `${col} AS "${col.split('.')[1]}"`;
+      }),
+    );
+    query = this.buildAggregationQuery(query, params);
+    query.addGroupBy('hud.date').addGroupBy('hud.hour');
+    query.addOrderBy('hud.date').addOrderBy('hud.hour');
 
-  //   return query;
-  // }
+    return query;
+  }
 
   private buildAggregationQuery(query, params): SelectQueryBuilder<HourUnitDataView> {
     query
