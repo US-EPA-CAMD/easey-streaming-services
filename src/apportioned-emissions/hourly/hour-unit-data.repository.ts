@@ -37,7 +37,7 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
       .addOrderBy('hud.unitId')
       .addOrderBy('hud.date')
       .addOrderBy('hud.hour');
-
+    
     return query.getQueryAndParameters();
   }
 

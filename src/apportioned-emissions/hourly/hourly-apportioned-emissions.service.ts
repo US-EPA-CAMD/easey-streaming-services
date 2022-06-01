@@ -17,11 +17,10 @@ import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { StreamingService } from '../../streaming/streaming.service';
 import { HourUnitDataRepository } from './hour-unit-data.repository';
 import { HourlyApportionedEmissionsDTO } from '../../dto/hourly-apportioned-emissions.dto';
-import { HourlyApportionedEmissionsParamsDTO, StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
-import { ReadStream } from 'fs';
-import { HourlyApportionedEmissionsFacilityAggregationDTO } from 'src/dto/hourly-apportioned-emissions-facility-aggregation.dto';
-import { HourlyApportionedEmissionsStateAggregationDTO } from 'src/dto/hourly-apportioned-emissions-state-aggregation.dto';
-import { HourlyApportionedEmissionsNationalAggregationDTO } from 'src/dto/hourly-apportioned-emissions-national-aggregation.dto';
+import { StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { HourlyApportionedEmissionsFacilityAggregationDTO } from '../../dto/hourly-apportioned-emissions-facility-aggregation.dto';
+import { HourlyApportionedEmissionsStateAggregationDTO } from '../../dto/hourly-apportioned-emissions-state-aggregation.dto';
+import { HourlyApportionedEmissionsNationalAggregationDTO } from '../../dto/hourly-apportioned-emissions-national-aggregation.dto';
 
 @Injectable()
 export class HourlyApportionedEmissionsService {
@@ -57,9 +56,8 @@ export class HourlyApportionedEmissionsService {
         callback(null, dto);
       },
     });
-
     const [sql, values] = this.repository.buildQuery(fieldMappingsList, params);
-
+    
     return this.streamService.getStream(
       req,
       sql,
