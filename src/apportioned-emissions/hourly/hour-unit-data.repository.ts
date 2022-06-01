@@ -37,7 +37,7 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
       .addOrderBy('hud.unitId')
       .addOrderBy('hud.date')
       .addOrderBy('hud.hour');
-    
+
     return query.getQueryAndParameters();
   }
 
@@ -107,7 +107,7 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     orderByColumns: string[],
     countQuery: boolean = false,
   ): SelectQueryBuilder<HourUnitDataView> {
-    
+
     let query = this.createQueryBuilder('hud').select(
       selectColumns.map(col => {
         return `${col} AS "${col.split('.')[1]}"`;

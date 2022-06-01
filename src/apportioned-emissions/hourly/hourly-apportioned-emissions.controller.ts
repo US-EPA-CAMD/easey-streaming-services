@@ -40,7 +40,7 @@ export class HourlyApportionedEmissionsController {
 
   constructor(
     private readonly service: HourlyApportionedEmissionsService
-  ) {}
+  ) { }
 
   @Get()
   @ApiOkResponse({

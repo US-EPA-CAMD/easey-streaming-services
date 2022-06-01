@@ -24,14 +24,14 @@ import { HourlyApportionedEmissionsNationalAggregationDTO } from '../../dto/hour
 
 @Injectable()
 export class HourlyApportionedEmissionsService {
-  
+
   constructor(
     private readonly logger: Logger,
-    private readonly streamService: StreamingService,    
+    private readonly streamService: StreamingService,
     @InjectRepository(HourUnitDataRepository)
     private readonly repository: HourUnitDataRepository,
-  ) {}
-  
+  ) { }
+
   async streamEmissions(
     req: Request,
     params: StreamHourlyApportionedEmissionsParamsDTO,
@@ -40,8 +40,8 @@ export class HourlyApportionedEmissionsService {
 
     const fieldMappingsList = params.exclude
       ? fieldMappings.emissions.hourly.data.aggregation.unit.filter(
-          item => !params.exclude.includes(item.value),
-        )
+        item => !params.exclude.includes(item.value),
+      )
       : fieldMappings.emissions.hourly.data.aggregation.unit;
 
     const json2Dto = new Transform({
@@ -57,7 +57,7 @@ export class HourlyApportionedEmissionsService {
       },
     });
     const [sql, values] = this.repository.buildQuery(fieldMappingsList, params);
-    
+
     return this.streamService.getStream(
       req,
       sql,
@@ -81,7 +81,7 @@ export class HourlyApportionedEmissionsService {
 
         const dto = plainToClass(
           HourlyApportionedEmissionsFacilityAggregationDTO,
-          data, 
+          data,
           {
             enableImplicitConversion: true,
           },
@@ -93,10 +93,10 @@ export class HourlyApportionedEmissionsService {
     });
 
     const fieldMappingsList = params.exclude
-    ? fieldMappings.emissions.hourly.data.aggregation.facility.filter(
+      ? fieldMappings.emissions.hourly.data.aggregation.facility.filter(
         item => !params.exclude.includes(item.value),
       )
-    : fieldMappings.emissions.hourly.data.aggregation.facility;
+      : fieldMappings.emissions.hourly.data.aggregation.facility;
 
     return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList)
   }
@@ -108,12 +108,12 @@ export class HourlyApportionedEmissionsService {
     const disposition = `attachment; filename="hourly-emissions-state-aggregation-${uuid()}"`;
 
     const [sql, values] = this.repository.getStateStreamQuery(params);
-    
+
     const fieldMappingsList = params.exclude
-    ? fieldMappings.emissions.hourly.data.aggregation.state.filter(
+      ? fieldMappings.emissions.hourly.data.aggregation.state.filter(
         item => !params.exclude.includes(item.value),
       )
-    : fieldMappings.emissions.hourly.data.aggregation.state;
+      : fieldMappings.emissions.hourly.data.aggregation.state;
 
     const toDto = new Transform({
       objectMode: true,
@@ -139,31 +139,31 @@ export class HourlyApportionedEmissionsService {
     params: StreamHourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
 
-      const disposition = `attachment; filename="hourly-emissions-national-aggregation-${uuid()}"`
-      const [sql, values] = this.repository.getNationalStreamQuery(params);
-      
-      const fieldMappingsList = params.exclude
-      ? fieldMappings.emissions.hourly.data.aggregation.national.filter(
-          item => !params.exclude.includes(item.value),
-        )
-      : fieldMappings.emissions.hourly.data.aggregation.national;
-  
-      const toDto = new Transform({
-        objectMode: true,
-        transform(data, _enc, callback) {
-          const dto = plainToClass(
-            HourlyApportionedEmissionsNationalAggregationDTO,
-            data,
-            {
-              enableImplicitConversion: true,
-            },
-          );
-          const date = new Date(dto.date);
-          dto.date = date.toISOString().split('T')[0];
-          callback(null, dto);
-        },
-      });
+    const disposition = `attachment; filename="hourly-emissions-national-aggregation-${uuid()}"`
+    const [sql, values] = this.repository.getNationalStreamQuery(params);
 
-      return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList);
+    const fieldMappingsList = params.exclude
+      ? fieldMappings.emissions.hourly.data.aggregation.national.filter(
+        item => !params.exclude.includes(item.value),
+      )
+      : fieldMappings.emissions.hourly.data.aggregation.national;
+
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          HourlyApportionedEmissionsNationalAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        const date = new Date(dto.date);
+        dto.date = date.toISOString().split('T')[0];
+        callback(null, dto);
+      },
+    });
+
+    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList);
   }
 }
