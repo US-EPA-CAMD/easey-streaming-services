@@ -75,7 +75,7 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
     repository = module.get(HourUnitDataRepository);
   });
 
-  describe('streamEmissions1', () => {
+  describe('streamEmissions', () => {
     it('calls HourlyUnitDataRepository.streamEmissions() and streams all emissions from the repository', async () => {
       repository.buildQuery.mockReturnValue(["", []]);
       let filters = new HourlyApportionedEmissionsParamsDTO();
