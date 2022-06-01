@@ -56,29 +56,15 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
   private buildFacilityAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): SelectQueryBuilder<HourUnitDataView> {
-    let query = this.createQueryBuilder('hud').select(
-      [
-        'hud.stateCode',
-        'hud.facilityName',
-        'hud.facilityId',
-        'hud.date',
-        'hud.hour',
-      ].map(col => {
-        return `${col} AS "${col.split('.')[1]}"`;
-      }),
-    );
-    query = this.buildAggregationQuery(query, params);
-    query
-      .addGroupBy('hud.stateCode')
-      .addGroupBy('hud.facilityName')
-      .addGroupBy('hud.facilityId')
-      .addGroupBy('hud.date')
-      .addGroupBy('hud.hour');
 
-    query
-      .orderBy('hud.facilityId')
-      .addOrderBy('hud.date')
-      .addOrderBy('hud.hour');
+    const selectColumns = ['hud.stateCode', 'hud.facilityName', 'hud.facilityId', 'hud.date', 'hud.hour',];
+    const orderByColumns = ['hud.stateCode', 'hud.facilityName', 'hud.facilityId', 'hud.date', 'hud.hour',];
+
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
 
     return query;
   }
@@ -86,21 +72,15 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
   private buildStateAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): SelectQueryBuilder<HourUnitDataView> {
-    let query = this.createQueryBuilder('hud').select(
-      ['hud.stateCode', 'hud.date', 'hud.hour'].map(col => {
-        return `${col} AS "${col.split('.')[1]}"`;
-      }),
-    );
-    query = this.buildAggregationQuery(query, params);
-    query
-      .addGroupBy('hud.stateCode')
-      .addGroupBy('hud.date')
-      .addGroupBy('hud.hour');
 
-    query
-      .orderBy('hud.stateCode')
-      .addOrderBy('hud.date')
-      .addOrderBy('hud.hour');
+    const selectColumns = ['hud.stateCode', 'hud.date', 'hud.hour'];
+    const orderByColumns = ['hud.stateCode', 'hud.date', 'hud.hour'];
+
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
 
     return query;
   }
@@ -108,19 +88,32 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
   private buildNationalAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): SelectQueryBuilder<HourUnitDataView> {
-    let query = this.createQueryBuilder('hud').select(
-      ['hud.date', 'hud.hour'].map(col => {
-        return `${col} AS "${col.split('.')[1]}"`;
-      }),
+
+    const selectColumns = ['hud.date', 'hud.hour'];
+    const orderByColumns = ['hud.date', 'hud.hour'];
+
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
     );
-    query = this.buildAggregationQuery(query, params);
-    query.addGroupBy('hud.date').addGroupBy('hud.hour');
-    query.addOrderBy('hud.date').addOrderBy('hud.hour');
 
     return query;
   }
 
-  private buildAggregationQuery(query, params): SelectQueryBuilder<HourUnitDataView> {
+  private buildAggregationQuery(
+    params,
+    selectColumns: string[],
+    orderByColumns: string[],
+    countQuery: boolean = false,
+  ): SelectQueryBuilder<HourUnitDataView> {
+    
+    let query = this.createQueryBuilder('hud').select(
+      selectColumns.map(col => {
+        return `${col} AS "${col.split('.')[1]}"`;
+      }),
+    );
+
     query
       .addSelect('SUM(hud.grossLoad)', 'grossLoad')
       .addSelect('SUM(hud.steamLoad)', 'steamLoad')
@@ -145,6 +138,9 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
       ],
       'hud',
     );
+
+    selectColumns.forEach(c => query.addGroupBy(c));
+    orderByColumns.forEach(c => query.addOrderBy(c));
 
     return query;
   }

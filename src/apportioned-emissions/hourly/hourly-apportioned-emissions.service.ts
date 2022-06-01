@@ -32,7 +32,7 @@ export class HourlyApportionedEmissionsService {
     private readonly repository: HourUnitDataRepository,
   ) {}
   
-  streamEmissions(
+  async streamEmissions(
     req: Request,
     params: StreamHourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
@@ -68,7 +68,7 @@ export class HourlyApportionedEmissionsService {
     );
   }
 
-  streamEmissionsFacilityAggregation(
+  async streamEmissionsFacilityAggregation(
     req: Request,
     params: StreamHourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
@@ -101,7 +101,7 @@ export class HourlyApportionedEmissionsService {
     return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList)
   }
 
-  streamEmissionsStateAggregation(
+  async streamEmissionsStateAggregation(
     req: Request,
     params: StreamHourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
@@ -134,7 +134,7 @@ export class HourlyApportionedEmissionsService {
     return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList);
   }
 
-  streamEmissionsNationalAggregation(
+  async streamEmissionsNationalAggregation(
     req: Request,
     params: StreamHourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {

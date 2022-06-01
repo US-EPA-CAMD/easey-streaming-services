@@ -27,7 +27,7 @@ import {
 import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { HourlyApportionedEmissionsDTO } from '../../dto/hourly-apportioned-emissions.dto';
 import { HourlyApportionedEmissionsService } from './hourly-apportioned-emissions.service';
-import { StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { HourlyApportionedEmissionsParamsDTO, StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 import { HourlyApportionedEmissionsFacilityAggregationDTO } from '../../dto/hourly-apportioned-emissions-facility-aggregation.dto';
 import { HourlyApportionedEmissionsStateAggregationDTO } from '../../dto/hourly-apportioned-emissions-state-aggregation.dto';
 import { HourlyApportionedEmissionsNationalAggregationDTO } from '../../dto/hourly-apportioned-emissions-national-aggregation.dto';
@@ -95,9 +95,9 @@ export class HourlyApportionedEmissionsController {
   @NotFoundResponse()
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
-  streamEmissionsFacilityAggregation(
+  async streamEmissionsFacilityAggregation(
     @Req() req: Request,
-    @Query() params: StreamHourlyApportionedEmissionsParamsDTO,
+    @Query() params: HourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
     return this.service.streamEmissionsFacilityAggregation(req, params);
   }
@@ -126,9 +126,9 @@ export class HourlyApportionedEmissionsController {
   @NotFoundResponse()
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
-  streamEmissionsStateAggregation(
+  async streamEmissionsStateAggregation(
     @Req() req: Request,
-    @Query() params: StreamHourlyApportionedEmissionsParamsDTO,
+    @Query() params: HourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
     return this.service.streamEmissionsStateAggregation(req, params);
   }
@@ -157,9 +157,9 @@ export class HourlyApportionedEmissionsController {
   @NotFoundResponse()
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
-  streamEmissionsNationalAggregation(
+  async streamEmissionsNationalAggregation(
     @Req() req: Request,
-    @Query() params: StreamHourlyApportionedEmissionsParamsDTO,
+    @Query() params: HourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
     return this.service.streamEmissionsNationalAggregation(req, params);
   }
