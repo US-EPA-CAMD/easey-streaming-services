@@ -20,16 +20,16 @@ const commonCharacteristics = [
 ];
 
 const commonEmissions = [
-  { ...propertyMetadata.sumOpTime.fieldLabels },
   { ...propertyMetadata.countOpTime.fieldLabels },
+  { ...propertyMetadata.sumOpTime.fieldLabels },
   { ...propertyMetadata.grossLoad.fieldLabels },
   { ...propertyMetadata.steamLoad.fieldLabels },
   { ...propertyMetadata.so2Mass.fieldLabels },
   { ...propertyMetadata.so2Rate.fieldLabels },
-  { ...propertyMetadata.noxMass.fieldLabels },
-  { ...propertyMetadata.noxRate.fieldLabels },
   { ...propertyMetadata.co2Mass.fieldLabels },
   { ...propertyMetadata.co2Rate.fieldLabels },
+  { ...propertyMetadata.noxMass.fieldLabels },
+  { ...propertyMetadata.noxRate.fieldLabels },
   { ...propertyMetadata.heatInput.fieldLabels },
 ];
 
@@ -41,8 +41,8 @@ const unitCharacteristics = [
 
 const controlInfoCharacteristics = [
   { ...propertyMetadata.so2ControlInfo.fieldLabels },
-  { ...propertyMetadata.pmControlInfo.fieldLabels },
   { ...propertyMetadata.noxControlInfo.fieldLabels },
+  { ...propertyMetadata.pmControlInfo.fieldLabels },
   { ...propertyMetadata.hgControlInfo.fieldLabels },
   { ...propertyMetadata.programCodeInfo.fieldLabels },
 ];
@@ -94,14 +94,14 @@ hourly.push(
   { ...propertyMetadata.so2MassMeasureFlg.fieldLabels },
   { ...propertyMetadata.so2Rate.fieldLabels },
   { ...propertyMetadata.so2RateMeasureFlg.fieldLabels },
-  { ...propertyMetadata.noxMassHourly.fieldLabels },
-  { ...propertyMetadata.noxMassMeasureFlg.fieldLabels },
-  { ...propertyMetadata.noxRate.fieldLabels },
-  { ...propertyMetadata.noxRateMeasureFlg.fieldLabels },
   { ...propertyMetadata.co2Mass.fieldLabels },
   { ...propertyMetadata.co2MassMeasureFlg.fieldLabels },
   { ...propertyMetadata.co2Rate.fieldLabels },
   { ...propertyMetadata.co2RateMeasureFlg.fieldLabels },
+  { ...propertyMetadata.noxMassHourly.fieldLabels },
+  { ...propertyMetadata.noxMassMeasureFlg.fieldLabels },
+  { ...propertyMetadata.noxRate.fieldLabels },
+  { ...propertyMetadata.noxRateMeasureFlg.fieldLabels },
   { ...propertyMetadata.heatInput.fieldLabels },
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
@@ -149,6 +149,7 @@ monthly.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
 quarterly.push(
   ...commonCharacteristics,
   { ...propertyMetadata.associatedStacks.fieldLabels },
@@ -158,6 +159,7 @@ quarterly.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
 annual.push(
   ...commonCharacteristics,
   { ...propertyMetadata.associatedStacks.fieldLabels },
@@ -166,6 +168,7 @@ annual.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
 hourlyMats.push(
   ...commonCharacteristics,
   ...hourlyCharacteristics,
@@ -194,7 +197,16 @@ hourlyMats.push(
 
 export const fieldMappings = {
   emissions: {
-    hourly: hourly,
+    hourly: {
+      data: {
+        aggregation: {
+          unit: hourly,
+          facility: hourlyFacilityAggregation,
+          state: hourlyStateAggregation,
+          national: hourlyNationalAggregation,
+        },
+      },
+    },
     daily: {
       data: {
         aggregation: {
