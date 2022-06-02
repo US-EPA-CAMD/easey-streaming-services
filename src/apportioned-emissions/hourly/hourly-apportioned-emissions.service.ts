@@ -77,8 +77,6 @@ export class HourlyApportionedEmissionsService {
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
-        data = exclude(data, params, ExcludeApportionedEmissions);
-
         const dto = plainToClass(
           HourlyApportionedEmissionsFacilityAggregationDTO,
           data,
