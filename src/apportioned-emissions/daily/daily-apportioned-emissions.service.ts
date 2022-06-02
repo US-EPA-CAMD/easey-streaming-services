@@ -56,10 +56,7 @@ export class DailyApportionedEmissionsService {
       },
     });
 
-    const [sql, values] = await this.repository.buildQuery(
-      fieldMappingsList,
-      params,
-    );
+    const [sql, values] = this.repository.buildQuery(fieldMappingsList, params);
 
     return this.streamService.getStream(
       req,
@@ -95,9 +92,7 @@ export class DailyApportionedEmissionsService {
       },
     });
 
-    const [sql, values] = await this.repository.buildFacilityAggregationQuery(
-      params,
-    );
+    const [sql, values] = this.repository.buildFacilityAggregationQuery(params);
 
     return this.streamService.getStream(
       req,
@@ -133,9 +128,7 @@ export class DailyApportionedEmissionsService {
       },
     });
 
-    const [sql, values] = await this.repository.buildStateAggregationQuery(
-      params,
-    );
+    const [sql, values] = this.repository.buildStateAggregationQuery(params);
 
     return this.streamService.getStream(
       req,
@@ -169,9 +162,7 @@ export class DailyApportionedEmissionsService {
         callback(null, dto);
       },
     });
-    const [sql, values] = await this.repository.buildNationalAggregationQuery(
-      params,
-    );
+    const [sql, values] = this.repository.buildNationalAggregationQuery(params);
 
     return this.streamService.getStream(
       req,
