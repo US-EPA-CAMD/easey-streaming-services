@@ -89,39 +89,10 @@ export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
     return query.getQueryAndParameters();
   }
 
-  private buildAggregationQuery1(query, params): SelectQueryBuilder<MonthUnitDataView> {
-    query
-      .addSelect('SUM(mud.grossLoad)', 'grossLoad')
-      .addSelect('SUM(mud.steamLoad)', 'steamLoad')
-      .addSelect('SUM(mud.so2Mass)', 'so2Mass')
-      .addSelect('SUM(mud.co2Mass)', 'co2Mass')
-      .addSelect('SUM(mud.noxMass)', 'noxMass')
-      .addSelect('SUM(mud.heatInput)', 'heatInput');
-
-    query = EmissionsQueryBuilder.createEmissionsQuery(
-      query,
-      params,
-      [
-        'year',
-        'month',
-        'stateCode',
-        'facilityId',
-        'unitType',
-        'controlTechnologies',
-        'unitFuelType',
-        'programCodeInfo',
-      ],
-      'mud',
-    );
-
-    return query;
-  }
-
   private buildAggregationQuery(
     params,
     selectColumns: string[],
     orderByColumns: string[],
-    countQuery: boolean = false,
   ): SelectQueryBuilder<MonthUnitDataView> {
 
     let query = this.createQueryBuilder('mud').select(

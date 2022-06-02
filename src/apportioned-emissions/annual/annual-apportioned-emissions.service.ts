@@ -17,7 +17,8 @@ import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { StreamingService } from '../../streaming/streaming.service';
 import { AnnualUnitDataRepository } from './annual-unit-data.repository';
 import { AnnualApportionedEmissionsDTO } from '../../dto/annual-apportioned-emissions.dto';
-import { StreamAnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
+import { AnnualApportionedEmissionsParamsDTO, StreamAnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
+import { AnnualApportionedEmissionsAggregationDTO } from 'src/dto/annual-apportioned-emissions-aggregation.dto';
 
 @Injectable()
 export class AnnualApportionedEmissionsService {
@@ -36,10 +37,10 @@ export class AnnualApportionedEmissionsService {
     const disposition = `attachment; filename="annual-emissions-${uuid()}`;
 
     const fieldMappingsList = params.exclude
-      ? fieldMappings.emissions.annual.filter(
+      ? fieldMappings.emissions.annual.data.aggregation.unit.filter(
           item => !params.exclude.includes(item.value),
         )
-      : fieldMappings.emissions.annual;
+      : fieldMappings.emissions.annual.data.aggregation.unit;
 
     const json2Dto = new Transform({
       objectMode: true,
@@ -64,6 +65,32 @@ export class AnnualApportionedEmissionsService {
     );
   }
 
+  async streamEmissionsNationalAggregation(
+    req: Request,
+    params: AnnualApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+
+    const disposition = `attachment; filename="annual-emissions-national-aggregation-${uuid()}"`
+    const [sql, values] = this.repository.buildNationalAggregationQuery(params);
+
+    const fieldMappingsList = fieldMappings.emissions.annual.data.aggregation.national;
+
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          AnnualApportionedEmissionsAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        callback(null, dto);
+      },
+    });
+
+    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList);
+  }
   // async streamEmissionsFacilityAggregation(
   //   req: Request,
   //   params: AnnualApportionedEmissionsParamsDTO,

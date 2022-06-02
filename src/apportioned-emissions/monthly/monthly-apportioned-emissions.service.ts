@@ -74,7 +74,7 @@ export class MonthlyApportionedEmissionsService {
 
     const disposition = `attachment; filename="monthly-emissions-facility-aggregation-${uuid()}"`
     const [sql, values] = this.repository.buildFacilityAggregationQuery(params);
-    
+
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {

@@ -93,7 +93,6 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     params,
     selectColumns: string[],
     orderByColumns: string[],
-    countQuery: boolean = false,
   ): SelectQueryBuilder<HourUnitDataView> {
 
     let query = this.createQueryBuilder('hud').select(
