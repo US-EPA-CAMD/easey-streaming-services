@@ -17,7 +17,7 @@ import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { StreamingService } from '../../streaming/streaming.service';
 import { HourUnitDataRepository } from './hour-unit-data.repository';
 import { HourlyApportionedEmissionsDTO } from '../../dto/hourly-apportioned-emissions.dto';
-import { StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { HourlyApportionedEmissionsParamsDTO, StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 import { HourlyApportionedEmissionsFacilityAggregationDTO } from '../../dto/hourly-apportioned-emissions-facility-aggregation.dto';
 import { HourlyApportionedEmissionsStateAggregationDTO } from '../../dto/hourly-apportioned-emissions-state-aggregation.dto';
 import { HourlyApportionedEmissionsNationalAggregationDTO } from '../../dto/hourly-apportioned-emissions-national-aggregation.dto';
@@ -70,10 +70,10 @@ export class HourlyApportionedEmissionsService {
 
   async streamEmissionsFacilityAggregation(
     req: Request,
-    params: StreamHourlyApportionedEmissionsParamsDTO,
+    params: HourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
     const disposition = `attachment; filename="hourly-emissions-facility-aggregation-${uuid()}"`
-    const [sql, values] = this.repository.getFacilityStreamQuery(params);
+    const [sql, values] = this.repository.buildFacilityAggregationQuery(params);
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
@@ -92,28 +92,20 @@ export class HourlyApportionedEmissionsService {
       },
     });
 
-    const fieldMappingsList = params.exclude
-      ? fieldMappings.emissions.hourly.data.aggregation.facility.filter(
-        item => !params.exclude.includes(item.value),
-      )
-      : fieldMappings.emissions.hourly.data.aggregation.facility;
+    const fieldMappingsList = fieldMappings.emissions.hourly.data.aggregation.facility;
 
     return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList)
   }
 
   async streamEmissionsStateAggregation(
     req: Request,
-    params: StreamHourlyApportionedEmissionsParamsDTO,
+    params: HourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
     const disposition = `attachment; filename="hourly-emissions-state-aggregation-${uuid()}"`;
 
-    const [sql, values] = this.repository.getStateStreamQuery(params);
+    const [sql, values] = this.repository.buildStateAggregationQuery(params);
 
-    const fieldMappingsList = params.exclude
-      ? fieldMappings.emissions.hourly.data.aggregation.state.filter(
-        item => !params.exclude.includes(item.value),
-      )
-      : fieldMappings.emissions.hourly.data.aggregation.state;
+    const fieldMappingsList = fieldMappings.emissions.hourly.data.aggregation.state;
 
     const toDto = new Transform({
       objectMode: true,
@@ -136,17 +128,13 @@ export class HourlyApportionedEmissionsService {
 
   async streamEmissionsNationalAggregation(
     req: Request,
-    params: StreamHourlyApportionedEmissionsParamsDTO,
+    params: HourlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
 
     const disposition = `attachment; filename="hourly-emissions-national-aggregation-${uuid()}"`
-    const [sql, values] = this.repository.getNationalStreamQuery(params);
+    const [sql, values] = this.repository.buildNationalAggregationQuery(params);
 
-    const fieldMappingsList = params.exclude
-      ? fieldMappings.emissions.hourly.data.aggregation.national.filter(
-        item => !params.exclude.includes(item.value),
-      )
-      : fieldMappings.emissions.hourly.data.aggregation.national;
+    const fieldMappingsList = fieldMappings.emissions.hourly.data.aggregation.national;
 
     const toDto = new Transform({
       objectMode: true,

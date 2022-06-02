@@ -123,7 +123,7 @@ describe('HourUnitDataRepository', () => {
 
   describe('streamEmissionsFacilityAggregation', () => {
     it('calls getFacilityStreamQuery from the repository', async () => {
-      const result = repository.getFacilityStreamQuery(streamFilters);
+      const result = repository.buildFacilityAggregationQuery(streamFilters);
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
@@ -131,7 +131,7 @@ describe('HourUnitDataRepository', () => {
 
   describe('streamEmissionsStateAggregation', () => {
     it('calls getStateStreamQuery from the repository', async () => {
-      const result = repository.getStateStreamQuery(streamFilters);
+      const result = repository.buildStateAggregationQuery(streamFilters);
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
@@ -139,7 +139,7 @@ describe('HourUnitDataRepository', () => {
 
   describe('streamEmissionsNationalAggregation', () => {
     it('calls getNationalStreamQuery from the repository', async () => {
-      const result = repository.getNationalStreamQuery(streamFilters);
+      const result = repository.buildNationalAggregationQuery(streamFilters);
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });

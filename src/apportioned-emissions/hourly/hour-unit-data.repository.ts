@@ -41,21 +41,21 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     return query.getQueryAndParameters();
   }
 
-  getFacilityStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
-    return this.buildFacilityAggregationQuery(params).getQueryAndParameters();
-  }
+  // getFacilityStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
+  //   return this.buildFacilityAggregationQuery(params).getQueryAndParameters();
+  // }
 
-  getStateStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
-    return this.buildStateAggregationQuery(params).getQueryAndParameters();
-  }
+  // getStateStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
+  //   return this.buildStateAggregationQuery(params).getQueryAndParameters();
+  // }
 
-  getNationalStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
-    return this.buildNationalAggregationQuery(params).getQueryAndParameters();
-  }
+  // getNationalStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
+  //   return this.buildNationalAggregationQuery(params).getQueryAndParameters();
+  // }
 
-  private buildFacilityAggregationQuery(
+  buildFacilityAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
-  ): SelectQueryBuilder<HourUnitDataView> {
+  ): [string, any[]] {
 
     const selectColumns = ['hud.stateCode', 'hud.facilityName', 'hud.facilityId', 'hud.date', 'hud.hour',];
     const orderByColumns = ['hud.stateCode', 'hud.facilityName', 'hud.facilityId', 'hud.date', 'hud.hour',];
@@ -66,12 +66,12 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
       orderByColumns,
     );
 
-    return query;
+    return query.getQueryAndParameters();
   }
 
-  private buildStateAggregationQuery(
+  buildStateAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
-  ): SelectQueryBuilder<HourUnitDataView> {
+  ): [string, any[]] {
 
     const selectColumns = ['hud.stateCode', 'hud.date', 'hud.hour'];
     const orderByColumns = ['hud.stateCode', 'hud.date', 'hud.hour'];
@@ -82,12 +82,12 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
       orderByColumns,
     );
 
-    return query;
+    return query.getQueryAndParameters();
   }
 
-  private buildNationalAggregationQuery(
+  buildNationalAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
-  ): SelectQueryBuilder<HourUnitDataView> {
+  ): [string, any[]] {
 
     const selectColumns = ['hud.date', 'hud.hour'];
     const orderByColumns = ['hud.date', 'hud.hour'];
@@ -98,7 +98,7 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
       orderByColumns,
     );
 
-    return query;
+    return query.getQueryAndParameters();
   }
 
   private buildAggregationQuery(
