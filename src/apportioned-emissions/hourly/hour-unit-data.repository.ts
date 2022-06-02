@@ -41,24 +41,12 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     return query.getQueryAndParameters();
   }
 
-  // getFacilityStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
-  //   return this.buildFacilityAggregationQuery(params).getQueryAndParameters();
-  // }
-
-  // getStateStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
-  //   return this.buildStateAggregationQuery(params).getQueryAndParameters();
-  // }
-
-  // getNationalStreamQuery(params: HourlyApportionedEmissionsParamsDTO): [string, any[]] {
-  //   return this.buildNationalAggregationQuery(params).getQueryAndParameters();
-  // }
-
   buildFacilityAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
 
     const selectColumns = ['hud.stateCode', 'hud.facilityName', 'hud.facilityId', 'hud.date', 'hud.hour',];
-    const orderByColumns = ['hud.stateCode', 'hud.facilityName', 'hud.facilityId', 'hud.date', 'hud.hour',];
+    const orderByColumns = ['hud.facilityId', 'hud.date', 'hud.hour',];
 
     const query = this.buildAggregationQuery(
       params,

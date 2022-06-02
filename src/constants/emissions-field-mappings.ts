@@ -7,6 +7,9 @@ const hourlyNationalAggregation = [];
 
 const daily = [];
 const monthly = [];
+const monthlyFacilityAggregation = [];
+const monthlyStateAggregation = [];
+const monthlyNationalAggregation = [];
 const quarterly = [];
 const annual = [];
 const hourlyMats = [];
@@ -52,6 +55,15 @@ const hourlyCharacteristics = [
   { ...propertyMetadata.opTime.fieldLabels },
 ];
 
+const aggregationData = [
+  { ...propertyMetadata.grossLoad.fieldLabels },
+  { ...propertyMetadata.steamLoad.fieldLabels },
+  { ...propertyMetadata.so2Mass.fieldLabels },
+  { ...propertyMetadata.co2Mass.fieldLabels },
+  { ...propertyMetadata.noxMass.fieldLabels },
+  { ...propertyMetadata.heatInput.fieldLabels },
+];
+
 const facilityAggregationData = [
   { ...propertyMetadata.stateCode.fieldLabels },
   { ...propertyMetadata.facilityName.fieldLabels },
@@ -67,6 +79,12 @@ const hourlyAggregationData = [
   { ...propertyMetadata.co2Mass.fieldLabels },
   { ...propertyMetadata.noxMassHourly.fieldLabels },
   { ...propertyMetadata.heatInput.fieldLabels },
+];
+
+const monthlyAggregationData = [
+  { ...propertyMetadata.year.fieldLabels },
+  { ...propertyMetadata.month.fieldLabels },
+  ...aggregationData,
 ];
 
 hourly.push(
@@ -122,6 +140,18 @@ monthly.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
+monthlyFacilityAggregation.push(
+  ...facilityAggregationData,
+  ...monthlyAggregationData,
+);
+
+monthlyStateAggregation.push(
+  { ...propertyMetadata.stateCode.fieldLabels },
+  ...monthlyAggregationData,
+);
+
+monthlyNationalAggregation.push(...monthlyAggregationData);
 
 quarterly.push(
   ...commonCharacteristics,
@@ -181,7 +211,16 @@ export const fieldMappings = {
       }
     },
     daily: daily,
-    monthly: monthly,
+    monthly: {
+      data: {
+        aggregation: {
+          unit: monthly,
+          facility: monthlyFacilityAggregation,
+          state: monthlyStateAggregation,
+          national: monthlyNationalAggregation,
+        },
+      }
+    },
     quarterly: quarterly,
     annual: annual,
     ozone: annual,

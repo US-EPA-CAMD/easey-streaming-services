@@ -17,7 +17,10 @@ import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { StreamingService } from '../../streaming/streaming.service';
 import { MonthUnitDataRepository } from './month-unit-data.repository';
 import { MonthlyApportionedEmissionsDTO } from '../../dto/monthly-apportioned-emissions.dto';
-import { StreamMonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
+import { MonthlyApportionedEmissionsParamsDTO, StreamMonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
+import { MonthlyApportionedEmissionsFacilityAggregationDTO } from 'src/dto/monthly-apportioned-emissions-facility-aggregation.dto';
+import { MonthlyApportionedEmissionsStateAggregationDTO } from 'src/dto/monthly-apportioned-emissions-state-aggregation.dto';
+import { MonthlyApportionedEmissionsNationalAggregationDTO } from 'src/dto/monthly-apportioned-emissions-national-aggregation.dto';
 
 @Injectable()
 export class MonthlyApportionedEmissionsService {
@@ -36,10 +39,10 @@ export class MonthlyApportionedEmissionsService {
     const disposition = `attachment; filename="monthly-emissions-${uuid()}`;
 
     const fieldMappingsList = params.exclude
-      ? fieldMappings.emissions.monthly.filter(
+      ? fieldMappings.emissions.monthly.data.aggregation.unit.filter(
           item => !params.exclude.includes(item.value),
         )
-      : fieldMappings.emissions.monthly;
+      : fieldMappings.emissions.monthly.data.aggregation.unit;
 
     const json2Dto = new Transform({
       objectMode: true,
@@ -64,163 +67,87 @@ export class MonthlyApportionedEmissionsService {
     );
   }
 
-  // async streamEmissionsFacilityAggregation(
-  //   req: Request,
-  //   params: MonthlyApportionedEmissionsParamsDTO,
-  // ): Promise<StreamableFile> {
-  //   try {
-  //     const query = this.repository.getFacilityStreamQuery(params);
-  //     const stream: ReadStream = await this.streamService.getStream(query);
+  async streamEmissionsFacilityAggregation(
+    req: Request,
+    params: MonthlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
 
-  //     req.on('close', () => {
-  //       stream.emit('end');
-  //     });
+    const disposition = `attachment; filename="monthly-emissions-facility-aggregation-${uuid()}"`
+    const [sql, values] = this.repository.buildFacilityAggregationQuery(params);
+    
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          MonthlyApportionedEmissionsFacilityAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        callback(null, dto);
+      },
+    });
 
-  //     req.res.setHeader(
-  //       fieldMappingHeader,
-  //       JSON.stringify(
-  //         fieldMappings.emissions.monthly.data.aggregation.facility,
-  //       ),
-  //     );
+    const fieldMappingsList = fieldMappings.emissions.monthly.data.aggregation.facility;
 
-  //     const toDto = new Transform({
-  //       objectMode: true,
-  //       transform(data, _enc, callback) {
-  //         const dto = plainToClass(
-  //           MonthlyApportionedEmissionsFacilityAggregationDTO,
-  //           data,
-  //           {
-  //             enableImplicitConversion: true,
-  //           },
-  //         );
-  //         callback(null, dto);
-  //       },
-  //     });
+    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList)
 
-  //     if (req.headers.accept === 'text/csv') {
-  //       const toCSV = new PlainToCSV(
-  //         fieldMappings.emissions.monthly.data.aggregation.facility,
-  //       );
-  //       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
-  //         type: req.headers.accept,
-  //         disposition: `attachment; filename="monthly-emissions-facility-aggregation-${uuid()}.csv"`,
-  //       });
-  //     }
+  }
 
-  //     const objToString = new PlainToJSON();
-  //     return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
-  //       type: req.headers.accept,
-  //       disposition: `attachment; filename="monthly-emissions-facility-aggregation-${uuid()}.json"`,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //     return null;
-  //   }
-  // }
+  async streamEmissionsStateAggregation(
+    req: Request,
+    params: MonthlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
 
-  // async streamEmissionsStateAggregation(
-  //   req: Request,
-  //   params: MonthlyApportionedEmissionsParamsDTO,
-  // ): Promise<StreamableFile> {
-  //   try {
-  //     const query = this.repository.getStateStreamQuery(params);
-  //     const stream: ReadStream = await this.streamService.getStream(query);
+    const disposition = `attachment; filename="monthly-emissions-state-aggregation-${uuid()}"`;
 
-  //     req.on('close', () => {
-  //       stream.emit('end');
-  //     });
+    const [sql, values] = this.repository.buildStateAggregationQuery(params);
 
-  //     req.res.setHeader(
-  //       fieldMappingHeader,
-  //       JSON.stringify(fieldMappings.emissions.monthly.data.aggregation.state),
-  //     );
+    const fieldMappingsList = fieldMappings.emissions.hourly.data.aggregation.state;
 
-  //     const toDto = new Transform({
-  //       objectMode: true,
-  //       transform(data, _enc, callback) {
-  //         const dto = plainToClass(
-  //           MonthlyApportionedEmissionsStateAggregationDTO,
-  //           data,
-  //           {
-  //             enableImplicitConversion: true,
-  //           },
-  //         );
-  //         callback(null, dto);
-  //       },
-  //     });
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          MonthlyApportionedEmissionsStateAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        callback(null, dto);
+      },
+    });
 
-  //     if (req.headers.accept === 'text/csv') {
-  //       const toCSV = new PlainToCSV(
-  //         fieldMappings.emissions.monthly.data.aggregation.state,
-  //       );
-  //       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
-  //         type: req.headers.accept,
-  //         disposition: `attachment; filename="monthly-emissions-state-aggregation-${uuid()}.csv"`,
-  //       });
-  //     }
+    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList);
 
-  //     const objToString = new PlainToJSON();
-  //     return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
-  //       type: req.headers.accept,
-  //       disposition: `attachment; filename="monthly-emissions-state-aggregation-${uuid()}.json"`,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //     return null;
-  //   }
-  // }
+  }
 
-  // async streamEmissionsNationalAggregation(
-  //   req: Request,
-  //   params: MonthlyApportionedEmissionsParamsDTO,
-  // ): Promise<StreamableFile> {
-  //   try {
-  //     const query = this.repository.getNationalStreamQuery(params);
-  //     const stream: ReadStream = await this.streamService.getStream(query);
+  async streamEmissionsNationalAggregation(
+    req: Request,
+    params: MonthlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
 
-  //     req.on('close', () => {
-  //       stream.emit('end');
-  //     });
+    const disposition = `attachment; filename="monthly-emissions-national-aggregation-${uuid()}"`
+    const [sql, values] = this.repository.buildNationalAggregationQuery(params);
 
-  //     req.res.setHeader(
-  //       fieldMappingHeader,
-  //       JSON.stringify(
-  //         fieldMappings.emissions.monthly.data.aggregation.national,
-  //       ),
-  //     );
+    const fieldMappingsList = fieldMappings.emissions.hourly.data.aggregation.national;
 
-  //     const toDto = new Transform({
-  //       objectMode: true,
-  //       transform(data, _enc, callback) {
-  //         const dto = plainToClass(
-  //           MonthlyApportionedEmissionsNationalAggregationDTO,
-  //           data,
-  //           {
-  //             enableImplicitConversion: true,
-  //           },
-  //         );
-  //         callback(null, dto);
-  //       },
-  //     });
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          MonthlyApportionedEmissionsNationalAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        callback(null, dto);
+      },
+    });
 
-  //     if (req.headers.accept === 'text/csv') {
-  //       const toCSV = new PlainToCSV(
-  //         fieldMappings.emissions.monthly.data.aggregation.national,
-  //       );
-  //       return new StreamableFile(stream.pipe(toDto).pipe(toCSV), {
-  //         type: req.headers.accept,
-  //         disposition: `attachment; filename="monthly-emissions-national-aggregation-${uuid()}.csv"`,
-  //       });
-  //     }
-
-  //     const objToString = new PlainToJSON();
-  //     return new StreamableFile(stream.pipe(toDto).pipe(objToString), {
-  //       type: req.headers.accept,
-  //       disposition: `attachment; filename="monthly-emissions-national-aggregation-${uuid()}.json"`,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //     return null;
-  //   }
-  // }
+    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList);
+  }
 }
