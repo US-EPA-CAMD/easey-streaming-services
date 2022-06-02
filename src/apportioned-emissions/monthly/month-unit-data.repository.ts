@@ -127,6 +127,7 @@ export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
 
     selectColumns.forEach(c => query.addGroupBy(c));
     orderByColumns.forEach(c => query.addOrderBy(c));
+    
     return query;
   }
 

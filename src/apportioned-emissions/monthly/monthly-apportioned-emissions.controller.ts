@@ -29,9 +29,9 @@ import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { MonthlyApportionedEmissionsDTO } from '../../dto/monthly-apportioned-emissions.dto';
 import { MonthlyApportionedEmissionsService } from './monthly-apportioned-emissions.service';
 import { MonthlyApportionedEmissionsParamsDTO, StreamMonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
-import { MonthlyApportionedEmissionsFacilityAggregationDTO } from 'src/dto/monthly-apportioned-emissions-facility-aggregation.dto';
-import { MonthlyApportionedEmissionsStateAggregationDTO } from 'src/dto/monthly-apportioned-emissions-state-aggregation.dto';
-import { MonthlyApportionedEmissionsNationalAggregationDTO } from 'src/dto/monthly-apportioned-emissions-national-aggregation.dto';
+import { MonthlyApportionedEmissionsFacilityAggregationDTO } from '../../dto/monthly-apportioned-emissions-facility-aggregation.dto';
+import { MonthlyApportionedEmissionsStateAggregationDTO } from '../../dto/monthly-apportioned-emissions-state-aggregation.dto';
+import { MonthlyApportionedEmissionsNationalAggregationDTO } from '../../dto/monthly-apportioned-emissions-national-aggregation.dto';
 
 @Controller()
 @ApiSecurity('APIKey')

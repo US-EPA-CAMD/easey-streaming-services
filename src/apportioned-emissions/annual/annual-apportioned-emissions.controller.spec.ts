@@ -50,4 +50,15 @@ describe('-- Annual Apportioned Emissions Controller --', () => {
       );
     });
   });
+
+  describe('streamEmissionsNationalAggregation endpoint', () => {
+    it('should return test 1', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new AnnualApportionedEmissionsParamsDTO();
+      jest.spyOn(service, 'streamEmissionsNationalAggregation').mockResolvedValue(expectedResult);
+      expect(await controller.streamEmissionsNationalAggregation(req, paramsDto)).toBe(
+        expectedResult,
+      );
+    });
+  });
 });

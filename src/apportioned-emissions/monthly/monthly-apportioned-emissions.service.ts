@@ -18,9 +18,9 @@ import { StreamingService } from '../../streaming/streaming.service';
 import { MonthUnitDataRepository } from './month-unit-data.repository';
 import { MonthlyApportionedEmissionsDTO } from '../../dto/monthly-apportioned-emissions.dto';
 import { MonthlyApportionedEmissionsParamsDTO, StreamMonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
-import { MonthlyApportionedEmissionsFacilityAggregationDTO } from 'src/dto/monthly-apportioned-emissions-facility-aggregation.dto';
-import { MonthlyApportionedEmissionsStateAggregationDTO } from 'src/dto/monthly-apportioned-emissions-state-aggregation.dto';
-import { MonthlyApportionedEmissionsNationalAggregationDTO } from 'src/dto/monthly-apportioned-emissions-national-aggregation.dto';
+import { MonthlyApportionedEmissionsFacilityAggregationDTO } from '../../dto/monthly-apportioned-emissions-facility-aggregation.dto';
+import { MonthlyApportionedEmissionsStateAggregationDTO } from '../../dto/monthly-apportioned-emissions-state-aggregation.dto';
+import { MonthlyApportionedEmissionsNationalAggregationDTO } from '../../dto/monthly-apportioned-emissions-national-aggregation.dto';
 
 @Injectable()
 export class MonthlyApportionedEmissionsService {

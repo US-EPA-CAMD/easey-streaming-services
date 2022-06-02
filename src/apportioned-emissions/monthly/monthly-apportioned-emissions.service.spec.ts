@@ -8,7 +8,7 @@ import { MonthlyApportionedEmissionsService } from './monthly-apportioned-emissi
 
 import { MonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
 import { ConfigService } from '@nestjs/config';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
+import { StreamingService } from './../../streaming/streaming.service';
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -16,8 +16,15 @@ jest.mock('uuid', () => {
 
 const mockRepository = () => ({
   getEmissions: jest.fn(),
-  getStreamQuery: jest.fn(),
+  buildQuery: jest.fn(),
+  buildFacilityAggregationQuery: jest.fn(),
+  buildStateAggregationQuery: jest.fn(),
+  buildNationalAggregationQuery: jest.fn(),
 });
+
+const mockStreamingService = () => ({
+  getStream: jest.fn().mockResolvedValue((new StreamableFile(Buffer.from('stream'))))
+})
 
 const mockRequest = () => {
   return {
@@ -37,8 +44,9 @@ const mockStream = {
   }),
 };
 
-describe('-- Monthly Apportioned Emissions Service --', () => {
+describe('MonthlyApportionedEmissionsService', () => {
   let service: MonthlyApportionedEmissionsService;
+  let streamingService: StreamingService;
   let repository: any;
   let req: any;
 
@@ -46,32 +54,29 @@ describe('-- Monthly Apportioned Emissions Service --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule],
       providers: [
-        {
-          provide: StreamService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
-        },
         ConfigService,
         MonthlyApportionedEmissionsService,
         {
           provide: MonthUnitDataRepository,
           useFactory: mockRepository,
         },
+        {
+          provide: StreamingService,
+          useFactory: mockStreamingService,
+        }
       ],
     }).compile();
 
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
     service = module.get(MonthlyApportionedEmissionsService);
+    streamingService = module.get(StreamingService);
     repository = module.get(MonthUnitDataRepository);
   });
 
   describe('streamEmissions', () => {
-    it('calls MonthlyUnitDataRepository.streamEmissions() and streams all emissions from the repository', async () => {
-      repository.getStreamQuery.mockResolvedValue('');
+    it('calls streamEmissions() and streams all emissions from the service', async () => {
+      repository.buildQuery.mockResolvedValue(["", []]);
 
       let filters = new MonthlyApportionedEmissionsParamsDTO();
 
@@ -80,74 +85,56 @@ describe('-- Monthly Apportioned Emissions Service --', () => {
       let result = await service.streamEmissions(req, filters);
 
       expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="monthly-emissions-${0}.json"`,
-        }),
+        new StreamableFile(Buffer.from('stream')),
       );
     });
   });
 
-  // describe('streamEmissionsFacilityAggregation', () => {
-  //   it('calls MonthUnitDataRepository.getFacilityStreamQuery() and streams all emissions from the repository', async () => {
-  //     repository.getFacilityStreamQuery.mockResolvedValue('');
+  describe('streamEmissionsFacilityAggregation', () => {
+    it('calls streamEmissionsFacilityAggregation() and streams all emissions from the service', async () => {
+      repository.buildFacilityAggregationQuery.mockReturnValue(["", []]);
+      let filters = new MonthlyApportionedEmissionsParamsDTO();
 
-  //     let filters = new MonthlyApportionedEmissionsParamsDTO();
+      req.headers.accept = '';
 
-  //     req.headers.accept = '';
+      let result = await service.streamEmissionsFacilityAggregation(req, filters);
+      
+      expect(result).toEqual(
+        new StreamableFile(Buffer.from('stream')),
+      );  
 
-  //     let result = await service.streamEmissionsFacilityAggregation(
-  //       req,
-  //       filters,
-  //     );
+    });
+  });
 
-  //     expect(result).toEqual(
-  //       new StreamableFile(Buffer.from('stream'), {
-  //         type: req.headers.accept,
-  //         disposition: `attachment; filename="monthly-emissions-facility-aggregation-${0}.json"`,
-  //       }),
-  //     );
-  //   });
-  // });
+  describe('streamEmissionsStateAggregation', () => {
+    it('calls streamEmissionsStateAggregation() and streams all emissions from the service', async () => {
+      repository.buildStateAggregationQuery.mockReturnValue(["", []]);
 
-  // describe('streamEmissionsStateAggregation', () => {
-  //   it('calls MonthUnitDataRepository.getStateStreamQuery() and streams all emissions from the repository', async () => {
-  //     repository.getStateStreamQuery.mockResolvedValue('');
+      let filters = new MonthlyApportionedEmissionsParamsDTO();
 
-  //     let filters = new MonthlyApportionedEmissionsParamsDTO();
+      req.headers.accept = '';
 
-  //     req.headers.accept = '';
+      let result = await service.streamEmissionsStateAggregation(req, filters);
 
-  //     let result = await service.streamEmissionsStateAggregation(req, filters);
+      expect(result).toEqual(
+        new StreamableFile(Buffer.from('stream')),
+      );
+    });
+  });
 
-  //     expect(result).toEqual(
-  //       new StreamableFile(Buffer.from('stream'), {
-  //         type: req.headers.accept,
-  //         disposition: `attachment; filename="monthly-emissions-state-aggregation-${0}.json"`,
-  //       }),
-  //     );
-  //   });
-  // });
+  describe('streamEmissionsNationalAggregation', () => {
+    it('calls streamEmissionsNationalAggregation() and streams all emissions from the service', async () => {
+      repository.buildNationalAggregationQuery.mockReturnValue(["", []]);
 
-  // describe('streamEmissionsNationalAggregation', () => {
-  //   it('calls MonthUnitDataRepository.getNationalStreamQuery() and streams all emissions from the repository', async () => {
-  //     repository.getNationalStreamQuery.mockResolvedValue('');
+      let filters = new MonthlyApportionedEmissionsParamsDTO();
 
-  //     let filters = new MonthlyApportionedEmissionsParamsDTO();
+      req.headers.accept = '';
 
-  //     req.headers.accept = '';
+      let result = await service.streamEmissionsNationalAggregation(req, filters);
 
-  //     let result = await service.streamEmissionsNationalAggregation(
-  //       req,
-  //       filters,
-  //     );
-
-  //     expect(result).toEqual(
-  //       new StreamableFile(Buffer.from('stream'), {
-  //         type: req.headers.accept,
-  //         disposition: `attachment; filename="monthly-emissions-national-aggregation-${0}.json"`,
-  //       }),
-  //     );
-  //   });
-  // });
+      expect(result).toEqual(
+        new StreamableFile(Buffer.from('stream')),
+      );
+    });
+  });
 });

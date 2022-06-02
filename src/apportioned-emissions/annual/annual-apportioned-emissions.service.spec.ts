@@ -14,7 +14,8 @@ jest.mock('uuid', () => {
 });
 
 const mockRepository = () => ({
-  getStreamQuery: jest.fn(),
+  buildQuery: jest.fn(),
+  buildNationalAggregationQuery: jest.fn(),
 });
 
 const mockRequest = () => {
@@ -29,14 +30,15 @@ const mockRequest = () => {
   };
 };
 
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
+const mockStreamingService = () => ({
+  getStream: jest
+    .fn()
+    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+});
 
 describe('-- Annual Apportioned Emissions Service --', () => {
   let service: AnnualApportionedEmissionsService;
+  let streamingService: StreamingService;
   let repository: any;
   let req: any;
 
@@ -47,16 +49,12 @@ describe('-- Annual Apportioned Emissions Service --', () => {
         ConfigService,
         AnnualApportionedEmissionsService,
         {
-          provide: StreamingService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
-        },
-        {
           provide: AnnualUnitDataRepository,
           useFactory: mockRepository,
+        },
+        {
+          provide: StreamingService,
+          useFactory: mockStreamingService,
         },
       ],
     }).compile();
@@ -64,25 +62,38 @@ describe('-- Annual Apportioned Emissions Service --', () => {
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
     service = module.get(AnnualApportionedEmissionsService);
+    streamingService = module.get(StreamingService);
     repository = module.get(AnnualUnitDataRepository);
   });
 
   describe('streamEmissions', () => {
-    it('calls AnnualUnitDataRepository.streamEmissions() and streams all emissions from the repository', async () => {
-      repository.getStreamQuery.mockResolvedValue('');
-      
+    it('calls streamEmissions() and streams all emissions from the service', async () => {
+      repository.buildQuery.mockResolvedValue(['', []]);
+
       let filters = new AnnualApportionedEmissionsParamsDTO();
 
       req.headers.accept = '';
 
       let result = await service.streamEmissions(req, filters);
 
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="annual-emissions-${0}.json"`,
-        }),
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+    });
+  });
+
+  describe('streamEmissionsNationalAggregation', () => {
+    it('calls streamEmissionsNationalAggregation() and streams all emissions from the service', async () => {
+      repository.buildNationalAggregationQuery.mockReturnValue(['', []]);
+
+      let filters = new AnnualApportionedEmissionsParamsDTO();
+
+      req.headers.accept = '';
+
+      let result = await service.streamEmissionsNationalAggregation(
+        req,
+        filters,
       );
+
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 
