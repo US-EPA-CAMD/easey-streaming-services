@@ -6,7 +6,7 @@ import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { StreamingService } from '../streaming/streaming.service';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { StreamingModule } from 'src/streaming/streaming.module';
+import { StreamingModule } from '../streaming/streaming.module';
 
 @Module({
   imports: [
