@@ -44,7 +44,7 @@ const mockStream = {
   }),
 };
 
-describe('MonthlyApportionedEmissionsService', () => {
+describe('-- Monthly Apportioned Emissions Service --', () => {
   let service: MonthlyApportionedEmissionsService;
   let streamingService: StreamingService;
   let repository: any;
