@@ -28,7 +28,8 @@ import {
 import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { AnnualApportionedEmissionsDTO } from '../../dto/annual-apportioned-emissions.dto';
 import { AnnualApportionedEmissionsService } from './annual-apportioned-emissions.service';
-import { StreamAnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
+import { AnnualApportionedEmissionsParamsDTO, StreamAnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
+import { AnnualApportionedEmissionsAggregationDTO } from '../../dto/annual-apportioned-emissions-aggregation.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -52,7 +53,7 @@ export class AnnualApportionedEmissionsController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.emissions.annual.map(i => i.label).join(','),
+          example: fieldMappings.emissions.annual.data.aggregation.unit.map(i => i.label).join(','),
         },
       },
     },
@@ -69,6 +70,36 @@ export class AnnualApportionedEmissionsController {
   ): Promise<StreamableFile> {
     return this.service.streamEmissions(req, params);
   }
+
+  @Get('nationally')
+  @ApiOkResponse({
+    description: 'Streams Annual Apportioned Emissions data per filter criteria aggregated nationally',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(AnnualApportionedEmissionsAggregationDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.emissions.annual.data.aggregation.national.map(i => i.label).join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryEmissionsMultiSelect()
+  @ApiQueryAnnually()
+  @ApiProgramQuery()
+  async streamEmissionsNationalAggregation(
+    @Req() req: Request,
+    @Query() params: AnnualApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.service.streamEmissionsNationalAggregation(req, params);
+  }
+
 
   // @Get('by-facility')
   // @ApiOkResponse({

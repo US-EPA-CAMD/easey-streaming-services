@@ -50,4 +50,38 @@ describe('-- Monthly Apportioned Emissions Controller --', () => {
       );
     });
   });
+
+  describe('streamEmissionsFacilityAggregation endpoint', () => {
+    it('should return test 1', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new MonthlyApportionedEmissionsParamsDTO();
+      jest.spyOn(service, 'streamEmissionsFacilityAggregation').mockResolvedValue(expectedResult);
+      expect(await controller.streamEmissionsFacilityAggregation(req, paramsDto)).toBe(
+        expectedResult,
+      );
+    });
+  });
+
+  describe('streamEmissionsStateAggregation endpoint', () => {
+    it('should return test 1', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new MonthlyApportionedEmissionsParamsDTO();
+      jest.spyOn(service, 'streamEmissionsStateAggregation').mockResolvedValue(expectedResult);
+      expect(await controller.streamEmissionsStateAggregation(req, paramsDto)).toBe(
+        expectedResult,
+      );
+    });
+  });
+
+  describe('streamEmissionsNationalAggregation endpoint', () => {
+    it('should return test 1', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new MonthlyApportionedEmissionsParamsDTO();
+      jest.spyOn(service, 'streamEmissionsNationalAggregation').mockResolvedValue(expectedResult);
+      expect(await controller.streamEmissionsNationalAggregation(req, paramsDto)).toBe(
+        expectedResult,
+      );
+    });
+  });
+
 });

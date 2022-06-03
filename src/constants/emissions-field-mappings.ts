@@ -7,8 +7,14 @@ const hourlyNationalAggregation = [];
 
 const daily = [];
 const monthly = [];
+const monthlyFacilityAggregation = [];
+const monthlyStateAggregation = [];
+const monthlyNationalAggregation = [];
 const quarterly = [];
 const annual = [];
+const annualFacilityAggregation = [];
+const annualStateAggregation = [];
+const annualNationalAggregation = [];
 const hourlyMats = [];
 
 const commonCharacteristics = [
@@ -52,6 +58,15 @@ const hourlyCharacteristics = [
   { ...propertyMetadata.opTime.fieldLabels },
 ];
 
+const aggregationData = [
+  { ...propertyMetadata.grossLoad.fieldLabels },
+  { ...propertyMetadata.steamLoad.fieldLabels },
+  { ...propertyMetadata.so2Mass.fieldLabels },
+  { ...propertyMetadata.co2Mass.fieldLabels },
+  { ...propertyMetadata.noxMass.fieldLabels },
+  { ...propertyMetadata.heatInput.fieldLabels },
+];
+
 const facilityAggregationData = [
   { ...propertyMetadata.stateCode.fieldLabels },
   { ...propertyMetadata.facilityName.fieldLabels },
@@ -67,6 +82,17 @@ const hourlyAggregationData = [
   { ...propertyMetadata.co2Mass.fieldLabels },
   { ...propertyMetadata.noxMassHourly.fieldLabels },
   { ...propertyMetadata.heatInput.fieldLabels },
+];
+
+const monthlyAggregationData = [
+  { ...propertyMetadata.year.fieldLabels },
+  { ...propertyMetadata.month.fieldLabels },
+  ...aggregationData,
+];
+
+const annualAggregationData = [
+  { ...propertyMetadata.year.fieldLabels },
+  ...aggregationData,
 ];
 
 hourly.push(
@@ -123,6 +149,18 @@ monthly.push(
   ...controlInfoCharacteristics,
 );
 
+monthlyFacilityAggregation.push(
+  ...facilityAggregationData,
+  ...monthlyAggregationData,
+);
+
+monthlyStateAggregation.push(
+  { ...propertyMetadata.stateCode.fieldLabels },
+  ...monthlyAggregationData,
+);
+
+monthlyNationalAggregation.push(...monthlyAggregationData);
+
 quarterly.push(
   ...commonCharacteristics,
   { ...propertyMetadata.associatedStacks.fieldLabels },
@@ -141,6 +179,17 @@ annual.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
+annualFacilityAggregation.push(
+  ...facilityAggregationData,
+  ...annualAggregationData,
+);
+annualStateAggregation.push(
+  { ...propertyMetadata.stateCode.fieldLabels },
+  ...annualAggregationData,
+);
+
+annualNationalAggregation.push(...annualAggregationData);
 
 hourlyMats.push(
   ...commonCharacteristics,
@@ -181,9 +230,27 @@ export const fieldMappings = {
       }
     },
     daily: daily,
-    monthly: monthly,
+    monthly: {
+      data: {
+        aggregation: {
+          unit: monthly,
+          facility: monthlyFacilityAggregation,
+          state: monthlyStateAggregation,
+          national: monthlyNationalAggregation,
+        },
+      }
+    },
     quarterly: quarterly,
-    annual: annual,
+    annual: {
+      data: {
+        aggregation: {
+          unit: annual,
+          facility: annualFacilityAggregation,
+          state: annualStateAggregation,
+          national: annualNationalAggregation,
+        },
+      }
+    },
     ozone: annual,
     mats: {
       hourly: hourlyMats,
