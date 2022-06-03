@@ -7,7 +7,6 @@ import { MonthUnitDataRepository } from './month-unit-data.repository';
 import { MonthlyApportionedEmissionsService } from './monthly-apportioned-emissions.service';
 
 import { MonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
-import { ConfigService } from '@nestjs/config';
 import { StreamingService } from './../../streaming/streaming.service';
 
 jest.mock('uuid', () => {
@@ -54,7 +53,6 @@ describe('-- Monthly Apportioned Emissions Service --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule],
       providers: [
-        ConfigService,
         MonthlyApportionedEmissionsService,
         {
           provide: MonthUnitDataRepository,

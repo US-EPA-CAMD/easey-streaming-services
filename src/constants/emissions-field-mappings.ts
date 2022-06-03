@@ -1,11 +1,12 @@
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
-
 const hourly = [];
 const hourlyFacilityAggregation = [];
 const hourlyStateAggregation = [];
 const hourlyNationalAggregation = [];
-
 const daily = [];
+const dailyFacilityAggregation = [];
+const dailyStateAggregation = [];
+const dailyNationalAggregation = [];
 const monthly = [];
 const monthlyFacilityAggregation = [];
 const monthlyStateAggregation = [];
@@ -84,6 +85,11 @@ const hourlyAggregationData = [
   { ...propertyMetadata.heatInput.fieldLabels },
 ];
 
+const dailyAggregationData = [
+  { ...propertyMetadata.date.fieldLabels },
+  ...aggregationData,
+];
+
 const monthlyAggregationData = [
   { ...propertyMetadata.year.fieldLabels },
   { ...propertyMetadata.month.fieldLabels },
@@ -138,6 +144,18 @@ daily.push(
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );
+
+dailyFacilityAggregation.push(
+  ...facilityAggregationData,
+  ...dailyAggregationData,
+);
+
+dailyStateAggregation.push(
+  { ...propertyMetadata.stateCode.fieldLabels },
+  ...dailyAggregationData,
+);
+
+dailyNationalAggregation.push(...dailyAggregationData);
 
 monthly.push(
   ...commonCharacteristics,
@@ -227,9 +245,18 @@ export const fieldMappings = {
           state: hourlyStateAggregation,
           national: hourlyNationalAggregation,
         },
-      }
+      },
     },
-    daily: daily,
+    daily: {
+      data: {
+        aggregation: {
+          unit: daily,
+          facility: dailyFacilityAggregation,
+          state: dailyStateAggregation,
+          national: dailyNationalAggregation,
+        },
+      },
+    },
     monthly: {
       data: {
         aggregation: {
@@ -238,7 +265,7 @@ export const fieldMappings = {
           state: monthlyStateAggregation,
           national: monthlyNationalAggregation,
         },
-      }
+      },
     },
     quarterly: quarterly,
     annual: {
@@ -249,7 +276,7 @@ export const fieldMappings = {
           state: annualStateAggregation,
           national: annualNationalAggregation,
         },
-      }
+      },
     },
     ozone: annual,
     mats: {

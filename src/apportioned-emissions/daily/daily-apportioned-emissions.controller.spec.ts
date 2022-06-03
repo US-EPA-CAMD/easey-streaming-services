@@ -27,7 +27,10 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [DailyApportionedEmissionsController],
-      providers: [DayUnitDataRepository, DailyApportionedEmissionsService],
+      providers: [
+        DayUnitDataRepository,
+        DailyApportionedEmissionsService,
+      ],
     }).compile();
 
     controller = module.get(DailyApportionedEmissionsController);
@@ -48,6 +51,45 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
       expect(await controller.streamEmissions(req, paramsDto)).toBe(
         expectedResult,
       );
+    });
+  });
+
+  describe('* streamEmissionsFacilityAggregation', () => {
+    it('should return test 1', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new DailyApportionedEmissionsParamsDTO();
+      jest
+        .spyOn(service, 'streamEmissionsFacilityAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsFacilityAggregation(req, paramsDto),
+      ).toBe(expectedResult);
+    });
+  });
+
+  describe('* streamEmissionsStateAggregation', () => {
+    it('should return test 1', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new DailyApportionedEmissionsParamsDTO();
+      jest
+        .spyOn(service, 'streamEmissionsStateAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsStateAggregation(req, paramsDto),
+      ).toBe(expectedResult);
+    });
+  });
+
+  describe('* streamEmissionsNationalAggregation', () => {
+    it('should return test 1', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new DailyApportionedEmissionsParamsDTO();
+      jest
+        .spyOn(service, 'streamEmissionsNationalAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsNationalAggregation(req, paramsDto),
+      ).toBe(expectedResult);
     });
   });
 });
