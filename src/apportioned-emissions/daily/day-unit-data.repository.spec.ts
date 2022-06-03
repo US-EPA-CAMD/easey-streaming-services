@@ -110,8 +110,8 @@ describe('DayUnitDataRepository', () => {
   });
 
   describe('streamEmissions', () => {
-    it('calls streamEmissions and streams DayUnitData from the repository', async () => {
-      const result = await repository.buildQuery(
+    it('calls streamEmissions and streams DayUnitData from the repository', () => {
+      const result = repository.buildQuery(
         fieldMappings.emissions.daily.data.aggregation.unit,
         streamFilters,
       );
@@ -121,7 +121,7 @@ describe('DayUnitDataRepository', () => {
   });
 
   describe('streamEmissionsFacilityAggregation', () => {
-    it('calls buildFacilityAggregationQuery from the repository', async () => {
+    it('calls buildFacilityAggregationQuery from the repository', () => {
       const result = repository.buildFacilityAggregationQuery(streamFilters);
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
@@ -129,7 +129,7 @@ describe('DayUnitDataRepository', () => {
   });
 
   describe('streamEmissionsStateAggregation', () => {
-    it('calls buildStateAggregationQuery from the repository', async () => {
+    it('calls buildStateAggregationQuery from the repository', () => {
       const result = repository.buildStateAggregationQuery(streamFilters);
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
@@ -137,7 +137,7 @@ describe('DayUnitDataRepository', () => {
   });
 
   describe('streamEmissionsNationalAggregation', () => {
-    it('calls buildNationalAggregationQuery from the repository', async () => {
+    it('calls buildNationalAggregationQuery from the repository', () => {
       const result = repository.buildNationalAggregationQuery(streamFilters);
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();

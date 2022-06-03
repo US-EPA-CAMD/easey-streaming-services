@@ -6,10 +6,7 @@ import {
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
 
-import {
-  IsInEnum,
-  IsInResponse,
-} from '@us-epa-camd/easey-common/pipes';
+import { IsInEnum, IsInResponse } from '@us-epa-camd/easey-common/pipes';
 import { Transform } from 'class-transformer';
 import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
 
@@ -41,7 +38,7 @@ export class StreamDailyApportionedEmissionsParamsDTO extends DailyApportionedEm
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.emissions.daily, {
+  @IsInResponse(fieldMappings.emissions.daily.data.aggregation.unit, {
     each: true,
     message: ErrorMessages.ValidParameter(),
   })

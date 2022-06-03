@@ -1,9 +1,6 @@
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsInEnum,
-  IsInResponse,
-} from '@us-epa-camd/easey-common/pipes';
+import { IsInEnum, IsInResponse } from '@us-epa-camd/easey-common/pipes';
 
 import {
   ErrorMessages,
@@ -46,7 +43,7 @@ export class StreamHourlyApportionedEmissionsParamsDTO extends HourlyApportioned
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.emissions.hourly, {
+  @IsInResponse(fieldMappings.emissions.hourly.data.aggregation.unit, {
     each: true,
     message: ErrorMessages.ValidParameter(),
   })
