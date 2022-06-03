@@ -17,14 +17,16 @@ jest.mock('uuid', () => {
 const mockRepository = () => ({
   getEmissions: jest.fn(),
   buildQuery: jest.fn(),
-  getFacilityStreamQuery: jest.fn(),
-  getStateStreamQuery: jest.fn(),
-  getNationalStreamQuery: jest.fn(),
+  buildFacilityAggregationQuery: jest.fn(),
+  buildStateAggregationQuery: jest.fn(),
+  buildNationalAggregationQuery: jest.fn(),
 });
 
 const mockStreamingService = () => ({
-  getStream: jest.fn().mockResolvedValue((new StreamableFile(Buffer.from('stream'))))
-})
+  getStream: jest
+    .fn()
+    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+});
 
 const mockRequest = () => {
   return {
@@ -36,13 +38,6 @@ const mockRequest = () => {
     },
     on: jest.fn(),
   };
-
-};
-
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
 };
 
 describe('-- Hourly Apportioned Emissions Service --', () => {
@@ -76,40 +71,37 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
   });
 
   describe('streamEmissions', () => {
-    it('calls HourlyUnitDataRepository.streamEmissions() and streams all emissions from the repository', async () => {
-      repository.buildQuery.mockReturnValue(["", []]);
+    it('calls streamEmissions() and streams all emissions from the service', async () => {
+      repository.buildQuery.mockReturnValue(['', []]);
       let filters = new HourlyApportionedEmissionsParamsDTO();
 
       req.headers.accept = '';
 
       let result = await service.streamEmissions(req, filters);
 
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream')),
-      );
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 
   describe('streamEmissionsFacilityAggregation', () => {
-    it('calls HourlyUnitDataRepository.getFacilityStreamQuery() and streams all emissions from the repository', async () => {
-      repository.getFacilityStreamQuery.mockReturnValue(["", []]);
-
+    it('calls HourlyUnitDataRepository.buildFacilityAggregationQuery() and streams all emissions from the repository', async () => {
+      repository.buildFacilityAggregationQuery.mockReturnValue(['', []]);
       let filters = new HourlyApportionedEmissionsParamsDTO();
 
       req.headers.accept = '';
 
-      let result = await service.streamEmissionsFacilityAggregation(req, filters);
-      
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream')),
-      );  
+      let result = await service.streamEmissionsFacilityAggregation(
+        req,
+        filters,
+      );
 
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 
   describe('streamEmissionsStateAggregation', () => {
-    it('calls HourlyUnitDataRepository.getStateStreamQuery() and streams all emissions from the repository', async () => {
-      repository.getStateStreamQuery.mockReturnValue(["", []]);
+    it('calls streamEmissionsStateAggregation() and streams all emissions from the service', async () => {
+      repository.buildStateAggregationQuery.mockReturnValue(['', []]);
 
       let filters = new HourlyApportionedEmissionsParamsDTO();
 
@@ -117,25 +109,24 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
 
       let result = await service.streamEmissionsStateAggregation(req, filters);
 
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream')),
-      );
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 
   describe('streamEmissionsNationalAggregation', () => {
-    it('calls HourlyUnitDataRepository.getNationalStreamQuery() and streams all emissions from the repository', async () => {
-      repository.getNationalStreamQuery.mockReturnValue(["", []]);
+    it('calls streamEmissionsNationalAggregation() and streams all emissions from the service', async () => {
+      repository.buildNationalAggregationQuery.mockReturnValue(['', []]);
 
       let filters = new HourlyApportionedEmissionsParamsDTO();
 
       req.headers.accept = '';
 
-      let result = await service.streamEmissionsNationalAggregation(req, filters);
-
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream')),
+      let result = await service.streamEmissionsNationalAggregation(
+        req,
+        filters,
       );
+
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 });

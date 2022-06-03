@@ -63,7 +63,6 @@ describe('-- Hourly Apportioned Emissions Controller --', () => {
     });
   });
 
-
   describe('streamEmissionsStateAggregation endpoint', () => {
     it('should return test 1', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
@@ -75,7 +74,6 @@ describe('-- Hourly Apportioned Emissions Controller --', () => {
     });
   });
 
-
   describe('streamEmissionsNationalAggregation endpoint', () => {
     it('should return test 1', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
@@ -86,6 +84,5 @@ describe('-- Hourly Apportioned Emissions Controller --', () => {
       );
     });
   });
-
 
 });
