@@ -280,7 +280,13 @@ export const fieldMappings = {
     },
     ozone: annual,
     mats: {
-      hourly: hourlyMats,
+      hourly: {
+        data: {
+          aggregation: {
+            unit: hourlyMats,
+          },
+        },
+      },
     },
   },
 };

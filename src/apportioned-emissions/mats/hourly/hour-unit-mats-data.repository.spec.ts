@@ -1,21 +1,19 @@
 import { Test } from '@nestjs/testing';
 import { SelectQueryBuilder } from 'typeorm';
-
 import {
   State,
   UnitType,
   UnitFuelType,
   ControlTechnology,
-  Program,
-  ExcludeHourlyApportionedEmissions,
+  ExcludeHourlyMatsApportionedEmissions,
 } from '@us-epa-camd/easey-common/enums';
 
-import { fieldMappings } from '../../constants/emissions-field-mappings';
-import { HourUnitDataRepository } from './hour-unit-data.repository';
-import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
-import { StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { StreamHourlyMatsApportionedEmissionsParamsDTO } from '../../../dto/hourly-mats-apporitioned-emissions.params.dto';
+import { HourUnitMatsDataRepository } from './hour-unit-mats-data.repository';
+import { EmissionsQueryBuilder } from '../../../utils/emissions-query-builder';
+import { fieldMappings } from '../../../constants/emissions-field-mappings';
 
-jest.mock('../../utils/emissions-query-builder');
+jest.mock('../../../utils/emissions-query-builder');
 
 const mockRequest = (url?: string, page?: number, perPage?: number) => {
   return {
@@ -36,18 +34,16 @@ const mockQueryBuilder = () => ({
   getManyAndCount: jest.fn(),
   select: jest.fn(),
   addSelect: jest.fn(),
-  innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
   addGroupBy: jest.fn(),
-  getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
   stream: jest.fn(),
-  getQueryAndParameters: jest.fn().mockReturnValue('mockEmissions'),
+  getQueryAndParameters: jest.fn(),
 });
 
-let streamFilters = new StreamHourlyApportionedEmissionsParamsDTO();
+let streamFilters = new StreamHourlyMatsApportionedEmissionsParamsDTO();
 streamFilters.beginDate = new Date();
 streamFilters.endDate = new Date();
 streamFilters.stateCode = [State.TX];
@@ -61,21 +57,20 @@ streamFilters.controlTechnologies = [
   ControlTechnology.ADDITIVES_TO_ENHANCE,
   ControlTechnology.OTHER,
 ];
-streamFilters.programCodeInfo = [Program.ARP, Program.RGGI];
 streamFilters.exclude = [
-  ExcludeHourlyApportionedEmissions.CO2_RATE,
-  ExcludeHourlyApportionedEmissions.GROSS_LOAD,
+  ExcludeHourlyMatsApportionedEmissions.HCL_INPUT_RATE,
+  ExcludeHourlyMatsApportionedEmissions.SECONDARY_FUEL_TYPE,
 ];
 
-describe('HourUnitDataRepository', () => {
-  let repository: HourUnitDataRepository;
+describe('HourUnitMatsDataRepository', () => {
+  let repository: HourUnitMatsDataRepository;
   let queryBuilder: any;
   let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
-        HourUnitDataRepository,
+        HourUnitMatsDataRepository,
         {
           provide: SelectQueryBuilder,
           useFactory: mockQueryBuilder,
@@ -83,7 +78,7 @@ describe('HourUnitDataRepository', () => {
       ],
     }).compile();
 
-    repository = module.get(HourUnitDataRepository);
+    repository = module.get(HourUnitMatsDataRepository);
     queryBuilder = module.get(SelectQueryBuilder);
     req = mockRequest('');
     req.res.setHeader.mockReturnValue();
@@ -94,54 +89,29 @@ describe('HourUnitDataRepository', () => {
 
     queryBuilder.select.mockReturnValue(queryBuilder);
     queryBuilder.addSelect.mockReturnValue(queryBuilder);
-    queryBuilder.innerJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.addGroupBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.take.mockReturnValue('mockPagination');
-    queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.getMany.mockReturnValue('mockEmissions');
-    queryBuilder.getManyAndCount.mockReturnValue(['mockEmissions', 0]);
+    queryBuilder.getMany.mockReturnValue('mockMatsEmissions');
+    queryBuilder.getManyAndCount.mockReturnValue(['mockMatsEmissions', 0]);
     queryBuilder.stream.mockReturnValue('mockEmissions');
+    queryBuilder.getQueryAndParameters.mockReturnValue('mockEmissions');
 
     repository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
   });
 
-  describe('streamEmissions', () => {
-    it('calls buildQuery and streams HourUnitData from the repository', () => {
+  describe('buildQuery', () => {
+    it('calls buildQuery and streams HourUnitMatsData from the repository', () => {
       const result = repository.buildQuery(
-        fieldMappings.emissions.hourly.data.aggregation.unit,
+        fieldMappings.emissions.mats.hourly.data.aggregation.unit,
         streamFilters,
       );
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
       expect(result).toEqual('mockEmissions');
-    });
-  });
-
-  describe('streamEmissionsFacilityAggregation', () => {
-    it('calls buildFacilityAggregationQuery from the repository', () => {
-      const result = repository.buildFacilityAggregationQuery(streamFilters);
-
-      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
-    });
-  });
-
-  describe('streamEmissionsStateAggregation', () => {
-    it('calls buildStateAggregationQuery from the repository', () => {
-      const result = repository.buildStateAggregationQuery(streamFilters);
-
-      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
-    });
-  });
-
-  describe('streamEmissionsNationalAggregation', () => {
-    it('calls buildNationalAggregationQuery from the repository', () => {
-      const result = repository.buildNationalAggregationQuery(streamFilters);
-
-      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
 });

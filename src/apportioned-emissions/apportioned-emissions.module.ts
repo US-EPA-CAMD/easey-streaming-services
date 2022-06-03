@@ -8,6 +8,7 @@ import { MonthlyApportionedEmissionsModule } from './monthly/monthly-apportioned
 import { QuarterlyApportionedEmissionsModule } from './quarterly/quarterly-apportioned-emissions.module';
 import { AnnualApportionedEmissionsModule } from './annual/annual-apportioned-emissions.module';
 import { OzoneApportionedEmissionsModule } from './ozone/ozone-apportioned-emissions.module';
+import { MatsApportionedEmissionsModule } from './mats/mats-apportioned-emissions.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { OzoneApportionedEmissionsModule } from './ozone/ozone-apportioned-emiss
     QuarterlyApportionedEmissionsModule,
     AnnualApportionedEmissionsModule,
     OzoneApportionedEmissionsModule,
+    MatsApportionedEmissionsModule,
   ],
   controllers: [],
   providers: [],
