@@ -1,5 +1,4 @@
 import { Test } from '@nestjs/testing';
-import { ConfigService } from '@nestjs/config';
 import { StreamableFile } from '@nestjs/common';
 
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
@@ -50,7 +49,6 @@ describe('-- Daily Apportioned Emissions Service --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule],
       providers: [
-        ConfigService,
         DailyApportionedEmissionsService,
         {
           provide: DayUnitDataRepository,
@@ -71,7 +69,7 @@ describe('-- Daily Apportioned Emissions Service --', () => {
   });
 
   describe('streamEmissions', () => {
-    it('calls DailyUnitDataRepository.streamEmissions() and streams all emissions from the repository', async () => {
+    it('calls streamEmissions() and streams all emissions from the repository', async () => {
       repository.buildQuery.mockReturnValue(['', []]);
 
       let filters = new DailyApportionedEmissionsParamsDTO();
@@ -85,8 +83,8 @@ describe('-- Daily Apportioned Emissions Service --', () => {
   });
 
   describe('streamEmissionsFacilityAggregation', () => {
-    it('calls DailyUnitDataRepository.buildFacilityAggregationQuery() and streams all emissions from the repository', async () => {
-      repository.buildFacilityAggregationQuery.mockResolvedValue(['', []]);
+    it('calls streamEmissionsFacilityAggregation() and streams all emissions from the repository', async () => {
+      repository.buildFacilityAggregationQuery.mockReturnValue(['', []]);
 
       let filters = new DailyApportionedEmissionsParamsDTO();
 
@@ -102,8 +100,8 @@ describe('-- Daily Apportioned Emissions Service --', () => {
   });
 
   describe('streamEmissionsStateAggregation', () => {
-    it('calls DailyUnitDataRepository.getStateStreamQuery() and streams all emissions from the repository', async () => {
-      repository.buildStateAggregationQuery.mockResolvedValue('');
+    it('calls streamEmissionsStateAggregation() and streams all emissions from the repository', async () => {
+      repository.buildStateAggregationQuery.mockReturnValue(['', []]);
 
       let filters = new DailyApportionedEmissionsParamsDTO();
 
@@ -116,8 +114,8 @@ describe('-- Daily Apportioned Emissions Service --', () => {
   });
 
   describe('streamEmissionsNationalAggregation', () => {
-    it('calls DailyUnitDataRepository.getNationalStreamQuery() and streams all emissions from the repository', async () => {
-      repository.buildNationalAggregationQuery.mockResolvedValue('');
+    it('calls streamEmissionsNationalAggregation() and streams all emissions from the repository', async () => {
+      repository.buildNationalAggregationQuery.mockReturnValue(['', []]);
 
       let filters = new DailyApportionedEmissionsParamsDTO();
 

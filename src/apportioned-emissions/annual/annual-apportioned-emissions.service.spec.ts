@@ -1,5 +1,4 @@
 import { Test } from '@nestjs/testing';
-import { ConfigService } from '@nestjs/config';
 import { StreamableFile } from '@nestjs/common';
 
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
@@ -46,7 +45,6 @@ describe('-- Annual Apportioned Emissions Service --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule],
       providers: [
-        ConfigService,
         AnnualApportionedEmissionsService,
         {
           provide: AnnualUnitDataRepository,

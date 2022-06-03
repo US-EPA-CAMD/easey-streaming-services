@@ -162,6 +162,9 @@ export class DailyApportionedEmissionsService {
         callback(null, dto);
       },
     });
+    console.log("0-000000000000000000000000000")
+    const o = this.repository.buildNationalAggregationQuery(params)
+    console.log(o)
     const [sql, values] = this.repository.buildNationalAggregationQuery(params);
 
     return this.streamService.getStream(

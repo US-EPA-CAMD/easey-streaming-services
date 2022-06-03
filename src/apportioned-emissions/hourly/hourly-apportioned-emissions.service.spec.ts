@@ -7,7 +7,6 @@ import { HourUnitDataRepository } from './hour-unit-data.repository';
 import { HourlyApportionedEmissionsService } from './hourly-apportioned-emissions.service';
 
 import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
-import { ConfigService } from '@nestjs/config';
 import { StreamingService } from './../../streaming/streaming.service';
 
 jest.mock('uuid', () => {
@@ -50,7 +49,6 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule],
       providers: [
-        ConfigService,
         HourlyApportionedEmissionsService,
         {
           provide: HourUnitDataRepository,
@@ -114,7 +112,7 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
   });
 
   describe('streamEmissionsNationalAggregation', () => {
-    it('calls streamEmissionsNationalAggregation() and streams all emissions from the service', async () => {
+    it('calls buildNationalAggregationQuery() and streams all emissions from the service', async () => {
       repository.buildNationalAggregationQuery.mockReturnValue(['', []]);
 
       let filters = new HourlyApportionedEmissionsParamsDTO();

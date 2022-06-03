@@ -8,7 +8,6 @@ import { DayUnitDataRepository } from './day-unit-data.repository';
 import { DailyApportionedEmissionsService } from './daily-apportioned-emissions.service';
 import { DailyApportionedEmissionsController } from './daily-apportioned-emissions.controller';
 import { DailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-emissions.params.dto';
-import { ConfigService } from '@nestjs/config';
 
 const mockRequest = (url: string) => {
   return {
@@ -29,7 +28,6 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
       imports: [LoggerModule, StreamingModule],
       controllers: [DailyApportionedEmissionsController],
       providers: [
-        ConfigService,
         DayUnitDataRepository,
         DailyApportionedEmissionsService,
       ],
