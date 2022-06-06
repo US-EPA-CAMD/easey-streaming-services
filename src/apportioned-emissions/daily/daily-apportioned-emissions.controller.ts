@@ -33,6 +33,9 @@ import { DailyApportionedEmissionsNationalAggregationDTO } from '../../dto/daily
 @ApiSecurity('APIKey')
 @ApiTags('Apportioned Daily Emissions')
 @ApiExtraModels(DailyApportionedEmissionsDTO)
+@ApiExtraModels(DailyApportionedEmissionsFacilityAggregationDTO)
+@ApiExtraModels(DailyApportionedEmissionsStateAggregationDTO)
+@ApiExtraModels(DailyApportionedEmissionsNationalAggregationDTO)
 export class DailyApportionedEmissionsController {
   constructor(private readonly service: DailyApportionedEmissionsService) {}
 
