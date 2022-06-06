@@ -36,6 +36,9 @@ import { HourlyApportionedEmissionsNationalAggregationDTO } from '../../dto/hour
 @ApiSecurity('APIKey')
 @ApiTags('Apportioned Hourly Emissions')
 @ApiExtraModels(HourlyApportionedEmissionsDTO)
+@ApiExtraModels(HourlyApportionedEmissionsFacilityAggregationDTO)
+@ApiExtraModels(HourlyApportionedEmissionsStateAggregationDTO)
+@ApiExtraModels(HourlyApportionedEmissionsNationalAggregationDTO)
 export class HourlyApportionedEmissionsController {
 
   constructor(
