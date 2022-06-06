@@ -37,6 +37,9 @@ import { MonthlyApportionedEmissionsNationalAggregationDTO } from '../../dto/mon
 @ApiSecurity('APIKey')
 @ApiTags('Apportioned Monthly Emissions')
 @ApiExtraModels(MonthlyApportionedEmissionsDTO)
+@ApiExtraModels(MonthlyApportionedEmissionsFacilityAggregationDTO)
+@ApiExtraModels(MonthlyApportionedEmissionsStateAggregationDTO)
+@ApiExtraModels(MonthlyApportionedEmissionsNationalAggregationDTO)
 export class MonthlyApportionedEmissionsController {
   
   constructor(
