@@ -78,6 +78,20 @@ describe('-- Annual Apportioned Emissions Service --', () => {
     });
   });
 
+  describe('streamEmissionsStateAggregation', () => {
+    it('calls streamEmissionsStateAggregation() and streams all emissions from the repository', async () => {
+      repository.buildStateAggregationQuery.mockReturnValue(['', []]);
+
+      let filters = new AnnualApportionedEmissionsParamsDTO();
+
+      req.headers.accept = '';
+
+      let result = await service.streamEmissionsStateAggregation(req, filters);
+
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+    });
+  });
+
   describe('streamEmissionsNationalAggregation', () => {
     it('calls streamEmissionsNationalAggregation() and streams all emissions from the service', async () => {
       repository.buildNationalAggregationQuery.mockReturnValue(['', []]);
