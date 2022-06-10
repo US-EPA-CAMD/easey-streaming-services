@@ -14,6 +14,8 @@ jest.mock('uuid', () => {
 
 const mockRepository = () => ({
   buildQuery: jest.fn(),
+  buildStateAggregationQuery: jest.fn(),
+  buildFacilityAggregationQuery: jest.fn(),
   buildNationalAggregationQuery: jest.fn(),
 });
 
@@ -78,8 +80,25 @@ describe('-- Annual Apportioned Emissions Service --', () => {
     });
   });
 
+  describe('streamEmissionsFacilityAggregation', () => {
+    it('calls streamEmissionsFacilityAggregation() and streams all emissions from the service', async () => {
+      repository.buildFacilityAggregationQuery.mockReturnValue(['', []]);
+
+      let filters = new AnnualApportionedEmissionsParamsDTO();
+
+      req.headers.accept = '';
+
+      let result = await service.streamEmissionsFacilityAggregation(
+        req,
+        filters,
+      );
+
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+    });
+  });
+
   describe('streamEmissionsStateAggregation', () => {
-    it('calls streamEmissionsStateAggregation() and streams all emissions from the repository', async () => {
+    it('calls streamEmissionsStateAggregation() and streams all emissions from the service', async () => {
       repository.buildStateAggregationQuery.mockReturnValue(['', []]);
 
       let filters = new AnnualApportionedEmissionsParamsDTO();
@@ -108,26 +127,4 @@ describe('-- Annual Apportioned Emissions Service --', () => {
       expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
-
-  // describe('streamEmissionsFacilityAggregation', () => {
-  //   it('calls AnnualUnitDataRepository.getFacilityStreamQuery() and streams all emissions from the repository', async () => {
-  //     repository.getFacilityStreamQuery.mockResolvedValue('');
-
-  //     let filters = new AnnualApportionedEmissionsParamsDTO();
-
-  //     req.headers.accept = '';
-
-  //     let result = await service.streamEmissionsFacilityAggregation(
-  //       req,
-  //       filters,
-  //     );
-
-  //     expect(result).toEqual(
-  //       new StreamableFile(Buffer.from('stream'), {
-  //         type: req.headers.accept,
-  //         disposition: `attachment; filename="annual-emissions-facility-aggregation-${0}.json"`,
-  //       }),
-  //     );
-  //   });
-  // });
 });
