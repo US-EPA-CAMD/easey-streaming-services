@@ -98,7 +98,7 @@ export class AnnualApportionedEmissionsService {
       disposition,
       fieldMappingsList,
     );
-  };
+  }
 
   async streamEmissionsNationalAggregation(
     req: Request,
