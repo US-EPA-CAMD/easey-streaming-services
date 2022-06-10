@@ -27,10 +27,7 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [DailyApportionedEmissionsController],
-      providers: [
-        DayUnitDataRepository,
-        DailyApportionedEmissionsService,
-      ],
+      providers: [DayUnitDataRepository, DailyApportionedEmissionsService],
     }).compile();
 
     controller = module.get(DailyApportionedEmissionsController);
@@ -44,7 +41,7 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
   });
 
   describe('* streamEmissions', () => {
-    it('should return test 1', async () => {
+    it('should call the service and return all daily emissions', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new DailyApportionedEmissionsParamsDTO();
       jest.spyOn(service, 'streamEmissions').mockResolvedValue(expectedResult);
@@ -55,7 +52,7 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
   });
 
   describe('* streamEmissionsFacilityAggregation', () => {
-    it('should return test 1', async () => {
+    it('should call the service and return all daily emissions aggregated by facility', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new DailyApportionedEmissionsParamsDTO();
       jest
@@ -68,7 +65,7 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
   });
 
   describe('* streamEmissionsStateAggregation', () => {
-    it('should return test 1', async () => {
+    it('should call the service and return all daily emissions aggregated by state', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new DailyApportionedEmissionsParamsDTO();
       jest
@@ -81,7 +78,7 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
   });
 
   describe('* streamEmissionsNationalAggregation', () => {
-    it('should return test 1', async () => {
+    it('should call the service and return all daily emissions aggregated nationally', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new DailyApportionedEmissionsParamsDTO();
       jest

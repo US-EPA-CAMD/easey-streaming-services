@@ -7,10 +7,8 @@ import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { AccountService } from '../account/account.service';
 import { AccountFactRepository } from '../account/account-fact.repository';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
 import { StreamAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
-import { StreamingService } from '../streaming/streaming.service';
-import { ConfigService } from '@nestjs/config';
+import { StreamingModule } from '../streaming/streaming.module';
 
 const mockRequest = (url: string) => {
   return {
@@ -25,46 +23,44 @@ describe('-- Allowance Holdings Controller --', () => {
   let allowanceHoldingsController: AllowanceHoldingsController;
   let allowanceHoldingsService: AllowanceHoldingsService;
   let accountService: AccountService;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, StreamModule],
+      imports: [LoggerModule, StreamingModule],
       controllers: [AllowanceHoldingsController],
       providers: [
         AllowanceHoldingsService,
         AllowanceHoldingDimRepository,
         AccountService,
         AccountFactRepository,
-        StreamingService,
-        ConfigService
       ],
     }).compile();
 
     allowanceHoldingsController = module.get(AllowanceHoldingsController);
     allowanceHoldingsService = module.get(AllowanceHoldingsService);
     accountService = module.get(AccountService);
+    req = mockRequest('');
+    req.res.setHeader.mockReturnValue();
   });
 
   afterEach(() => {
     jest.resetAllMocks();
   });
 
-  describe('* getAllowanceHoldingsStream', () => {
-    const req: any = mockRequest('');
-    req.res.setHeader.mockReturnValue();
-
-    it('should call the service and return allowance holdings ', async () => {
-      const expectedResults: StreamableFile = undefined;
+  describe('* streamAllowanceHoldings', () => {
+    it('should call the service and return all allowance holdings ', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDTO = new StreamAllowanceHoldingsParamsDTO();
       jest
         .spyOn(allowanceHoldingsService, 'streamAllowanceHoldings')
-        .mockResolvedValue(expectedResults);
+        .mockResolvedValue(expectedResult);
       expect(
         await allowanceHoldingsController.streamAllowanceHoldings(
           req,
           paramsDTO,
         ),
-      ).toBe(expectedResults);
+      ).toBe(expectedResult);
     });
   });
 });

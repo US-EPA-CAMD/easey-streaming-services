@@ -27,10 +27,7 @@ describe('-- Facilities Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [FacilitiesController],
-      providers: [
-        FacilitiesService,
-        FacilityUnitAttributesRepository,
-      ],
+      providers: [FacilitiesService, FacilityUnitAttributesRepository],
     }).compile();
 
     facilitiesController = module.get(FacilitiesController);
@@ -44,18 +41,15 @@ describe('-- Facilities Controller --', () => {
   });
 
   describe('* streamAttributes', () => {
-    it('should call the service and return facilites ', async () => {
-      const expectedResults: StreamableFile = undefined;
+    it('should call the service and return all facility unit attributes ', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDTO = new StreamFacilityAttributesParamsDTO();
       jest
         .spyOn(facilitiesService, 'streamAttributes')
-        .mockResolvedValue(expectedResults);
-      expect(
-        await facilitiesController.streamAttributes(
-          req,
-          paramsDTO,
-        ),
-      ).toBe(expectedResults);
+        .mockResolvedValue(expectedResult);
+      expect(await facilitiesController.streamAttributes(req, paramsDTO)).toBe(
+        expectedResult,
+      );
     });
   });
 });

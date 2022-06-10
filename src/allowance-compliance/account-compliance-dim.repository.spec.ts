@@ -6,19 +6,12 @@ import { AccountComplianceDimRepository } from './account-compliance-dim.reposit
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
-  getMany: jest.fn(),
-  getManyAndCount: jest.fn(),
-  getRawMany: jest.fn(),
   select: jest.fn(),
-  leftJoin: jest.fn(),
   innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
-  getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  distinctOn: jest.fn(),
-  stream: jest.fn(),
   getQueryAndParameters: jest.fn(),
 });
 
@@ -50,40 +43,30 @@ describe('-- AccountComplianceDimRepository --', () => {
 
     repository = module.get(AccountComplianceDimRepository);
     queryBuilder = module.get(SelectQueryBuilder);
-
     req = mockRequest('');
     req.res.setHeader.mockReturnValue();
 
     repository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
     queryBuilder.select.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
-    queryBuilder.leftJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
-    queryBuilder.distinctOn.mockReturnValue(queryBuilder);
-    queryBuilder.getMany.mockReturnValue('mockAllowanceCompliance');
-    queryBuilder.getRawMany.mockReturnValue(
-      'mockApplicableAllowanceComplianceAttributes',
-    );
-    queryBuilder.getManyAndCount.mockReturnValue([
-      'mockAllowanceCompliance',
-      0,
-    ]);
     queryBuilder.take.mockReturnValue('mockPagination');
-    queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.stream.mockReturnValue('mockStream');
-    queryBuilder.getQueryAndParameters.mockReturnValue('');
+    queryBuilder.getQueryAndParameters.mockReturnValue(
+      'mockAllowanceCompliance',
+    );
   });
 
-  describe('streamAllowanceCompliance', () => {
-    it('streams all allowance compliance', async () => {
-      const result = repository.buildQuery(
+  describe('buildQuery', () => {
+    it('builds allowance compliance query', async () => {
+      const result = await repository.buildQuery(
         new StreamAllowanceComplianceParamsDTO(),
       );
 
-      expect(result).toEqual('');
+      expect(result).toEqual('mockAllowanceCompliance');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
 });

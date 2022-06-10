@@ -32,19 +32,15 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
-  getMany: jest.fn(),
-  getManyAndCount: jest.fn(),
   select: jest.fn(),
   addSelect: jest.fn(),
   innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
   addGroupBy: jest.fn(),
-  getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  stream: jest.fn(),
-  getQueryAndParameters: jest.fn().mockResolvedValue('mockEmissions'),
+  getQueryAndParameters: jest.fn(),
 });
 
 let streamFilters = new StreamDailyApportionedEmissionsParamsDTO();
@@ -101,45 +97,46 @@ describe('DayUnitDataRepository', () => {
     queryBuilder.addGroupBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.take.mockReturnValue('mockPagination');
-    queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.getMany.mockReturnValue('mockEmissions');
-    queryBuilder.getManyAndCount.mockReturnValue(['mockEmissions', 0]);
-    queryBuilder.stream.mockReturnValue('mockEmissions');
+    queryBuilder.getQueryAndParameters.mockReturnValue('mockEmissions');
 
     repository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
   });
 
-  describe('streamEmissions', () => {
-    it('calls streamEmissions and streams DayUnitData from the repository', () => {
+  describe('buildQuery', () => {
+    it('builds daily emissions query', () => {
       const result = repository.buildQuery(
         fieldMappings.emissions.daily.data.aggregation.unit,
         streamFilters,
       );
 
+      expect(result).toEqual('mockEmissions');
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
 
-  describe('streamEmissionsFacilityAggregation', () => {
-    it('calls buildFacilityAggregationQuery from the repository', () => {
+  describe('buildFacilityAggregationQuery', () => {
+    it('builds daily emissions aggregated by facility query', () => {
       const result = repository.buildFacilityAggregationQuery(streamFilters);
 
+      expect(result).toEqual('mockEmissions');
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
 
-  describe('streamEmissionsStateAggregation', () => {
-    it('calls buildStateAggregationQuery from the repository', () => {
+  describe('buildStateAggregationQuery', () => {
+    it('builds daily emissions aggregated by state query', () => {
       const result = repository.buildStateAggregationQuery(streamFilters);
 
+      expect(result).toEqual('mockEmissions');
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
 
-  describe('streamEmissionsNationalAggregation', () => {
-    it('calls buildNationalAggregationQuery from the repository', () => {
+  describe('buildNationalAggregationQuery', () => {
+    it('builds daily emissions nationally aggregated query', () => {
       const result = repository.buildNationalAggregationQuery(streamFilters);
 
+      expect(result).toEqual('mockEmissions');
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });

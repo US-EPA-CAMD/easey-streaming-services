@@ -32,19 +32,15 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
-  getMany: jest.fn(),
-  getManyAndCount: jest.fn(),
   select: jest.fn(),
   addSelect: jest.fn(),
   innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
   addGroupBy: jest.fn(),
-  getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  stream: jest.fn(),
-  getQueryAndParameters: jest.fn().mockResolvedValue('mockEmissions'),
+  getQueryAndParameters: jest.fn(),
 });
 
 let streamFilters = new StreamMonthlyApportionedEmissionsParamsDTO();
@@ -101,19 +97,16 @@ describe('MonthUnitDataRepository', () => {
     queryBuilder.addGroupBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.take.mockReturnValue('mockPagination');
-    queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.getMany.mockReturnValue('mockEmissions');
-    queryBuilder.getManyAndCount.mockReturnValue(['mockEmissions', 0]);
-    queryBuilder.stream.mockReturnValue('mockEmissions');
+    queryBuilder.getQueryAndParameters.mockReturnValue('mockEmissions');
 
     repository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
   });
 
-  describe('streamEmissions', () => {
-    it('calls buildQuery and streams MonthUnitData from the repository', async () => {
+  describe('buildQuery', () => {
+    it('builds monthly emissions query', async () => {
       const result = await repository.buildQuery(
         fieldMappings.emissions.monthly.data.aggregation.unit,
-        streamFilters
+        streamFilters,
       );
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
@@ -121,28 +114,30 @@ describe('MonthUnitDataRepository', () => {
     });
   });
 
-  describe('streamEmissionsFacilityAggregation', () => {
-    it('calls buildFacilityAggregationQuery from the repository', async () => {
+  describe('buildFacilityAggregationQuery', () => {
+    it('builds monthly emissions aggregated by facility query', async () => {
       const result = repository.buildFacilityAggregationQuery(streamFilters);
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+      expect(result).toEqual('mockEmissions');
     });
   });
 
-  describe('streamEmissionsStateAggregation', () => {
-    it('calls buildStateAggregationQuery from the repository', async () => {
+  describe('buildStateAggregationQuery', () => {
+    it('builds monthly emissions aggregated by state query', async () => {
       const result = repository.buildStateAggregationQuery(streamFilters);
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+      expect(result).toEqual('mockEmissions');
     });
   });
 
-  describe('streamEmissionsNationalAggregation', () => {
-    it('calls buildNationalAggregationQuery from the repository', async () => {
+  describe('buildNationalAggregationQuery', () => {
+    it('builds monthly emissions nationally aggregated query', async () => {
       const result = repository.buildNationalAggregationQuery(streamFilters);
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+      expect(result).toEqual('mockEmissions');
     });
   });
-
 });

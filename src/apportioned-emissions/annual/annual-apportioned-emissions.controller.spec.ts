@@ -41,7 +41,7 @@ describe('-- Annual Apportioned Emissions Controller --', () => {
   });
 
   describe('* streamEmissions', () => {
-    it('should return test 1', async () => {
+    it('should call the service and return all annual emissions ', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new AnnualApportionedEmissionsParamsDTO();
       jest.spyOn(service, 'streamEmissions').mockResolvedValue(expectedResult);
@@ -52,13 +52,15 @@ describe('-- Annual Apportioned Emissions Controller --', () => {
   });
 
   describe('streamEmissionsNationalAggregation endpoint', () => {
-    it('should return test 1', async () => {
+    it('should call the service and return all annual emissions aggregated nationally', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new AnnualApportionedEmissionsParamsDTO();
-      jest.spyOn(service, 'streamEmissionsNationalAggregation').mockResolvedValue(expectedResult);
-      expect(await controller.streamEmissionsNationalAggregation(req, paramsDto)).toBe(
-        expectedResult,
-      );
+      jest
+        .spyOn(service, 'streamEmissionsNationalAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsNationalAggregation(req, paramsDto),
+      ).toBe(expectedResult);
     });
   });
 });

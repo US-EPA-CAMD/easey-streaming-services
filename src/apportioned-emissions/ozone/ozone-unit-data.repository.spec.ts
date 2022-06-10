@@ -14,7 +14,6 @@ import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
-import { StreamingService } from '../../streaming/streaming.service';
 
 jest.mock('../../utils/emissions-query-builder');
 
@@ -33,17 +32,13 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
-  getMany: jest.fn(),
-  getManyAndCount: jest.fn(),
   select: jest.fn(),
   innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
-  getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  stream: jest.fn(),
-  getQueryAndParameters: jest.fn().mockResolvedValue('mockEmissions'),
+  getQueryAndParameters: jest.fn(),
 });
 
 let streamFilters = new StreamOzoneApportionedEmissionsParamsDTO();
@@ -74,7 +69,6 @@ describe('OzoneUnitDataRepository', () => {
     const module = await Test.createTestingModule({
       providers: [
         OzoneUnitDataRepository,
-        StreamingService,
         {
           provide: SelectQueryBuilder,
           useFactory: mockQueryBuilder,
@@ -98,19 +92,16 @@ describe('OzoneUnitDataRepository', () => {
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.take.mockReturnValue('mockPagination');
-    queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.getMany.mockReturnValue('mockEmissions');
-    queryBuilder.getManyAndCount.mockReturnValue(['mockEmissions', 0]);
-    queryBuilder.stream.mockReturnValue('mockEmissions');
+    queryBuilder.getQueryAndParameters.mockReturnValue('mockEmissions');
 
     repository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
   });
 
-  describe('streamEmissions', () => {
-    it('calls streamEmissions and streams OzoneUnitData from the repository', async () => {
+  describe('buildQuery', () => {
+    it('builds ozone emissions query', async () => {
       const result = await repository.buildQuery(
         fieldMappings.emissions.ozone,
-        streamFilters
+        streamFilters,
       );
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();

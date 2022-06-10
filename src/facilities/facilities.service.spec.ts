@@ -1,4 +1,3 @@
-import { Repository } from 'typeorm';
 import { Test } from '@nestjs/testing';
 
 import { StreamableFile } from '@nestjs/common';
@@ -23,11 +22,11 @@ const mockRequest = (url?: string) => {
   };
 };
 
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
+const mockStreamingService = () => ({
+  getStream: jest
+    .fn()
+    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+});
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -38,11 +37,11 @@ const mockFua = () => ({
   lastArchivedYear: jest.fn(),
 });
 
-let req: any;
-
 describe('-- Facilities Service --', () => {
   let facilitiesService: FacilitiesService;
-  let facilityUnitAttributesRepository: FacilityUnitAttributesRepository;
+  let streamingService: StreamingService;
+  let facilityUnitAttributesRepository: any;
+  let req: any;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -50,21 +49,18 @@ describe('-- Facilities Service --', () => {
       providers: [
         FacilitiesService,
         {
-          provide: StreamingService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
-        },
-        {
           provide: FacilityUnitAttributesRepository,
           useFactory: mockFua,
+        },
+        {
+          provide: StreamingService,
+          useFactory: mockStreamingService,
         },
       ],
     }).compile();
 
     facilitiesService = module.get(FacilitiesService);
+    streamingService = module.get(StreamingService);
     facilityUnitAttributesRepository = module.get(
       FacilityUnitAttributesRepository,
     );
@@ -75,35 +71,15 @@ describe('-- Facilities Service --', () => {
 
   describe('streamAttributes', () => {
     it('streams all facility unit attributes', async () => {
-     // facilityUnitAttributesRepository.buildQuery.mockResolvedValue([], '');
+      facilityUnitAttributesRepository.buildQuery.mockReturnValue(['', []]);
 
       let filters = new StreamFacilityAttributesParamsDTO();
 
       req.headers.accept = '';
 
-      let result = await facilitiesService.streamAttributes(
-        req,
-        filters,
-      );
+      let result = await facilitiesService.streamAttributes(req, filters);
 
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="facility-attributes-${0}.json"`,
-        }),
-      );
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 });
-
-// @ts-ignore
-export const repositoryMockFactory: () => MockType<Repository<any>> = jest.fn(
-  () => ({
-    findOne: jest.fn(),
-    findAndCount: jest.fn(),
-  }),
-);
-
-export type MockType<T> = {
-  [P in keyof T]: jest.Mock<{}>;
-};

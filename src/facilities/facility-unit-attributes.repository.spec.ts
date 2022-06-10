@@ -7,20 +7,31 @@ import { FacilityUnitAttributes } from '../entities/vw-facility-unit-attributes.
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
-  getMany: jest.fn(),
   select: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
-  getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  stream: jest.fn(),
   getQueryAndParameters: jest.fn(),
 });
 
+const mockRequest = (url?: string, page?: number, perPage?: number) => {
+  return {
+    url,
+    res: {
+      setHeader: jest.fn(),
+    },
+    query: {
+      page,
+      perPage,
+    },
+  };
+};
+
 describe('FacilityUnitAttributesRepository', () => {
-  let facilityUnitAttributesRepository;
-  let queryBuilder;
+  let facilityUnitAttributesRepository: FacilityUnitAttributesRepository;
+  let queryBuilder: any;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -30,12 +41,12 @@ describe('FacilityUnitAttributesRepository', () => {
       ],
     }).compile();
 
-    facilityUnitAttributesRepository = module.get<
-      FacilityUnitAttributesRepository
-    >(FacilityUnitAttributesRepository);
-    queryBuilder = module.get<SelectQueryBuilder<FacilityUnitAttributes>>(
-      SelectQueryBuilder,
+    facilityUnitAttributesRepository = module.get(
+      FacilityUnitAttributesRepository,
     );
+    queryBuilder = module.get(SelectQueryBuilder);
+    req = mockRequest('');
+    req.res.setHeader.mockReturnValue();
 
     facilityUnitAttributesRepository.createQueryBuilder = jest
       .fn()
@@ -45,8 +56,9 @@ describe('FacilityUnitAttributesRepository', () => {
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
-    queryBuilder.stream.mockReturnValue('mockStream');
-    queryBuilder.getQueryAndParameters.mockReturnValue('');
+    queryBuilder.getQueryAndParameters.mockReturnValue(
+      'mockFacilityAttributes',
+    );
   });
 
   describe('buildQuery', () => {
@@ -54,8 +66,8 @@ describe('FacilityUnitAttributesRepository', () => {
       const result = await facilityUnitAttributesRepository.buildQuery(
         new StreamFacilityAttributesParamsDTO(),
       );
-
-      expect(result).toEqual('');
+      expect(result).toEqual('mockFacilityAttributes');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
 

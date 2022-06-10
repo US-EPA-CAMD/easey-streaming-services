@@ -43,7 +43,7 @@ describe('-- Hourly MATS Apportioned Emissions Controller --', () => {
   });
 
   describe('* streamEmissions', () => {
-    it('should return test 1', async () => {
+    it('should call the service and return all hourly MATS emissions', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new HourlyMatsApportionedEmissionsParamsDTO();
       jest.spyOn(service, 'streamEmissions').mockResolvedValue(expectedResult);

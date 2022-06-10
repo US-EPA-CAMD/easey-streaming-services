@@ -4,20 +4,18 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { AllowanceTransactionsService } from './allowance-transactions.service';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 import { StreamAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
 import { StreamableFile } from '@nestjs/common';
+import { StreamingService } from '../streaming/streaming.service';
 
 const mockTransactionBlockDimRepository = () => ({
-  getAllowanceTransactions: jest.fn(),
-  getAllApplicableAllowanceTransactionsAttributes: jest.fn(),
-  getStreamQuery: jest.fn(),
+  buildQuery: jest.fn(),
 });
 
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
+const mockStreamingService = () => ({
+  getStream: jest
+    .fn()
+    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+});
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -40,13 +38,11 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
   };
 };
 
-let req: any;
-
 describe('-- Allowance Transactions Service --', () => {
-  let allowanceTransactionsService;
-  let transactionBlockDimRepository;
-  let transactionOwnerDimRepository;
-  let allowanceTransactionsMap;
+  let allowanceTransactionsService: AllowanceTransactionsService;
+  let streamingService: StreamingService;
+  let transactionBlockDimRepository: any;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -54,21 +50,18 @@ describe('-- Allowance Transactions Service --', () => {
       providers: [
         AllowanceTransactionsService,
         {
-          provide: StreamService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
-        },
-        {
           provide: TransactionBlockDimRepository,
           useFactory: mockTransactionBlockDimRepository,
+        },
+        {
+          provide: StreamingService,
+          useFactory: mockStreamingService,
         },
       ],
     }).compile();
 
     allowanceTransactionsService = module.get(AllowanceTransactionsService);
+    streamingService = module.get(StreamingService);
     transactionBlockDimRepository = module.get(TransactionBlockDimRepository);
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
@@ -76,7 +69,7 @@ describe('-- Allowance Transactions Service --', () => {
 
   describe('streamAllowanceTransactions', () => {
     it('streams all allowance transactions', async () => {
-      transactionBlockDimRepository.getStreamQuery.mockResolvedValue('');
+      transactionBlockDimRepository.buildQuery.mockReturnValue(['', []]);
 
       let filters = new StreamAllowanceTransactionsParamsDTO();
 
@@ -87,12 +80,7 @@ describe('-- Allowance Transactions Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="allowance-transactions-${0}.json"`,
-        }),
-      );
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 });

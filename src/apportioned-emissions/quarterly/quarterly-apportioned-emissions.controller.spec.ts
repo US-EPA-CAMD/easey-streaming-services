@@ -9,7 +9,6 @@ import { QuarterlyApportionedEmissionsService } from './quarterly-apportioned-em
 import { QuarterlyApportionedEmissionsController } from './quarterly-apportioned-emissions.controller';
 import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 
-
 const mockRequest = (url: string) => {
   return {
     url,
