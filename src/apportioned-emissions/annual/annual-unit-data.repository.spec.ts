@@ -113,6 +113,14 @@ describe('AnnualUnitDataRepository', () => {
     });
   });
 
+  describe('streamEmissionsStateAggregation', () => {
+    it('calls buildStateAggregationQuery from the repository', () => {
+      const result = repository.buildStateAggregationQuery(streamFilters);
+
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
+
   describe('buildNationalAggregationQuery', () => {
     it('builds annual emissions nationally aggregated query', () => {
       const result = repository.buildNationalAggregationQuery(streamFilters);

@@ -38,6 +38,22 @@ export class AnnualUnitDataRepository extends Repository<AnnualUnitDataView> {
     return query.getQueryAndParameters();
   }
 
+  buildStateAggregationQuery(
+    params: AnnualApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
+
+    const selectColumns = ['aud.stateCode', 'aud.year'];
+    const orderByColumns = ['aud.stateCode', 'aud.year'];
+
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
+
+    return query.getQueryAndParameters();
+  }
+
   buildNationalAggregationQuery(
     params: AnnualApportionedEmissionsParamsDTO,
   ): [string, any[]] {
