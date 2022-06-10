@@ -6,7 +6,7 @@ import { TransactionBlockDimRepository } from './transaction-block-dim.repositor
 import { StreamAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { StreamableFile } from '@nestjs/common';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
+import { StreamingModule } from '../streaming/streaming.module';
 
 const mockRequest = (url: string) => {
   return {
@@ -20,10 +20,11 @@ const mockRequest = (url: string) => {
 describe('-- Allowance Transactions Controller --', () => {
   let allowanceTransactionsController: AllowanceTransactionsController;
   let allowanceTransactionsService: AllowanceTransactionsService;
+  let req: any;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, StreamModule],
+      imports: [LoggerModule, StreamingModule],
       controllers: [AllowanceTransactionsController],
       providers: [AllowanceTransactionsService, TransactionBlockDimRepository],
     }).compile();
@@ -32,24 +33,27 @@ describe('-- Allowance Transactions Controller --', () => {
       AllowanceTransactionsController,
     );
     allowanceTransactionsService = module.get(AllowanceTransactionsService);
+    req = mockRequest('');
+    req.res.setHeader.mockReturnValue();
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   describe('* streamAllowanceTransactions', () => {
-    const req: any = mockRequest('');
-    req.res.setHeader.mockReturnValue();
-
     it('should call the service and return all allowance transactions ', async () => {
-      const expectedResults: StreamableFile = undefined;
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDTO = new StreamAllowanceTransactionsParamsDTO();
       jest
         .spyOn(allowanceTransactionsService, 'streamAllowanceTransactions')
-        .mockResolvedValue(expectedResults);
+        .mockResolvedValue(expectedResult);
       expect(
         await allowanceTransactionsController.streamAllowanceTransactions(
           req,
           paramsDTO,
         ),
-      ).toBe(expectedResults);
+      ).toBe(expectedResult);
     });
   });
 });

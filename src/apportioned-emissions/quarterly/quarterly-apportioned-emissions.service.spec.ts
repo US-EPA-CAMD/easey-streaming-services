@@ -7,16 +7,14 @@ import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
 import { QuarterlyApportionedEmissionsService } from './quarterly-apportioned-emissions.service';
 
 import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
-import { ConfigService } from '@nestjs/config';
+import { StreamingService } from '../../streaming/streaming.service';
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
 });
 
 const mockRepository = () => ({
-  getEmissions: jest.fn(),
-  getStreamQuery: jest.fn(),
+  buildQuery: jest.fn(),
 });
 
 const mockRequest = () => {
@@ -31,14 +29,15 @@ const mockRequest = () => {
   };
 };
 
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
+const mockStreamingService = () => ({
+  getStream: jest
+    .fn()
+    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+});
 
 describe('-- Quarterly Apportioned Emissions Service --', () => {
   let service: QuarterlyApportionedEmissionsService;
+  let streamingService: StreamingService;
   let repository: any;
   let req: any;
 
@@ -46,19 +45,14 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule],
       providers: [
-        ConfigService,
-        {
-          provide: StreamService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
-        },
         QuarterlyApportionedEmissionsService,
         {
           provide: QuarterUnitDataRepository,
           useFactory: mockRepository,
+        },
+        {
+          provide: StreamingService,
+          useFactory: mockStreamingService,
         },
       ],
     }).compile();
@@ -66,25 +60,20 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
     service = module.get(QuarterlyApportionedEmissionsService);
+    streamingService = module.get(StreamingService);
     repository = module.get(QuarterUnitDataRepository);
   });
 
   describe('streamEmissions', () => {
     it('calls QuarterlyUnitDataRepository.streamEmissions() and streams all emissions from the repository', async () => {
-      repository.getStreamQuery.mockResolvedValue('');
-
+      repository.buildQuery.mockReturnValue(['', []]);
       let filters = new QuarterlyApportionedEmissionsParamsDTO();
 
       req.headers.accept = '';
 
       let result = await service.streamEmissions(req, filters);
 
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="quarterly-emissions-${0}.json"`,
-        }),
-      );
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 });

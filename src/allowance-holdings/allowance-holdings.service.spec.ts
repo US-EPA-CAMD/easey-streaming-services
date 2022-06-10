@@ -5,7 +5,6 @@ import { AllowanceHoldingsService } from './allowance-holdings.service';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 import { StreamAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 
-import { StreamService } from '@us-epa-camd/easey-common/stream';
 import { StreamableFile } from '@nestjs/common';
 import { StreamingService } from '../streaming/streaming.service';
 
@@ -13,21 +12,33 @@ const mockAllowanceHoldingDimRepository = () => ({
   buildQuery: jest.fn(),
 });
 
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
-
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
 });
 
-let req: any;
+const mockStreamingService = () => ({
+  getStream: jest
+    .fn()
+    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+});
+
+const mockRequest = () => {
+  return {
+    headers: {
+      accept: '',
+    },
+    res: {
+      setHeader: jest.fn(),
+    },
+    on: jest.fn(),
+  };
+};
 
 describe('-- Allowance Holdings Service --', () => {
-  let allowanceHoldingsService;
-  let allowanceHoldingDimRepository;
+  let allowanceHoldingsService: AllowanceHoldingsService;
+  let allowanceHoldingDimRepository: any;
+  let req: any;
+  let streamingService: StreamingService;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -35,27 +46,26 @@ describe('-- Allowance Holdings Service --', () => {
       providers: [
         AllowanceHoldingsService,
         {
-          provide: StreamingService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
-        },
-        {
           provide: AllowanceHoldingDimRepository,
           useFactory: mockAllowanceHoldingDimRepository,
+        },
+        {
+          provide: StreamingService,
+          useFactory: mockStreamingService,
         },
       ],
     }).compile();
 
+    req = mockRequest();
+    req.res.setHeader.mockReturnValue();
     allowanceHoldingsService = module.get(AllowanceHoldingsService);
     allowanceHoldingDimRepository = module.get(AllowanceHoldingDimRepository);
+    streamingService = module.get(StreamingService);
   });
 
   describe('streamAllowanceHoldings', () => {
     it('streams all allowance holdings', async () => {
-      allowanceHoldingDimRepository.buildQuery.mockResolvedValue('');
+      allowanceHoldingDimRepository.buildQuery.mockReturnValue(['', []]);
 
       let filters = new StreamAllowanceHoldingsParamsDTO();
 
@@ -66,12 +76,7 @@ describe('-- Allowance Holdings Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="allowance-holdings-${0}.json"`,
-        }),
-      );
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 });

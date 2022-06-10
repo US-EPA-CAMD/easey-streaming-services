@@ -30,8 +30,6 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
-  getMany: jest.fn(),
-  getManyAndCount: jest.fn(),
   select: jest.fn(),
   addSelect: jest.fn(),
   orderBy: jest.fn(),
@@ -39,7 +37,6 @@ const mockQueryBuilder = () => ({
   addGroupBy: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  stream: jest.fn(),
   getQueryAndParameters: jest.fn(),
 });
 
@@ -95,16 +92,13 @@ describe('HourUnitMatsDataRepository', () => {
     queryBuilder.addGroupBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.take.mockReturnValue('mockPagination');
-    queryBuilder.getMany.mockReturnValue('mockMatsEmissions');
-    queryBuilder.getManyAndCount.mockReturnValue(['mockMatsEmissions', 0]);
-    queryBuilder.stream.mockReturnValue('mockEmissions');
     queryBuilder.getQueryAndParameters.mockReturnValue('mockEmissions');
 
     repository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
   });
 
   describe('buildQuery', () => {
-    it('calls buildQuery and streams HourUnitMatsData from the repository', () => {
+    it('builds hourly mats query', () => {
       const result = repository.buildQuery(
         fieldMappings.emissions.mats.hourly.data.aggregation.unit,
         streamFilters,

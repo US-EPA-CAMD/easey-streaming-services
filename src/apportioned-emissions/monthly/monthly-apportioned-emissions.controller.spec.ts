@@ -41,7 +41,7 @@ describe('-- Monthly Apportioned Emissions Controller --', () => {
   });
 
   describe('* streamEmissions', () => {
-    it('should return test 1', async () => {
+    it('should call the service and return all monthly emissions', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new MonthlyApportionedEmissionsParamsDTO();
       jest.spyOn(service, 'streamEmissions').mockResolvedValue(expectedResult);
@@ -51,37 +51,42 @@ describe('-- Monthly Apportioned Emissions Controller --', () => {
     });
   });
 
-  describe('streamEmissionsFacilityAggregation endpoint', () => {
-    it('should return test 1', async () => {
+  describe('* streamEmissionsFacilityAggregation', () => {
+    it('should call the service and return all monthly emissions aggregated by facility', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new MonthlyApportionedEmissionsParamsDTO();
-      jest.spyOn(service, 'streamEmissionsFacilityAggregation').mockResolvedValue(expectedResult);
-      expect(await controller.streamEmissionsFacilityAggregation(req, paramsDto)).toBe(
-        expectedResult,
-      );
+      jest
+        .spyOn(service, 'streamEmissionsFacilityAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsFacilityAggregation(req, paramsDto),
+      ).toBe(expectedResult);
     });
   });
 
-  describe('streamEmissionsStateAggregation endpoint', () => {
-    it('should return test 1', async () => {
+  describe('* streamEmissionsStateAggregation', () => {
+    it('should call the service and return all monthly emissions aggregated by state', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new MonthlyApportionedEmissionsParamsDTO();
-      jest.spyOn(service, 'streamEmissionsStateAggregation').mockResolvedValue(expectedResult);
-      expect(await controller.streamEmissionsStateAggregation(req, paramsDto)).toBe(
-        expectedResult,
-      );
+      jest
+        .spyOn(service, 'streamEmissionsStateAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsStateAggregation(req, paramsDto),
+      ).toBe(expectedResult);
     });
   });
 
-  describe('streamEmissionsNationalAggregation endpoint', () => {
-    it('should return test 1', async () => {
+  describe('* streamEmissionsNationalAggregation', () => {
+    it('should call the service and return all monthly emissions aggregated nationally', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new MonthlyApportionedEmissionsParamsDTO();
-      jest.spyOn(service, 'streamEmissionsNationalAggregation').mockResolvedValue(expectedResult);
-      expect(await controller.streamEmissionsNationalAggregation(req, paramsDto)).toBe(
-        expectedResult,
-      );
+      jest
+        .spyOn(service, 'streamEmissionsNationalAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsNationalAggregation(req, paramsDto),
+      ).toBe(expectedResult);
     });
   });
-
 });

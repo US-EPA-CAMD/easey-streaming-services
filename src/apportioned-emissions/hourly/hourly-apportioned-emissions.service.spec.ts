@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { Module, StreamableFile } from '@nestjs/common';
+import { StreamableFile } from '@nestjs/common';
 
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
@@ -14,7 +14,6 @@ jest.mock('uuid', () => {
 });
 
 const mockRepository = () => ({
-  getEmissions: jest.fn(),
   buildQuery: jest.fn(),
   buildFacilityAggregationQuery: jest.fn(),
   buildStateAggregationQuery: jest.fn(),
