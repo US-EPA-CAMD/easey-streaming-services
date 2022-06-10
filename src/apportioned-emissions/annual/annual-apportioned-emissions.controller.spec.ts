@@ -51,6 +51,19 @@ describe('-- Annual Apportioned Emissions Controller --', () => {
     });
   });
 
+  describe('* streamEmissionsFacilityAggregation', () => {
+    it('should call the service and return all daily emissions aggregated by facility', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new AnnualApportionedEmissionsParamsDTO();
+      jest
+        .spyOn(service, 'streamEmissionsFacilityAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsFacilityAggregation(req, paramsDto),
+      ).toBe(expectedResult);
+    });
+  });
+
   describe('* streamEmissionsStateAggregation', () => {
     it('should call the service and return all daily emissions aggregated by state', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));

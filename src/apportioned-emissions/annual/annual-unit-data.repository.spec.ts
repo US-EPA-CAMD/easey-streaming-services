@@ -113,10 +113,20 @@ describe('AnnualUnitDataRepository', () => {
     });
   });
 
-  describe('streamEmissionsStateAggregation', () => {
-    it('calls buildStateAggregationQuery from the repository', () => {
+  describe('buildEmissionsFacilityAggregation', () => {
+    it('builds annual emissions aggregated by facility query', () => {
+      const result = repository.buildFacilityAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
+
+  describe('buildEmissionsStateAggregation', () => {
+    it('builds annual emissions aggregated by state query', () => {
       const result = repository.buildStateAggregationQuery(streamFilters);
 
+      expect(result).toEqual('mockEmissions');
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });

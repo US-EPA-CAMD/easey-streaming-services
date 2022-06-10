@@ -6,7 +6,6 @@ import { AnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportione
 
 @EntityRepository(AnnualUnitDataView)
 export class AnnualUnitDataRepository extends Repository<AnnualUnitDataView> {
-
   async buildQuery(
     columns: any[],
     params: AnnualApportionedEmissionsParamsDTO,
@@ -38,10 +37,29 @@ export class AnnualUnitDataRepository extends Repository<AnnualUnitDataView> {
     return query.getQueryAndParameters();
   }
 
+  buildFacilityAggregationQuery(
+    params: AnnualApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
+    const selectColumns = [
+      'aud.stateCode',
+      'aud.facilityName',
+      'aud.facilityId',
+      'aud.year',
+    ];
+    const orderByColumns = ['aud.facilityId', 'aud.year'];
+
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
+
+    return query.getQueryAndParameters();
+  }
+
   buildStateAggregationQuery(
     params: AnnualApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
     const selectColumns = ['aud.stateCode', 'aud.year'];
     const orderByColumns = ['aud.stateCode', 'aud.year'];
 
@@ -57,7 +75,6 @@ export class AnnualUnitDataRepository extends Repository<AnnualUnitDataView> {
   buildNationalAggregationQuery(
     params: AnnualApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
     const selectColumns = ['aud.year'];
     const orderByColumns = ['aud.year'];
 
@@ -75,7 +92,6 @@ export class AnnualUnitDataRepository extends Repository<AnnualUnitDataView> {
     selectColumns: string[],
     orderByColumns: string[],
   ): SelectQueryBuilder<AnnualUnitDataView> {
-
     let query = this.createQueryBuilder('aud').select(
       selectColumns.map(col => {
         return `${col} AS "${col.split('.')[1]}"`;
@@ -109,21 +125,4 @@ export class AnnualUnitDataRepository extends Repository<AnnualUnitDataView> {
     orderByColumns.forEach(c => query.addOrderBy(c));
     return query;
   }
-
-  // getFacilityStreamQuery(params: AnnualApportionedEmissionsParamsDTO) {
-  //   const columns = [
-  //     'aud.stateCode',
-  //     'aud.facilityName',
-  //     'aud.facilityId',
-  //     'aud.year',
-  //   ];
-  //   const orderByColumns = ['aud.facilityId', 'aud.year'];
-
-  //   return this.buildAggregationQuery(
-  //     params,
-  //     columns,
-  //     orderByColumns,
-  //   ).getQueryAndParameters();
-  // }
-
 }
