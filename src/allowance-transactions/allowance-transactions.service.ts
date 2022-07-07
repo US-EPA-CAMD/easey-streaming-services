@@ -27,7 +27,7 @@ export class AllowanceTransactionsService {
     req: Request,
     params: StreamAllowanceTransactionsParamsDTO,
   ): Promise<StreamableFile> {
-    const disposition = `attachment; filename="allowance-compliance-${uuid()}`;
+    const disposition = `attachment; filename="allowance-transactions-${uuid()}`;
 
     let fieldMappingValues = [];
     fieldMappingValues = fieldMappings.allowances.transactions.data;
