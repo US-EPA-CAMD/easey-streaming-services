@@ -40,5 +40,8 @@ export default registerAs('app', () => ({
   published: process.env.EASEY_STREAMING_SERVICES_PUBLISHED || 'local',
   streamBatchSize:
     +process.env.EASEY_STREAMING_SERVICES_STREAM_BATCH_SIZE || 20000,
-  maxPoolSize: +process.env.EASEY_SERVICES_MAX_POOL_SIZE || 200,
+  maxPoolSize: +process.env.EASEY_STREAMING_SERVICES_MAX_POOL_SIZE || 200,
+  idleTimeout: +process.env.EASEY_STREAMING_SERVICES_IDLE_TIMEOUT || 10000,
+  connectionTimeout:
+    +process.env.EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT || 10000,
 }));

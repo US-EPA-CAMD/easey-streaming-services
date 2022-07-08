@@ -5,10 +5,7 @@ import QueryStream from 'pg-query-stream';
 
 import { ConfigService } from '@nestjs/config';
 
-import {
-  Injectable,
-  StreamableFile,
-} from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 
 import { Logger } from '@us-epa-camd/easey-common/logger';
 
@@ -32,9 +29,11 @@ export class StreamingService {
       // set pool max size to 20
       max: this.configService.get<number>('app.maxPoolSize'),
       // close idle clients after 1 second
-      idleTimeoutMillis: 1000,
+      idleTimeoutMillis: this.configService.get<number>('app.idleTimeout'),
       // return an error after 1 second if connection could not be established
-      connectionTimeoutMillis: 5000,
+      connectionTimeoutMillis: this.configService.get<number>(
+        'app.connectionTimeout',
+      ),
       // close (and replace) a connection after it has been used 500 times
       maxUses: 500,
     });
@@ -60,9 +59,7 @@ export class StreamingService {
       this.logger.info('Client Released');
     });
 
-    req.res.setHeader(
-      'X-Field-Mappings', JSON.stringify(fieldMappings),
-    );
+    req.res.setHeader('X-Field-Mappings', JSON.stringify(fieldMappings));
 
     if (req.headers.accept === 'text/csv') {
       const json2Csv = new Json2CSV(fieldMappings);
