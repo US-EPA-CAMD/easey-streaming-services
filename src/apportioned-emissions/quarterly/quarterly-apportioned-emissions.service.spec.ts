@@ -15,6 +15,7 @@ jest.mock('uuid', () => {
 
 const mockRepository = () => ({
   buildQuery: jest.fn(),
+  buildFacilityAggregationQuery: jest.fn(),
 });
 
 const mockRequest = () => {
@@ -72,6 +73,23 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
       req.headers.accept = '';
 
       let result = await service.streamEmissions(req, filters);
+
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+    });
+  });
+
+  describe('streamEmissionsFacilityAggregation', () => {
+    it('calls streamEmissionsFacilityAggregation() and streams all emissions from the service', async () => {
+      repository.buildFacilityAggregationQuery.mockReturnValue(['', []]);
+
+      let filters = new QuarterlyApportionedEmissionsParamsDTO();
+
+      req.headers.accept = '';
+
+      let result = await service.streamEmissionsFacilityAggregation(
+        req,
+        filters,
+      );
 
       expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });

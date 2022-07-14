@@ -18,6 +18,8 @@ import { StreamingService } from '../../streaming/streaming.service';
 import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
 import { QuarterlyApportionedEmissionsDTO } from '../../dto/quarterly-apportioned-emissions.dto';
 import { StreamQuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
+import { QuarterlyApportionedEmissionsFacilityAggregationDTO } from './../../dto/quarterly-apportioned-emissions-facility-aggregation.dto';
+import { QuarterlyApportionedEmissionsParamsDTO } from './../../dto/quarterly-apportioned-emissions.params.dto';
 
 @Injectable()
 export class QuarterlyApportionedEmissionsService {
@@ -36,10 +38,10 @@ export class QuarterlyApportionedEmissionsService {
     const disposition = `attachment; filename="quarterly-emissions-${uuid()}`;
 
     const fieldMappingsList = params.exclude
-      ? fieldMappings.emissions.quarterly.filter(
+      ? fieldMappings.emissions.quarterly.data.aggregation.unit.filter(
           item => !params.exclude.includes(item.value),
         )
-      : fieldMappings.emissions.quarterly;
+      : fieldMappings.emissions.quarterly.data.aggregation.unit;
 
     const json2Dto = new Transform({
       objectMode: true,
@@ -59,6 +61,40 @@ export class QuarterlyApportionedEmissionsService {
       sql,
       values,
       json2Dto,
+      disposition,
+      fieldMappingsList,
+    );
+  }
+
+  async streamEmissionsFacilityAggregation(
+    req: Request,
+    params: QuarterlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    const disposition = `attachment; filename="quarterly-emissions-facility-aggregation-${uuid()}"`;
+    const [sql, values] = this.repository.buildFacilityAggregationQuery(params);
+
+    const fieldMappingsList =
+      fieldMappings.emissions.quarterly.data.aggregation.facility;
+
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          QuarterlyApportionedEmissionsFacilityAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        callback(null, dto);
+      },
+    });
+
+    return this.streamService.getStream(
+      req,
+      sql,
+      values,
+      toDto,
       disposition,
       fieldMappingsList,
     );
