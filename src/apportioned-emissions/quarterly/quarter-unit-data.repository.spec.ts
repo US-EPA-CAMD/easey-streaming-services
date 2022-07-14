@@ -102,7 +102,7 @@ describe('QuarterUnitDataRepository', () => {
   describe('buildQuery', () => {
     it('builds quarterly emissions query', async () => {
       const result = await repository.buildQuery(
-        fieldMappings.emissions.quarterly,
+        fieldMappings.emissions.quarterly.data.aggregation.unit,
         streamFilters,
       );
 

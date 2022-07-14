@@ -53,4 +53,17 @@ describe('-- Quarterly Apportioned Emissions Controller --', () => {
       );
     });
   });
+
+  describe('* streamEmissionsFacilityAggregation', () => {
+    it('should call the service and return all annual emissions aggregated by facility', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new QuarterlyApportionedEmissionsParamsDTO();
+      jest
+        .spyOn(service, 'streamEmissionsFacilityAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsFacilityAggregation(req, paramsDto),
+      ).toBe(expectedResult);
+    });
+  });
 });

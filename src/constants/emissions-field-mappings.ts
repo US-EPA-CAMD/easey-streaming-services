@@ -12,6 +12,7 @@ const monthlyFacilityAggregation = [];
 const monthlyStateAggregation = [];
 const monthlyNationalAggregation = [];
 const quarterly = [];
+const quarterlyFacilityAggregation = [];
 const annual = [];
 const annualFacilityAggregation = [];
 const annualStateAggregation = [];
@@ -267,7 +268,14 @@ export const fieldMappings = {
         },
       },
     },
-    quarterly: quarterly,
+    quarterly: {
+      data: {
+        aggregation: {
+          unit: quarterly,
+          facility: quarterlyFacilityAggregation,
+        }
+      }
+    },
     annual: {
       data: {
         aggregation: {
