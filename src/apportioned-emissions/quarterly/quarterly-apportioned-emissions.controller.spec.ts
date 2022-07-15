@@ -55,7 +55,7 @@ describe('-- Quarterly Apportioned Emissions Controller --', () => {
   });
 
   describe('* streamEmissionsFacilityAggregation', () => {
-    it('should call the service and return all annual emissions aggregated by facility', async () => {
+    it('should call the service and return all quarterly emissions aggregated by facility', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new QuarterlyApportionedEmissionsParamsDTO();
       jest
@@ -63,6 +63,19 @@ describe('-- Quarterly Apportioned Emissions Controller --', () => {
         .mockResolvedValue(expectedResult);
       expect(
         await controller.streamEmissionsFacilityAggregation(req, paramsDto),
+      ).toBe(expectedResult);
+    });
+  });
+
+  describe('* streamEmissionsStateAggregation', () => {
+    it('should call the service and return all quarterly emissions aggregated by state', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new QuarterlyApportionedEmissionsParamsDTO();
+      jest
+        .spyOn(service, 'streamEmissionsStateAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsStateAggregation(req, paramsDto),
       ).toBe(expectedResult);
     });
   });

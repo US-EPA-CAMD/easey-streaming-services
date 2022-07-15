@@ -61,6 +61,21 @@ export class QuarterUnitDataRepository extends Repository<QuarterUnitDataView> {
     return query.getQueryAndParameters();
   }
 
+  buildStateAggregationQuery(
+    params: QuarterlyApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
+    const selectColumns = ['qud.stateCode', 'qud.year', 'qud.quarter'];
+    const orderByColumns = ['qud.stateCode', 'qud.year', 'qud.quarter'];
+
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
+
+    return query.getQueryAndParameters();
+  }
+
   private buildAggregationQuery(
     params,
     selectColumns: string[],
