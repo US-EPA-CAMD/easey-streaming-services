@@ -116,7 +116,7 @@ describe('QuarterUnitDataRepository', () => {
   });
 
   describe('buildEmissionsFacilityAggregation', () => {
-    it('builds annual emissions aggregated by facility query', () => {
+    it('builds quarterly emissions aggregated by facility query', () => {
       const result = repository.buildFacilityAggregationQuery(streamFilters);
 
       expect(result).toEqual('mockEmissions');
@@ -125,7 +125,7 @@ describe('QuarterUnitDataRepository', () => {
   });
 
   describe('buildEmissionsStateAggregation', () => {
-    it('builds annual emissions aggregated by state query', () => {
+    it('builds quarterly emissions aggregated by state query', () => {
       const result = repository.buildStateAggregationQuery(streamFilters);
 
       expect(result).toEqual('mockEmissions');
