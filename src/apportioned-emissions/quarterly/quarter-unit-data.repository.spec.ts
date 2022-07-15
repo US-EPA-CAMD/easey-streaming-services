@@ -33,9 +33,11 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
   select: jest.fn(),
+  addSelect: jest.fn(),
   innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
+  addGroupBy: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
   stream: jest.fn(),
@@ -88,9 +90,11 @@ describe('QuarterUnitDataRepository', () => {
       .mockReturnValue(queryBuilder);
 
     queryBuilder.select.mockReturnValue(queryBuilder);
+    queryBuilder.addSelect.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
+    queryBuilder.addGroupBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.take.mockReturnValue('mockPagination');
@@ -110,4 +114,23 @@ describe('QuarterUnitDataRepository', () => {
       expect(result).toEqual('mockEmissions');
     });
   });
+
+  describe('buildEmissionsFacilityAggregation', () => {
+    it('builds annual emissions aggregated by facility query', () => {
+      const result = repository.buildFacilityAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
+
+  describe('buildEmissionsStateAggregation', () => {
+    it('builds annual emissions aggregated by state query', () => {
+      const result = repository.buildStateAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
+
 });
