@@ -7,29 +7,14 @@ import { StreamAccountAttributesParamsDTO } from '../dto/account-attributes.para
 
 const mockQueryBuilder = () => ({
   select: jest.fn(),
-  distinctOn: jest.fn(),
   andWhere: jest.fn(),
-  getMany: jest.fn(),
-  getRawMany: jest.fn(),
   innerJoin: jest.fn(),
-  leftJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
-  getCount: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  stream: jest.fn(),
   getQueryAndParameters: jest.fn(),
 });
-
-const mockRequest = (url: string) => {
-  return {
-    url,
-    res: {
-      setHeader: jest.fn(),
-    },
-  };
-};
 
 describe('AccountFactRepository', () => {
   let accountFactRepository;
@@ -55,28 +40,23 @@ describe('AccountFactRepository', () => {
       .fn()
       .mockReturnValue(queryBuilder);
     queryBuilder.select.mockReturnValue(queryBuilder);
-    queryBuilder.distinctOn.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
-    queryBuilder.leftJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
-    queryBuilder.getMany.mockReturnValue('mockAccount');
-    queryBuilder.getRawMany.mockReturnValue('mockRawAccount');
     queryBuilder.take.mockReturnValue('mockPagination');
-    queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.stream.mockReturnValue('mockStream');
-    queryBuilder.getQueryAndParameters.mockReturnValue('');
+    queryBuilder.getQueryAndParameters.mockReturnValue('mockAccount');
   });
 
-  describe('streamAccountAttributes', () => {
-    it('streams all account attributes', async () => {
-      const result = accountFactRepository.buildQuery(
+  describe('buildQuery', () => {
+    it('builds account attributes query', async () => {
+      const result = await accountFactRepository.buildQuery(
         new StreamAccountAttributesParamsDTO(),
       );
 
-      expect(result).toEqual('');
+      expect(result).toEqual('mockAccount');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
 });

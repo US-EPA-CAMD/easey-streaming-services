@@ -6,7 +6,7 @@ import { AccountComplianceDimRepository } from './account-compliance-dim.reposit
 import { AllowanceComplianceController } from './allowance-compliance.controller';
 import { AllowanceComplianceService } from './allowance-compliance.service';
 import { StreamAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
-import { StreamModule } from '@us-epa-camd/easey-common/stream';
+import { StreamingModule } from '../streaming/streaming.module';
 
 const mockRequest = (url: string) => {
   return {
@@ -24,7 +24,7 @@ describe('-- Allowance Compliance Controller --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule, StreamModule],
+      imports: [LoggerModule, StreamingModule],
       controllers: [AllowanceComplianceController],
       providers: [AllowanceComplianceService, AccountComplianceDimRepository],
     }).compile();
@@ -35,22 +35,23 @@ describe('-- Allowance Compliance Controller --', () => {
     req.res.setHeader.mockReturnValue();
   });
 
-  describe('* streamAllowanceCompliance', () => {
-    const req: any = mockRequest('');
-    req.res.setHeader.mockReturnValue();
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
-    it('should call the service and return all allowance compliance data ', async () => {
-      const expectedResults: StreamableFile = undefined;
+  describe('* streamAllowanceCompliance', () => {
+    it('should call the service and return all allowance compliance data', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDTO = new StreamAllowanceComplianceParamsDTO();
       jest
         .spyOn(allowanceComplianceService, 'streamAllowanceCompliance')
-        .mockResolvedValue(expectedResults);
+        .mockResolvedValue(expectedResult);
       expect(
         await allowanceComplianceService.streamAllowanceCompliance(
           req,
           paramsDTO,
         ),
-      ).toBe(expectedResults);
+      ).toBe(expectedResult);
     });
   });
 });

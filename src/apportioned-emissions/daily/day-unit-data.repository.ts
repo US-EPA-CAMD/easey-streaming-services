@@ -1,4 +1,4 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
 
 import { DayUnitDataView } from '../../entities/vw-day-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
@@ -6,11 +6,10 @@ import { DailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-
 
 @EntityRepository(DayUnitDataView)
 export class DayUnitDataRepository extends Repository<DayUnitDataView> {
-  
-  async buildQuery(
+  buildQuery(
     columns: any[],
     params: DailyApportionedEmissionsParamsDTO,
-  ): Promise<[string, any[]]> {
+  ): [string, any[]] {
     let query = this.createQueryBuilder('dud').select(
       columns.map(col => `dud.${col.value} AS "${col.value}"`),
     );
@@ -39,84 +38,95 @@ export class DayUnitDataRepository extends Repository<DayUnitDataView> {
     return query.getQueryAndParameters();
   }
 
-  // private buildFacilityAggregationQuery(
-  //   params: DailyApportionedEmissionsParamsDTO,
-  // ): SelectQueryBuilder<DayUnitDataView> {
-  //   let query = this.createQueryBuilder('dud').select(
-  //     ['dud.stateCode', 'dud.facilityName', 'dud.facilityId', 'dud.date'].map(
-  //       col => {
-  //         return `${col} AS "${col.split('.')[1]}"`;
-  //       },
-  //     ),
-  //   );
-  //   query = this.buildAggregationQuery(query, params);
-  //   query
-  //     .addGroupBy('dud.stateCode')
-  //     .addGroupBy('dud.facilityName')
-  //     .addGroupBy('dud.facilityId')
-  //     .addGroupBy('dud.date');
+  buildFacilityAggregationQuery(
+    params: DailyApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
+    const selectColumns = [
+      'dud.stateCode',
+      'dud.facilityName',
+      'dud.facilityId',
+      'dud.date',
+    ];
+    const orderByColumns = ['dud.facilityId', 'dud.date'];
 
-  //   query.orderBy('dud.facilityId').addOrderBy('dud.date');
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
 
-  //   return query;
-  // }
+    return query.getQueryAndParameters();
+  }
 
-  // private buildStateAggregationQuery(
-  //   params: DailyApportionedEmissionsParamsDTO,
-  // ): SelectQueryBuilder<DayUnitDataView> {
-  //   let query = this.createQueryBuilder('dud').select(
-  //     ['dud.stateCode', 'dud.date'].map(col => {
-  //       return `${col} AS "${col.split('.')[1]}"`;
-  //     }),
-  //   );
-  //   query = this.buildAggregationQuery(query, params);
-  //   query.addGroupBy('dud.stateCode').addGroupBy('dud.date');
+  buildStateAggregationQuery(
+    params: DailyApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
+    const selectColumns = ['dud.stateCode', 'dud.date'];
+    const orderByColumns = ['dud.stateCode', 'dud.date'];
 
-  //   query.orderBy('dud.stateCode').addOrderBy('dud.date');
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
 
-  //   return query;
-  // }
+    return query.getQueryAndParameters();
+  }
 
-  // private buildNationalAggregationQuery(
-  //   params: DailyApportionedEmissionsParamsDTO,
-  // ): SelectQueryBuilder<DayUnitDataView> {
-  //   let query = this.createQueryBuilder('dud').select(
-  //     ['dud.date'].map(col => {
-  //       return `${col} AS "${col.split('.')[1]}"`;
-  //     }),
-  //   );
-  //   query = this.buildAggregationQuery(query, params);
-  //   query.addGroupBy('dud.date');
-  //   query.addOrderBy('dud.date');
+  buildNationalAggregationQuery(
+    params: DailyApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
+    const selectColumns = ['dud.date'];
+    const orderByColumns = ['dud.date'];
 
-  //   return query;
-  // }
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
 
-  // private buildAggregationQuery(query, params): SelectQueryBuilder<DayUnitDataView> {
-  //   query
-  //     .addSelect('SUM(dud.grossLoad)', 'grossLoad')
-  //     .addSelect('SUM(dud.steamLoad)', 'steamLoad')
-  //     .addSelect('SUM(dud.so2Mass)', 'so2Mass')
-  //     .addSelect('SUM(dud.co2Mass)', 'co2Mass')
-  //     .addSelect('SUM(dud.noxMass)', 'noxMass')
-  //     .addSelect('SUM(dud.heatInput)', 'heatInput');
+    return query.getQueryAndParameters();
+  }
 
-  //   query = EmissionsQueryBuilder.createEmissionsQuery(
-  //     query,
-  //     params,
-  //     [
-  //       'beginDate',
-  //       'endDate',
-  //       'stateCode',
-  //       'facilityId',
-  //       'unitType',
-  //       'controlTechnologies',
-  //       'unitFuelType',
-  //       'programCodeInfo',
-  //     ],
-  //     'dud',
-  //   );
+  private buildAggregationQuery(
+    params,
+    selectColumns: string[],
+    orderByColumns: string[],
+  ): SelectQueryBuilder<DayUnitDataView> {
+    let query = null;
+    query = this.createQueryBuilder('dud').select(
+      selectColumns.map(col => {
+        return `${col} AS "${col.split('.')[1]}"`;
+      }),
+    );
 
-  //   return query;
-  // }
+    query
+      .addSelect('SUM(dud.grossLoad)', 'grossLoad')
+      .addSelect('SUM(dud.steamLoad)', 'steamLoad')
+      .addSelect('SUM(dud.so2Mass)', 'so2Mass')
+      .addSelect('SUM(dud.co2Mass)', 'co2Mass')
+      .addSelect('SUM(dud.noxMass)', 'noxMass')
+      .addSelect('SUM(dud.heatInput)', 'heatInput');
+
+    query = EmissionsQueryBuilder.createEmissionsQuery(
+      query,
+      params,
+      [
+        'beginDate',
+        'endDate',
+        'stateCode',
+        'facilityId',
+        'unitType',
+        'controlTechnologies',
+        'unitFuelType',
+        'programCodeInfo',
+      ],
+      'dud',
+    );
+
+    selectColumns.forEach(c => query.addGroupBy(c));
+    orderByColumns.forEach(c => query.addOrderBy(c));
+
+    return query;
+  }
 }

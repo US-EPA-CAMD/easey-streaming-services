@@ -32,17 +32,15 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
-  getMany: jest.fn(),
-  getManyAndCount: jest.fn(),
   select: jest.fn(),
+  addSelect: jest.fn(),
   innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
-  getCount: jest.fn(),
+  addGroupBy: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
-  stream: jest.fn(),
-  getQueryAndParameters: jest.fn().mockReturnValue(''),
+  getQueryAndParameters: jest.fn(),
 });
 
 let streamFilters = new StreamAnnualApportionedEmissionsParamsDTO();
@@ -90,28 +88,55 @@ describe('AnnualUnitDataRepository', () => {
       .mockReturnValue(queryBuilder);
 
     queryBuilder.select.mockReturnValue(queryBuilder);
+    queryBuilder.addSelect.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
+    queryBuilder.addGroupBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.take.mockReturnValue('mockPagination');
-    queryBuilder.getCount.mockReturnValue('mockCount');
-    queryBuilder.getMany.mockReturnValue('mockEmissions');
-    queryBuilder.getManyAndCount.mockReturnValue(['mockEmissions', 0]);
-    queryBuilder.stream.mockReturnValue('mockEmissions');
+    queryBuilder.getQueryAndParameters.mockReturnValue('mockEmissions');
 
     repository.createQueryBuilder = jest.fn().mockReturnValue(queryBuilder);
   });
 
-  describe('streamEmissions', () => {
-    it('calls streamEmissions and streams AnnualUnitData from the repository', async () => {
+  describe('buildQuery', () => {
+    it('builds annual emissions query', async () => {
       const result = await repository.buildQuery(
-        fieldMappings.emissions.annual,
-        streamFilters);
+        fieldMappings.emissions.annual.data.aggregation.unit,
+        streamFilters,
+      );
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
-      expect(result).toEqual('');
+      expect(result).toEqual('mockEmissions');
+    });
+  });
+
+  describe('buildEmissionsFacilityAggregation', () => {
+    it('builds annual emissions aggregated by facility query', () => {
+      const result = repository.buildFacilityAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
+
+  describe('buildEmissionsStateAggregation', () => {
+    it('builds annual emissions aggregated by state query', () => {
+      const result = repository.buildStateAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
+
+  describe('buildNationalAggregationQuery', () => {
+    it('builds annual emissions nationally aggregated query', () => {
+      const result = repository.buildNationalAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
 });

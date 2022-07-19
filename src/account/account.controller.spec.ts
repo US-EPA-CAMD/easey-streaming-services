@@ -6,6 +6,7 @@ import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
 import { StreamAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { StreamingModule } from '../streaming/streaming.module';
 
 const mockRequest = (url: string) => {
   return {
@@ -17,18 +18,21 @@ const mockRequest = (url: string) => {
 };
 
 describe('-- Account Controller --', () => {
-  let accountController;
-  let accountService;
+  let accountController: AccountController;
+  let accountService: AccountService;
+  let req: any;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [LoggerModule],
+      imports: [LoggerModule, StreamingModule],
       controllers: [AccountController],
       providers: [AccountService, AccountFactRepository],
     }).compile();
 
     accountController = module.get(AccountController);
     accountService = module.get(AccountService);
+    req = mockRequest('');
+    req.res.setHeader.mockReturnValue();
   });
 
   afterEach(() => {
@@ -36,18 +40,15 @@ describe('-- Account Controller --', () => {
   });
 
   describe('* streamAllAccountAttributes', () => {
-    const req: any = mockRequest('');
-    req.res.setHeader.mockReturnValue();
-
-    it('should call the service and return all account attributes ', async () => {
-      const expectedResults: StreamableFile = undefined;
+    it('should call the service and return all account attributes', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDTO = new StreamAccountAttributesParamsDTO();
       jest
         .spyOn(accountService, 'streamAllAccountAttributes')
-        .mockResolvedValue(expectedResults);
+        .mockResolvedValue(expectedResult);
       expect(
         await accountController.streamAllAccountAttributes(req, paramsDTO),
-      ).toBe(expectedResults);
+      ).toBe(expectedResult);
     });
   });
 });

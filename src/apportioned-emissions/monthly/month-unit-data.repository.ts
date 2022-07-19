@@ -1,4 +1,4 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
 
 import { MonthUnitDataView } from '../../entities/vw-month-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
@@ -40,98 +40,95 @@ export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
     return query.getQueryAndParameters();
   }
 
-  // private buildFacilityAggregationQuery(
-  //   params: MonthlyApportionedEmissionsParamsDTO,
-  // ): SelectQueryBuilder<MonthUnitDataView> {
-  //   let query = this.createQueryBuilder('mud').select(
-  //     [
-  //       'mud.stateCode',
-  //       'mud.facilityName',
-  //       'mud.facilityId',
-  //       'mud.year',
-  //       'mud.month',
-  //     ].map(col => {
-  //       return `${col} AS "${col.split('.')[1]}"`;
-  //     }),
-  //   );
-  //   query = this.buildAggregationQuery(query, params);
-  //   query
-  //     .addGroupBy('mud.stateCode')
-  //     .addGroupBy('mud.facilityName')
-  //     .addGroupBy('mud.facilityId')
-  //     .addGroupBy('mud.year')
-  //     .addGroupBy('mud.month');
+  buildFacilityAggregationQuery(
+    params: MonthlyApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
 
-  //   query
-  //     .orderBy('mud.facilityId')
-  //     .addOrderBy('mud.year')
-  //     .addOrderBy('mud.month');
+    const selectColumns = ['mud.stateCode', 'mud.facilityName', 'mud.facilityId', 'mud.year', 'mud.month',];
+    const orderByColumns = ['mud.facilityId', 'mud.year', 'mud.month',];
 
-  //   return query;
-  // }
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
 
-  // private buildStateAggregationQuery(
-  //   params: MonthlyApportionedEmissionsParamsDTO,
-  // ): SelectQueryBuilder<MonthUnitDataView> {
-  //   let query = this.createQueryBuilder('mud').select(
-  //     ['mud.stateCode', 'mud.year', 'mud.month'].map(col => {
-  //       return `${col} AS "${col.split('.')[1]}"`;
-  //     }),
-  //   );
-  //   query = this.buildAggregationQuery(query, params);
-  //   query
-  //     .addGroupBy('mud.stateCode')
-  //     .addGroupBy('mud.year')
-  //     .addGroupBy('mud.month');
+    return query.getQueryAndParameters();
 
-  //   query
-  //     .orderBy('mud.stateCode')
-  //     .addOrderBy('mud.year')
-  //     .addOrderBy('mud.month');
+  }
 
-  //   return query;
-  // }
+  buildStateAggregationQuery(
+    params: MonthlyApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
 
-  // private buildNationalAggregationQuery(
-  //   params: MonthlyApportionedEmissionsParamsDTO,
-  // ): SelectQueryBuilder<MonthUnitDataView> {
-  //   let query = this.createQueryBuilder('mud').select(
-  //     ['mud.year', 'mud.month'].map(col => {
-  //       return `${col} AS "${col.split('.')[1]}"`;
-  //     }),
-  //   );
-  //   query = this.buildAggregationQuery(query, params);
-  //   query.addGroupBy('mud.year').addGroupBy('mud.month');
-  //   query.addOrderBy('mud.year').addOrderBy('mud.month');
+    const selectColumns = ['mud.stateCode', 'mud.year', 'mud.month'];
+    const orderByColumns = ['mud.stateCode', 'mud.year', 'mud.month'];
 
-  //   return query;
-  // }
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
 
-  // private buildAggregationQuery(query, params): SelectQueryBuilder<MonthUnitDataView> {
-  //   query
-  //     .addSelect('SUM(mud.grossLoad)', 'grossLoad')
-  //     .addSelect('SUM(mud.steamLoad)', 'steamLoad')
-  //     .addSelect('SUM(mud.so2Mass)', 'so2Mass')
-  //     .addSelect('SUM(mud.co2Mass)', 'co2Mass')
-  //     .addSelect('SUM(mud.noxMass)', 'noxMass')
-  //     .addSelect('SUM(mud.heatInput)', 'heatInput');
+    return query.getQueryAndParameters();
+  }
 
-  //   query = EmissionsQueryBuilder.createEmissionsQuery(
-  //     query,
-  //     params,
-  //     [
-  //       'year',
-  //       'month',
-  //       'stateCode',
-  //       'facilityId',
-  //       'unitType',
-  //       'controlTechnologies',
-  //       'unitFuelType',
-  //       'programCodeInfo',
-  //     ],
-  //     'mud',
-  //   );
+  buildNationalAggregationQuery(
+    params: MonthlyApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
 
-  //   return query;
-  // }
+    const selectColumns = ['mud.year', 'mud.month'];
+    const orderByColumns = ['mud.year', 'mud.month'];
+
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
+
+    return query.getQueryAndParameters();
+  }
+
+  private buildAggregationQuery(
+    params,
+    selectColumns: string[],
+    orderByColumns: string[],
+  ): SelectQueryBuilder<MonthUnitDataView> {
+
+    let query = this.createQueryBuilder('mud').select(
+      selectColumns.map(col => {
+        return `${col} AS "${col.split('.')[1]}"`;
+      }),
+    );
+
+    query
+      .addSelect('SUM(mud.grossLoad)', 'grossLoad')
+      .addSelect('SUM(mud.steamLoad)', 'steamLoad')
+      .addSelect('SUM(mud.so2Mass)', 'so2Mass')
+      .addSelect('SUM(mud.co2Mass)', 'co2Mass')
+      .addSelect('SUM(mud.noxMass)', 'noxMass')
+      .addSelect('SUM(mud.heatInput)', 'heatInput');
+
+    query = EmissionsQueryBuilder.createEmissionsQuery(
+      query,
+      params,
+      [
+        'year',
+        'month',
+        'stateCode',
+        'facilityId',
+        'unitType',
+        'controlTechnologies',
+        'unitFuelType',
+        'programCodeInfo',
+      ],
+      'mud',
+    );
+
+    selectColumns.forEach(c => query.addGroupBy(c));
+    orderByColumns.forEach(c => query.addOrderBy(c));
+    
+    return query;
+  }
+
 }

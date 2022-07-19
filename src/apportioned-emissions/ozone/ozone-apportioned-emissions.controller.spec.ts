@@ -41,7 +41,7 @@ describe('-- Ozone Apportioned Emissions Controller --', () => {
   });
 
   describe('* streamEmissions', () => {
-    it('should return test 1', async () => {
+    it('should call the service and return all ozone emissions', async () => {
       const expectedResult = new StreamableFile(Buffer.from('stream'));
       const paramsDto = new OzoneApportionedEmissionsParamsDTO();
       jest.spyOn(service, 'streamEmissions').mockResolvedValue(expectedResult);

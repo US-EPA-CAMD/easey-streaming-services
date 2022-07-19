@@ -1,4 +1,7 @@
 import { Request } from 'express';
+import { QuarterlyApportionedEmissionsParamsDTO } from './../../dto/quarterly-apportioned-emissions.params.dto';
+import { QuarterlyApportionedEmissionsFacilityAggregationDTO } from './../../dto/quarterly-apportioned-emissions-facility-aggregation.dto';
+import { QuarterlyApportionedEmissionsStateAggregationDTO } from './../../dto/quarterly-apportioned-emissions-state-aggregation.dto';
 
 import {
   Get,
@@ -52,7 +55,7 @@ export class QuarterlyApportionedEmissionsController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.emissions.quarterly
+          example: fieldMappings.emissions.quarterly.data.aggregation.unit
             .map(i => i.label)
             .join(','),
         },
@@ -70,5 +73,69 @@ export class QuarterlyApportionedEmissionsController {
     @Query() params: StreamQuarterlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
     return this.service.streamEmissions(req, params);
+  }
+
+  @Get('by-facility')
+  @ApiOkResponse({
+    description:
+      'Streams Quarterly Apportioned Emissions data per filter criteria aggregated by facility',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(QuarterlyApportionedEmissionsFacilityAggregationDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.emissions.quarterly.data.aggregation.facility
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryEmissionsMultiSelect()
+  @ApiProgramQuery()
+  @ApiQueryQuarterly()
+  async streamEmissionsFacilityAggregation(
+    @Req() req: Request,
+    @Query() params: QuarterlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.service.streamEmissionsFacilityAggregation(req, params);
+  }
+
+  @Get('by-state')
+  @ApiOkResponse({
+    description:
+      'Streams Quarterly Apportioned Emissions data per filter criteria aggregated by state',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(QuarterlyApportionedEmissionsStateAggregationDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.emissions.quarterly.data.aggregation.state
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryEmissionsMultiSelect()
+  @ApiProgramQuery()
+  @ApiQueryQuarterly()
+  async streamEmissionsStateAggregation(
+    @Req() req: Request,
+    @Query() params: QuarterlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.service.streamEmissionsStateAggregation(req, params);
   }
 }

@@ -5,21 +5,17 @@ import { AccountFactRepository } from './account-fact.repository';
 import { AccountService } from './account.service';
 import { StreamAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { StreamableFile } from '@nestjs/common';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
+import { StreamingService } from '../streaming/streaming.service';
 
 const mockAccountFactRepository = () => ({
   buildQuery: jest.fn(),
 });
 
-const mockAccountMap = () => ({
-  many: jest.fn(),
+const mockStreamingService = () => ({
+  getStream: jest
+    .fn()
+    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
 });
-
-const mockStream = {
-  pipe: jest.fn().mockReturnValue({
-    pipe: jest.fn().mockReturnValue(Buffer.from('stream')),
-  }),
-};
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -42,11 +38,11 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
   };
 };
 
-let req: any;
-
 describe('-- Account Service --', () => {
-  let accountService;
-  let accountFactRepository;
+  let accountService: AccountService;
+  let streamingService: StreamingService;
+  let accountFactRepository: any;
+  let req: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -58,25 +54,22 @@ describe('-- Account Service --', () => {
           useFactory: mockAccountFactRepository,
         },
         {
-          provide: StreamService,
-          useFactory: () => ({
-            getStream: () => {
-              return mockStream;
-            },
-          }),
+          provide: StreamingService,
+          useFactory: mockStreamingService,
         },
       ],
     }).compile();
 
     accountService = module.get(AccountService);
     accountFactRepository = module.get(AccountFactRepository);
+    streamingService = module.get(StreamingService);
     req = mockRequest();
     req.res.setHeader.mockReturnValue();
   });
 
   describe('streamAccountAttributes', () => {
     it('streams all account attributes', async () => {
-      accountFactRepository.buildQuery.mockResolvedValue('');
+      accountFactRepository.buildQuery.mockReturnValue(['', []]);
 
       let filters = new StreamAccountAttributesParamsDTO();
 
@@ -87,12 +80,7 @@ describe('-- Account Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(
-        new StreamableFile(Buffer.from('stream'), {
-          type: req.headers.accept,
-          disposition: `attachment; filename="account-attributes-${0}.json"`,
-        }),
-      );
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
     });
   });
 });
