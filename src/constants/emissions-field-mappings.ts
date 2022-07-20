@@ -98,6 +98,12 @@ const monthlyAggregationData = [
   ...aggregationData,
 ];
 
+const quarterlyAggregationData = [
+  { ...propertyMetadata.year.fieldLabels },
+  { ...propertyMetadata.quarter.fieldLabels },
+  ...aggregationData,
+];
+
 const annualAggregationData = [
   { ...propertyMetadata.year.fieldLabels },
   ...aggregationData,
@@ -189,6 +195,16 @@ quarterly.push(
   ...commonEmissions,
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
+);
+
+quarterlyFacilityAggregation.push(
+  ...facilityAggregationData,
+  ...quarterlyAggregationData,
+);
+
+quarterlyStateAggregation.push(
+  { ...propertyMetadata.stateCode.fieldLabels },
+  ...quarterlyAggregationData,
 );
 
 annual.push(
