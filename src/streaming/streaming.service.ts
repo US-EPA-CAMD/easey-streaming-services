@@ -21,6 +21,7 @@ export class StreamingService {
     private readonly configService: ConfigService,
   ) {
     this.pool = new Pool({
+      application_name: this.configService.get<string>('app.name'),
       user: this.configService.get<string>('database.user'),
       host: this.configService.get<string>('database.host'),
       database: this.configService.get<string>('database.name'),
