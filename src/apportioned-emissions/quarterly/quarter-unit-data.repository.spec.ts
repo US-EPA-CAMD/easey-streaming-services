@@ -133,4 +133,12 @@ describe('QuarterUnitDataRepository', () => {
     });
   });
 
+  describe('buildEmissionsNationalAggregation', () => {
+    it('builds quarterly emissions aggregated nationally query', () => {
+      const result = repository.buildNationalAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
 });
