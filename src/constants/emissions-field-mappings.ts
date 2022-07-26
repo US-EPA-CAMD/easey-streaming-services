@@ -19,6 +19,7 @@ const annual = [];
 const annualFacilityAggregation = [];
 const annualStateAggregation = [];
 const annualNationalAggregation = [];
+const ozoneFacilityAggregation = [];
 const hourlyMats = [];
 
 const commonCharacteristics = [
@@ -106,6 +107,11 @@ const quarterlyAggregationData = [
 ];
 
 const annualAggregationData = [
+  { ...propertyMetadata.year.fieldLabels },
+  ...aggregationData,
+];
+
+const ozoneAggregationData = [
   { ...propertyMetadata.year.fieldLabels },
   ...aggregationData,
 ];
@@ -230,6 +236,11 @@ annualStateAggregation.push(
 
 annualNationalAggregation.push(...annualAggregationData);
 
+ozoneFacilityAggregation.push(
+  ...facilityAggregationData,
+  ...ozoneAggregationData,
+);
+
 hourlyMats.push(
   ...commonCharacteristics,
   ...hourlyCharacteristics,
@@ -308,7 +319,14 @@ export const fieldMappings = {
         },
       },
     },
-    ozone: annual,
+    ozone: {
+      data: {
+        aggregation: {
+          unit: annual,
+          facility: ozoneFacilityAggregation,
+        },
+      },
+    },
     mats: {
       hourly: {
         data: {
