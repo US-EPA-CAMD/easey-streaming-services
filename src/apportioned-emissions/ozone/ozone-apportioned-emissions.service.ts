@@ -71,10 +71,10 @@ export class OzoneApportionedEmissionsService {
   ): Promise<StreamableFile> {
     const disposition = `attachment; filename="ozone-emissions-facility-aggregation-${uuid()}"`;
     const [sql, values] = this.repository.buildFacilityAggregationQuery(params);
-    
+  
     const fieldMappingsList =
     fieldMappings.emissions.ozone.data.aggregation.facility;
-    
+  
     const toDto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
