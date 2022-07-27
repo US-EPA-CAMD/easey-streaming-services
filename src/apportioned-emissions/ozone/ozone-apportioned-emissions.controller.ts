@@ -39,6 +39,7 @@ import { OzoneApportionedEmissionsNationalAggregationDTO } from './../../dto/ozo
 @ApiExtraModels(OzoneApportionedEmissionsDTO)
 @ApiExtraModels(OzoneApportionedEmissionsFacilityAggregationDTO)
 @ApiExtraModels(OzoneApportionedEmissionsStateAggregationDTO)
+@ApiExtraModels(OzoneApportionedEmissionsNationalAggregationDTO)
 export class OzoneApportionedEmissionsController {
   
   constructor(
