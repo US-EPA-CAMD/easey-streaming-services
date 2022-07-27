@@ -114,8 +114,17 @@ describe('OzoneUnitDataRepository', () => {
   });
 
   describe('buildEmissionsFacilityAggregation', () => {
-    it('builds annual emissions aggregated by facility query', async() => {
+    it('builds ozone emissions aggregated by facility query', async() => {
       const result = await repository.buildFacilityAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
+
+  describe('buildEmissionsStateAggregation', () => {
+    it('builds ozone emissions aggregated by state query', async() => {
+      const result = await repository.buildStateAggregationQuery(streamFilters);
 
       expect(result).toEqual('mockEmissions');
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();

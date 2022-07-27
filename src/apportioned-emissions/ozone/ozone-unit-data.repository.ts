@@ -58,6 +58,21 @@ export class OzoneUnitDataRepository extends Repository<OzoneUnitDataView> {
     return query.getQueryAndParameters();
   }
 
+  buildStateAggregationQuery(
+    params: OzoneApportionedEmissionsParamsDTO,
+  ): [string, any[]] {
+    const selectColumns = ['oud.stateCode', 'oud.year'];
+    const orderByColumns = ['oud.stateCode', 'oud.year'];
+
+    const query = this.buildAggregationQuery(
+      params,
+      selectColumns,
+      orderByColumns,
+    );
+
+    return query.getQueryAndParameters();
+  }
+
   private buildAggregationQuery(
     params,
     selectColumns: string[],

@@ -63,4 +63,17 @@ describe('-- Ozone Apportioned Emissions Controller --', () => {
       ).toBe(expectedResult);
     });
   });
+
+  describe('* streamEmissionsStateAggregation', () => {
+    it('should call the service and return all Ozone emissions aggregated by state', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new OzoneApportionedEmissionsParamsDTO();
+      jest
+        .spyOn(service, 'streamEmissionsStateAggregation')
+        .mockResolvedValue(expectedResult);
+      expect(
+        await controller.streamEmissionsStateAggregation(req, paramsDto),
+      ).toBe(expectedResult);
+    });
+  });
 });

@@ -19,6 +19,7 @@ import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 import { OzoneApportionedEmissionsDTO } from '../../dto/ozone-apportioned-emissions.dto';
 import { OzoneApportionedEmissionsParamsDTO, StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 import { OzoneApportionedEmissionsFacilityAggregationDTO } from './../../dto/ozone-apportioned-emissions-facility-aggregation.dto';
+import { OzoneApportionedEmissionsStateAggregationDTO } from './../../dto/ozone-apportioned-emissions-state-aggregation.dto';
 
 @Injectable()
 export class OzoneApportionedEmissionsService {
@@ -80,6 +81,40 @@ export class OzoneApportionedEmissionsService {
       transform(data, _enc, callback) {
         const dto = plainToClass(
           OzoneApportionedEmissionsFacilityAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        callback(null, dto);
+      },
+    });
+
+    return this.streamService.getStream(
+      req,
+      sql,
+      values,
+      toDto,
+      disposition,
+      fieldMappingsList,
+    );
+  }
+
+  async streamEmissionsStateAggregation(
+    req: Request,
+    params: OzoneApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    const disposition = `attachment; filename="ozone-emissions-state-aggregation-${uuid()}"`;
+    const [sql, values] = this.repository.buildStateAggregationQuery(params);
+
+    const fieldMappingsList =
+    fieldMappings.emissions.ozone.data.aggregation.state;
+
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          OzoneApportionedEmissionsStateAggregationDTO,
           data,
           {
             enableImplicitConversion: true,
