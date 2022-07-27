@@ -30,12 +30,14 @@ import { OzoneApportionedEmissionsDTO } from '../../dto/ozone-apportioned-emissi
 import { OzoneApportionedEmissionsService } from './ozone-apportioned-emissions.service';
 import { OzoneApportionedEmissionsParamsDTO, StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 import { OzoneApportionedEmissionsFacilityAggregationDTO } from './../../dto/ozone-apportioned-emissions-facility-aggregation.dto';
+import { OzoneApportionedEmissionsStateAggregationDTO } from './../../dto/ozone-apportioned-emissions-state-aggregation.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
 @ApiTags('Apportioned Ozone Emissions')
 @ApiExtraModels(OzoneApportionedEmissionsDTO)
 @ApiExtraModels(OzoneApportionedEmissionsFacilityAggregationDTO)
+@ApiExtraModels(OzoneApportionedEmissionsStateAggregationDTO)
 export class OzoneApportionedEmissionsController {
   
   constructor(
@@ -102,6 +104,38 @@ export class OzoneApportionedEmissionsController {
     @Query() params: OzoneApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
     return this.service.streamEmissionsFacilityAggregation(req, params);
+  }
+
+  @Get('by-state')
+  @ApiOkResponse({
+    description:
+      'Retrieves Ozone Apportioned Emissions data per filter criteria aggregated by state',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(OzoneApportionedEmissionsStateAggregationDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.emissions.ozone.data.aggregation.state
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryEmissionsMultiSelect()
+  @ApiProgramQuery()
+  @ApiQueryAnnually()
+  streamEmissionsStateAggregation(
+    @Req() req: Request,
+    @Query() params: OzoneApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.service.streamEmissionsStateAggregation(req, params);
   }
 
 }

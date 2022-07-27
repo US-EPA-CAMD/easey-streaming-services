@@ -20,6 +20,7 @@ const annualFacilityAggregation = [];
 const annualStateAggregation = [];
 const annualNationalAggregation = [];
 const ozoneFacilityAggregation = [];
+const ozoneStateAggregation = [];
 const hourlyMats = [];
 
 const commonCharacteristics = [
@@ -241,6 +242,11 @@ ozoneFacilityAggregation.push(
   ...ozoneAggregationData,
 );
 
+ozoneStateAggregation.push(
+  { ...propertyMetadata.stateCode.fieldLabels },
+  ...ozoneAggregationData,
+);
+
 hourlyMats.push(
   ...commonCharacteristics,
   ...hourlyCharacteristics,
@@ -324,6 +330,7 @@ export const fieldMappings = {
         aggregation: {
           unit: annual,
           facility: ozoneFacilityAggregation,
+          state: ozoneStateAggregation,
         },
       },
     },
