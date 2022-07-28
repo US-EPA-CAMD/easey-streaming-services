@@ -33,9 +33,11 @@ const mockRequest = (url?: string, page?: number, perPage?: number) => {
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
   select: jest.fn(),
+  addSelect: jest.fn(),
   innerJoin: jest.fn(),
   orderBy: jest.fn(),
   addOrderBy: jest.fn(),
+  addGroupBy: jest.fn(),
   skip: jest.fn(),
   take: jest.fn(),
   getQueryAndParameters: jest.fn(),
@@ -86,10 +88,12 @@ describe('OzoneUnitDataRepository', () => {
       .mockReturnValue(queryBuilder);
 
     queryBuilder.select.mockReturnValue(queryBuilder);
+    queryBuilder.addSelect.mockReturnValue(queryBuilder);
     queryBuilder.innerJoin.mockReturnValue(queryBuilder);
     queryBuilder.andWhere.mockReturnValue(queryBuilder);
     queryBuilder.orderBy.mockReturnValue(queryBuilder);
     queryBuilder.addOrderBy.mockReturnValue(queryBuilder);
+    queryBuilder.addGroupBy.mockReturnValue(queryBuilder);
     queryBuilder.skip.mockReturnValue(queryBuilder);
     queryBuilder.take.mockReturnValue('mockPagination');
     queryBuilder.getQueryAndParameters.mockReturnValue('mockEmissions');
@@ -100,12 +104,39 @@ describe('OzoneUnitDataRepository', () => {
   describe('buildQuery', () => {
     it('builds ozone emissions query', async () => {
       const result = await repository.buildQuery(
-        fieldMappings.emissions.ozone,
+        fieldMappings.emissions.ozone.data.aggregation.unit,
         streamFilters,
       );
 
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
       expect(result).toEqual('mockEmissions');
+    });
+  });
+
+  describe('buildEmissionsFacilityAggregation', () => {
+    it('builds ozone emissions aggregated by facility query', async() => {
+      const result = await repository.buildFacilityAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
+
+  describe('buildEmissionsStateAggregation', () => {
+    it('builds ozone emissions aggregated by state query', async() => {
+      const result = await repository.buildStateAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
+
+  describe('buildEmissionsNationalAggregation', () => {
+    it('builds ozone emissions aggregated by National query', async() => {
+      const result = await repository.buildNationalAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
 });

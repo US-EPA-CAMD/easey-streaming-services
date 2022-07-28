@@ -14,10 +14,14 @@ const monthlyNationalAggregation = [];
 const quarterly = [];
 const quarterlyFacilityAggregation = [];
 const quarterlyStateAggregation = [];
+const quarterlyNationalAggregation = [];
 const annual = [];
 const annualFacilityAggregation = [];
 const annualStateAggregation = [];
 const annualNationalAggregation = [];
+const ozoneFacilityAggregation = [];
+const ozoneStateAggregation = [];
+const ozoneNationalAggregation = []; 
 const hourlyMats = [];
 
 const commonCharacteristics = [
@@ -105,6 +109,11 @@ const quarterlyAggregationData = [
 ];
 
 const annualAggregationData = [
+  { ...propertyMetadata.year.fieldLabels },
+  ...aggregationData,
+];
+
+const ozoneAggregationData = [
   { ...propertyMetadata.year.fieldLabels },
   ...aggregationData,
 ];
@@ -207,6 +216,8 @@ quarterlyStateAggregation.push(
   ...quarterlyAggregationData,
 );
 
+quarterlyNationalAggregation.push(...quarterlyAggregationData);
+
 annual.push(
   ...commonCharacteristics,
   { ...propertyMetadata.associatedStacks.fieldLabels },
@@ -226,6 +237,18 @@ annualStateAggregation.push(
 );
 
 annualNationalAggregation.push(...annualAggregationData);
+
+ozoneFacilityAggregation.push(
+  ...facilityAggregationData,
+  ...ozoneAggregationData,
+);
+
+ozoneStateAggregation.push(
+  { ...propertyMetadata.stateCode.fieldLabels },
+  ...ozoneAggregationData,
+);
+
+ozoneNationalAggregation.push(...ozoneAggregationData);
 
 hourlyMats.push(
   ...commonCharacteristics,
@@ -291,6 +314,7 @@ export const fieldMappings = {
           unit: quarterly,
           facility: quarterlyFacilityAggregation,
           state: quarterlyStateAggregation,
+          national: quarterlyNationalAggregation,
         }
       }
     },
@@ -304,7 +328,16 @@ export const fieldMappings = {
         },
       },
     },
-    ozone: annual,
+    ozone: {
+      data: {
+        aggregation: {
+          unit: annual,
+          facility: ozoneFacilityAggregation,
+          state: ozoneStateAggregation,
+          national: ozoneNationalAggregation
+        },
+      },
+    },
     mats: {
       hourly: {
         data: {

@@ -21,6 +21,7 @@ import { StreamQuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterl
 import { QuarterlyApportionedEmissionsFacilityAggregationDTO } from './../../dto/quarterly-apportioned-emissions-facility-aggregation.dto';
 import { QuarterlyApportionedEmissionsParamsDTO } from './../../dto/quarterly-apportioned-emissions.params.dto';
 import { QuarterlyApportionedEmissionsStateAggregationDTO } from './../../dto/quarterly-apportioned-emissions-state-aggregation.dto';
+import { QuarterlyApportionedEmissionsNationalAggregationDTO } from './../../dto/quarterly-apportioned-emissions-national-aggregation.dto';
 
 @Injectable()
 export class QuarterlyApportionedEmissionsService {
@@ -116,6 +117,40 @@ export class QuarterlyApportionedEmissionsService {
       transform(data, _enc, callback) {
         const dto = plainToClass(
           QuarterlyApportionedEmissionsStateAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        callback(null, dto);
+      },
+    });
+
+    return this.streamService.getStream(
+      req,
+      sql,
+      values,
+      toDto,
+      disposition,
+      fieldMappingsList,
+    );
+  }
+
+  async streamEmissionsNationalAggregation(
+    req: Request,
+    params: QuarterlyApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    const disposition = `attachment; filename="quarterly-emissions-national-aggregation-${uuid()}"`;
+    const [sql, values] = this.repository.buildNationalAggregationQuery(params);
+
+    const fieldMappingsList =
+      fieldMappings.emissions.quarterly.data.aggregation.national;
+
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          QuarterlyApportionedEmissionsNationalAggregationDTO,
           data,
           {
             enableImplicitConversion: true,
