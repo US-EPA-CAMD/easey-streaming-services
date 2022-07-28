@@ -20,6 +20,7 @@ import { OzoneApportionedEmissionsDTO } from '../../dto/ozone-apportioned-emissi
 import { OzoneApportionedEmissionsParamsDTO, StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 import { OzoneApportionedEmissionsFacilityAggregationDTO } from './../../dto/ozone-apportioned-emissions-facility-aggregation.dto';
 import { OzoneApportionedEmissionsStateAggregationDTO } from './../../dto/ozone-apportioned-emissions-state-aggregation.dto';
+import { OzoneApportionedEmissionsNationalAggregationDTO } from './../../dto/ozone-apportioned-emissions-national-aggregation.dto';
 
 @Injectable()
 export class OzoneApportionedEmissionsService {
@@ -115,6 +116,40 @@ export class OzoneApportionedEmissionsService {
       transform(data, _enc, callback) {
         const dto = plainToClass(
           OzoneApportionedEmissionsStateAggregationDTO,
+          data,
+          {
+            enableImplicitConversion: true,
+          },
+        );
+        callback(null, dto);
+      },
+    });
+
+    return this.streamService.getStream(
+      req,
+      sql,
+      values,
+      toDto,
+      disposition,
+      fieldMappingsList,
+    );
+  }
+
+  async streamEmissionsNationalAggregation(
+    req: Request,
+    params: OzoneApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    const disposition = `attachment; filename="ozone-emissions-national-aggregation-${uuid()}"`;
+    const [sql, values] = this.repository.buildNationalAggregationQuery(params);
+
+    const fieldMappingsList =
+    fieldMappings.emissions.ozone.data.aggregation.national;
+
+    const toDto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        const dto = plainToClass(
+          OzoneApportionedEmissionsNationalAggregationDTO,
           data,
           {
             enableImplicitConversion: true,

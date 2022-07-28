@@ -130,4 +130,13 @@ describe('OzoneUnitDataRepository', () => {
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
     });
   });
+
+  describe('buildEmissionsNationalAggregation', () => {
+    it('builds ozone emissions aggregated by National query', async() => {
+      const result = await repository.buildNationalAggregationQuery(streamFilters);
+
+      expect(result).toEqual('mockEmissions');
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+    });
+  });
 });

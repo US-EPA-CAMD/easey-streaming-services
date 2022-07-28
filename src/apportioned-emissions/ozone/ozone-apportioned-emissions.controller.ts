@@ -31,6 +31,7 @@ import { OzoneApportionedEmissionsService } from './ozone-apportioned-emissions.
 import { OzoneApportionedEmissionsParamsDTO, StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 import { OzoneApportionedEmissionsFacilityAggregationDTO } from './../../dto/ozone-apportioned-emissions-facility-aggregation.dto';
 import { OzoneApportionedEmissionsStateAggregationDTO } from './../../dto/ozone-apportioned-emissions-state-aggregation.dto';
+import { OzoneApportionedEmissionsNationalAggregationDTO } from './../../dto/ozone-apportioned-emissions-national-aggregation.dto';
 
 @Controller()
 @ApiSecurity('APIKey')
@@ -38,6 +39,7 @@ import { OzoneApportionedEmissionsStateAggregationDTO } from './../../dto/ozone-
 @ApiExtraModels(OzoneApportionedEmissionsDTO)
 @ApiExtraModels(OzoneApportionedEmissionsFacilityAggregationDTO)
 @ApiExtraModels(OzoneApportionedEmissionsStateAggregationDTO)
+@ApiExtraModels(OzoneApportionedEmissionsNationalAggregationDTO)
 export class OzoneApportionedEmissionsController {
   
   constructor(
@@ -138,4 +140,35 @@ export class OzoneApportionedEmissionsController {
     return this.service.streamEmissionsStateAggregation(req, params);
   }
 
+  @Get('nationally')
+  @ApiOkResponse({
+    description:
+      'Retrieves Ozone Apportioned Emissions data per filter criteria aggregated by nationally',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: getSchemaPath(OzoneApportionedEmissionsNationalAggregationDTO),
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.emissions.ozone.data.aggregation.national
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryEmissionsMultiSelect()
+  @ApiProgramQuery()
+  @ApiQueryAnnually()
+  streamEmissionsNationalAggregation(
+    @Req() req: Request,
+    @Query() params: OzoneApportionedEmissionsParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.service.streamEmissionsNationalAggregation(req, params);
+  }
 }

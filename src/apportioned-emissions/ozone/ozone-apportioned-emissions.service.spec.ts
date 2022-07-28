@@ -19,6 +19,7 @@ const mockRepository = () => ({
   buildQuery: jest.fn(),
   buildFacilityAggregationQuery: jest.fn(),
   buildStateAggregationQuery: jest.fn(),
+  buildNationalAggregationQuery: jest.fn(),
 });
 
 const mockRequest = () => {
@@ -109,6 +110,23 @@ describe('-- Ozone Apportioned Emissions Service --', () => {
       req.headers.accept = '';
 
       let result = await service.streamEmissionsStateAggregation(
+        req,
+        filters,
+      );
+
+      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+    });
+  });
+
+  describe('streamEmissionsNationalAggregation', () => {
+    it('calls streamEmissionsNationalAggregation() and streams all emissions from the service', async () => {
+      repository.buildNationalAggregationQuery.mockReturnValue(['', []]);
+
+      let filters = new OzoneApportionedEmissionsParamsDTO();
+
+      req.headers.accept = '';
+
+      let result = await service.streamEmissionsNationalAggregation(
         req,
         filters,
       );
