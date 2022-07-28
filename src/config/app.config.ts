@@ -18,6 +18,8 @@ if (host === 'localhost') {
 export default registerAs('app', () => ({
   name: 'streaming-services',
   title: process.env.EASEY_STREAMING_SERVICES_TITLE || 'Streaming Services',
+  description:
+    'Streaming services API contains endpoints to stream account, allowance, facilities, and emissions data',
   path,
   host,
   apiHost: process.env.EASEY_API_GATEWAY_HOST || 'api.epa.gov/easey/dev',
