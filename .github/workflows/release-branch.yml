@@ -3,6 +3,10 @@ name: Release Branch Workflow
 on:
   push:
     branches: [ release/* ]
+    paths-ignore:
+    - '**/*.md'
+    - 'LICENSE'
+    - '.gitignore'
 
 jobs:
   Build-Test-Package:
@@ -43,6 +47,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARTIFACTS_STORAGE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
+  
   Test-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
@@ -79,6 +84,7 @@ jobs:
         run: devops/scripts/cf-app-init.sh
       - name: Deploy
         run: devops/scripts/deploy.sh
+  
   Beta-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
@@ -115,6 +121,7 @@ jobs:
         run: devops/scripts/cf-app-init.sh
       - name: Deploy
         run: devops/scripts/deploy.sh
+  
   Stage-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
@@ -151,11 +158,12 @@ jobs:
         run: devops/scripts/cf-app-init.sh
       - name: Deploy
         run: devops/scripts/deploy.sh
-  Performace-Deployment:
+  
+  Performance-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
     environment:
-      name: Performace
+      name: Performance
       url: https://api.epa.gov/easey/perf/streaming-services/swagger
     steps:
       - name: Checkout repo
@@ -187,4 +195,3 @@ jobs:
         run: devops/scripts/cf-app-init.sh
       - name: Deploy
         run: devops/scripts/deploy.sh
-
