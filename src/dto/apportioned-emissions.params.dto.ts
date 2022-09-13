@@ -14,11 +14,11 @@ import {
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
 
+import { IsProgram } from '../pipes/is-program.pipe';
 import { IsUnitType } from '../pipes/is-unit-type.pipe';
 import { IsStateCode } from '../pipes/is-state-code.pipe';
 import { IsUnitFuelType } from '../pipes/is-unit-fuel-type.pipe';
 import { IsControlTechnology } from '../pipes/is-control-technology.pipe';
-import { IsEmissionsProgram } from '../pipes/is-emissions-program.pipe';
 
 export class MatsApportionedEmissionsParamsDTO {
   @ApiHideProperty()
@@ -95,7 +95,7 @@ export class ApportionedEmissionsParamsDTO extends MatsApportionedEmissionsParam
     description: propertyMetadata.programCodeInfo.description,
   })
   @IsOptional()
-  @IsEmissionsProgram({
+  @IsProgram('Emissions', {
     each: true,
     message:
       ErrorMessages.UnitCharacteristics(true, 'programCodeInfo') +
