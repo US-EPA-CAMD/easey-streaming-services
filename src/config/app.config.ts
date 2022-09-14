@@ -46,4 +46,8 @@ export default registerAs('app', () => ({
   idleTimeout: +process.env.EASEY_STREAMING_SERVICES_IDLE_TIMEOUT || 10000,
   connectionTimeout:
     +process.env.EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT || 10000,
+  enableSecretToken: parseBool(
+    process.env.EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN,
+    false,
+  ),
 }));
