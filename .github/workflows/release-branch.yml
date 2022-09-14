@@ -2,11 +2,11 @@ name: Release Branch Workflow
 
 on:
   push:
-    branches: [ release/* ]
+    branches: [release/*]
     paths-ignore:
-    - '**/*.md'
-    - 'LICENSE'
-    - '.gitignore'
+      - '**/*.md'
+      - 'LICENSE'
+      - '.gitignore'
 
 jobs:
   Build-Test-Package:
@@ -41,13 +41,13 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}          
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Package App
         run: devops/scripts/package-artifact.sh
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ARTIFACTS_STORAGE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
-  
+
   Test-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
@@ -82,9 +82,14 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
       - name: Init Application
         run: devops/scripts/cf-app-init.sh
+      - name: Configure Env Vars (secrets)
+        run: |
+          cf set-env $APP_NAME EASEY_STREAMING_SERVICES_SECRET_TOKEN $API_SECRET_TOKEN
+        env:
+          API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
       - name: Deploy
         run: devops/scripts/deploy.sh
-  
+
   Beta-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
@@ -119,9 +124,14 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
       - name: Init Application
         run: devops/scripts/cf-app-init.sh
+      - name: Configure Env Vars (secrets)
+        run: |
+          cf set-env $APP_NAME EASEY_STREAMING_SERVICES_SECRET_TOKEN $API_SECRET_TOKEN
+        env:
+          API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
       - name: Deploy
         run: devops/scripts/deploy.sh
-  
+
   Stage-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
@@ -156,9 +166,14 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
       - name: Init Application
         run: devops/scripts/cf-app-init.sh
+      - name: Configure Env Vars (secrets)
+        run: |
+          cf set-env $APP_NAME EASEY_STREAMING_SERVICES_SECRET_TOKEN $API_SECRET_TOKEN
+        env:
+          API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
       - name: Deploy
         run: devops/scripts/deploy.sh
-  
+
   Performance-Deployment:
     needs: Build-Test-Package
     runs-on: ubuntu-latest
@@ -193,5 +208,10 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ARTIFACTS_STORAGE_SECRET_ACCESS_KEY }}
       - name: Init Application
         run: devops/scripts/cf-app-init.sh
+      - name: Configure Env Vars (secrets)
+        run: |
+          cf set-env $APP_NAME EASEY_STREAMING_SERVICES_SECRET_TOKEN $API_SECRET_TOKEN
+        env:
+          API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
       - name: Deploy
         run: devops/scripts/deploy.sh
