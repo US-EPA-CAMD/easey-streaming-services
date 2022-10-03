@@ -35,6 +35,48 @@ Follow these [instructions](https://github.com/US-EPA-CAMD/devops/blob/master/GE
     $ yarn install
     ```
 
+## Configuration
+The Streaming Services uses a number of environment variables to properly configure the api. The following is the list of configureble values and their default setting.
+
+| Typescript Var Name | Environment Var Name | Default Value | Comment |
+| :------------------ | :------------------- | :------------ | :------ |
+| name | N/A | streaming-services | Fixed value |
+| host | EASEY_STREAMING_SERVICES_HOST | localhost | Configurable
+| port | EASEY_STREAMING_SERVICES_PORT | 8080 | Configurable |
+| path | EASEY_STREAMING_SERVICES_PATH | streaming-services | Configurable |
+| uri | N/A | N/A | Determined by host, port, & path |
+| title | EASEY_STREAMING_SERVICES_TITLE | Streaming Services | Configurable |
+| description | EASEY_STREAMING_SERVICES_DESCRIPTION | Streaming services API contains endpoints to stream account, allowance, facilities, and emissions data | Configurable |
+| apiHost | EASEY_API_GATEWAY_HOST | api.epa.gov/easey/dev | Configurable |
+| env | EASEY_STREAMING_SERVICES_ENV | local-dev | Configurable |
+| enableCors | EASEY_STREAMING_SERVICES_ENABLE_CORS | true | Configurable |
+| enableApiKey | EASEY_STREAMING_SERVICES_ENABLE_API_KEY | false | Configurable |
+| enableGlobalValidationPipes | EASEY_STREAMING_SERVICES_ENABLE_GLOBAL_VALIDATION_PIPE | true | Configurable |
+| version | EASEY_STREAMING_SERVICES_VERSION | v0.0.0 | Dynamically set by CI/CD workflow |
+| published | EASEY_STREAMING_SERVICES_PUBLISHED | local | Dynamically set by CI/CD workflow |
+| streamBatchSize | EASEY_STREAMING_SERVICES_STREAM_BATCH_SIZE | 20000 | Configurable |
+| maxPoolSize | EASEY_STREAMING_SERVICES_MAX_POOL_SIZE | 200 | Configurable |
+| idleTimeout | EASEY_STREAMING_SERVICES_IDLE_TIMEOUT | 10000 | Configurable |
+| connectionTimeout | EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT | 10000 | Configurable |
+| transactionDateYearsLimit | EASEY_STREAMING_SERVICES_TRANSACTION_DATE_LIMIT_YEARS | 2 | Configurable |
+| secretToken | EASEY_STREAMING_SERVICES_SECRET_TOKEN | N/A | Dynamically set by CI/CD workflow |
+| enableSecretToken | EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN | false | Configurable |
+| enableDebug | EASEY_STREAMING_SERVICES_ENABLE_DEBUG | false | Configurable |
+
+## Environment Variables File
+Database credentials are injected into the cloud.gov environments as part of the CI/CD deployment process therefore they do not need to be configured. However, when running locally for local development the following environment variables are required to be configured using a local .env file in the root of the project. **PLEASE DO NOT commit the .env file to source control.**
+
+- EASEY_STREAMING_SERVICES_ENABLE_DEBUG=true
+- EASEY_STREAMING_SERVICES_ENABLE_API_KEY=false
+- EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN=false
+
+**Please refer to our [Getting Started](https://github.com/US-EPA-CAMD/devops/blob/master/GETTING-STARTED.md) instructions on how to configure the following environment variables & connect to the database.**
+- EASEY_DB_HOST
+- EASEY_DB_PORT
+- EASEY_DB_NAME
+- EASEY_DB_USER
+- EASEY_DB_PWD
+
 ## Building, Testing, & Running the application
 From within the projects root directory run the following commands using the yarn command line interface
 

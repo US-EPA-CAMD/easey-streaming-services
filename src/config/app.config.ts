@@ -64,6 +64,9 @@ export default registerAs('app', () => ({
   connectionTimeout: getConfigValueNumber(
     'EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT', 10000,
   ),
+  secretToken: getConfigValue(
+    'EASEY_STREAMING_SERVICES_SECRET_TOKEN',
+  ),
   enableSecretToken: getConfigValueBoolean(
     'EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN',
   ),
