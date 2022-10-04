@@ -44,13 +44,13 @@ The Streaming Services uses a number of environment variables to properly config
 | host | EASEY_STREAMING_SERVICES_HOST | localhost | Configurable
 | port | EASEY_STREAMING_SERVICES_PORT | 8080 | Configurable |
 | path | EASEY_STREAMING_SERVICES_PATH | streaming-services | Configurable |
-| uri | N/A | N/A | Determined by host, port, & path |
 | title | EASEY_STREAMING_SERVICES_TITLE | Streaming Services | Configurable |
 | description | EASEY_STREAMING_SERVICES_DESCRIPTION | Streaming services API contains endpoints to stream account, allowance, facilities, and emissions data | Configurable |
-| apiHost | EASEY_API_GATEWAY_HOST | api.epa.gov/easey/dev | Configurable |
 | env | EASEY_STREAMING_SERVICES_ENV | local-dev | Configurable |
-| enableCors | EASEY_STREAMING_SERVICES_ENABLE_CORS | true | Configurable |
 | enableApiKey | EASEY_STREAMING_SERVICES_ENABLE_API_KEY | false | Configurable |
+| secretToken | EASEY_STREAMING_SERVICES_SECRET_TOKEN | *** | Dynamically set by CI/CD workflow |
+| enableSecretToken | EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN | false | Configurable |
+| enableCors | EASEY_STREAMING_SERVICES_ENABLE_CORS | true | Configurable |
 | enableGlobalValidationPipes | EASEY_STREAMING_SERVICES_ENABLE_GLOBAL_VALIDATION_PIPE | true | Configurable |
 | version | EASEY_STREAMING_SERVICES_VERSION | v0.0.0 | Dynamically set by CI/CD workflow |
 | published | EASEY_STREAMING_SERVICES_PUBLISHED | local | Dynamically set by CI/CD workflow |
@@ -58,17 +58,20 @@ The Streaming Services uses a number of environment variables to properly config
 | maxPoolSize | EASEY_STREAMING_SERVICES_MAX_POOL_SIZE | 200 | Configurable |
 | idleTimeout | EASEY_STREAMING_SERVICES_IDLE_TIMEOUT | 10000 | Configurable |
 | connectionTimeout | EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT | 10000 | Configurable |
-| transactionDateYearsLimit | EASEY_STREAMING_SERVICES_TRANSACTION_DATE_LIMIT_YEARS | 2 | Configurable |
-| secretToken | EASEY_STREAMING_SERVICES_SECRET_TOKEN | N/A | Dynamically set by CI/CD workflow |
-| enableSecretToken | EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN | false | Configurable |
+| transactionDateLimitYears | EASEY_STREAMING_SERVICES_TRANSACTION_DATE_LIMIT_YEARS | 2 | Configurable |
 | enableDebug | EASEY_STREAMING_SERVICES_ENABLE_DEBUG | false | Configurable |
+| apiHost | EASEY_API_GATEWAY_HOST | api.epa.gov/easey/dev | Configurable |
 
 ## Environment Variables File
 Database credentials are injected into the cloud.gov environments as part of the CI/CD deployment process therefore they do not need to be configured. However, when running locally for local development the following environment variables are required to be configured using a local .env file in the root of the project. **PLEASE DO NOT commit the .env file to source control.**
 
-- EASEY_STREAMING_SERVICES_ENABLE_DEBUG=true
-- EASEY_STREAMING_SERVICES_ENABLE_API_KEY=false
-- EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN=false
+- EASEY_STREAMING SERVICES_ENABLE_DEBUG=true|false
+- EASEY_STREAMING SERVICES_ENABLE_API_KEY=true|false
+  - IF ABOVE IS TRUE THEN SET
+    - EASEY_STREAMING SERVICES_API_KEY={ask project dev/tech lead}
+- EASEY_STREAMING SERVICES_ENABLE_SECRET_TOKEN=true|false
+  - IF ABOVE IS TRUE THEN SET
+    - EASEY_STREAMING SERVICES_SECRET_TOKEN={ask project dev/tech lead}
 
 **Please refer to our [Getting Started](https://github.com/US-EPA-CAMD/devops/blob/master/GETTING-STARTED.md) instructions on how to configure the following environment variables & connect to the database.**
 - EASEY_DB_HOST
@@ -107,7 +110,7 @@ $ yarn start
 
 ## API Endpoints
 Please refer to the Stremaing Services Swagger Documentation for descriptions of the endpoints.<br>
-[Dev Environment](https://api.epa.gov/easey/dev/streaming-services/swagger/) | [Test Environment](https://api.epa.gov/easey/test/streaming-services/swagger/) | [Beta Environment](https://api.epa.gov/easey/beta/streaming-services/swagger/) | [Staging Environment](https://api.epa.gov/easey/staging/streaming-services/swagger/)
+[Dev Environment](https://api.epa.gov/easey/dev/streaming-services/swagger/) | [Test Environment](https://api.epa.gov/easey/test/streaming-services/swagger/) | [Performance Environment](https://api.epa.gov/easey/perf/streaming-services/swagger/) | [Beta Environment](https://api.epa.gov/easey/beta/streaming-services/swagger/) | [Staging Environment](https://api.epa.gov/easey/staging/streaming-services/swagger/)
 
 ## License & Contributing
 This project is licensed under the MIT License. We encourage you to read this project’s [License](LICENSE), [Contributing Guidelines](CONTRIBUTING.md), and [Code of Conduct](CODE-OF-CONDUCT.md).

@@ -7,19 +7,21 @@ import {
 
 require('dotenv').config();
 
-const path = getConfigValue('EASEY_STREAMING_SERVICES_PATH', 'streaming-services');
 const host = getConfigValue('EASEY_STREAMING_SERVICES_HOST', 'localhost');
 const port = getConfigValueNumber('EASEY_STREAMING_SERVICES_PORT', 8080);
-
-export const TRANSACTION_DATE_LIMIT_YEARS = getConfigValueNumber(
-  'EASEY_STREAMING_SERVICES_TRANSACTION_DATE_LIMIT_YEARS', 2,
-);
+const path = getConfigValue('EASEY_STREAMING_SERVICES_PATH', 'streaming-services');
 
 let uri = `https://${host}/${path}`;
 
 if (host === 'localhost') {
   uri = `http://localhost:${port}/${path}`;
 }
+
+const apiHost = getConfigValue('EASEY_API_GATEWAY_HOST', 'api.epa.gov/easey/dev');
+
+export const TRANSACTION_DATE_LIMIT_YEARS = getConfigValueNumber(
+  'EASEY_STREAMING_SERVICES_TRANSACTION_DATE_LIMIT_YEARS', 2,
+);
 
 export default registerAs('app', () => ({
   name: 'streaming-services',
@@ -31,17 +33,20 @@ export default registerAs('app', () => ({
     'EASEY_STREAMING_SERVICES_DESCRIPTION',
     'Streaming services API contains endpoints to stream account, allowance, facilities, and emissions data',
   ),
-  apiHost: getConfigValue(
-    'EASEY_API_GATEWAY_HOST', 'api.epa.gov/easey/dev',
-  ),
   env: getConfigValue(
     'EASEY_STREAMING_SERVICES_ENV', 'local-dev',
   ),
-  enableCors: getConfigValueBoolean(
-    'EASEY_STREAMING_SERVICES_ENABLE_CORS', true,
-  ),
   enableApiKey: getConfigValueBoolean(
     'EASEY_STREAMING_SERVICES_ENABLE_API_KEY',
+  ),
+  secretToken: getConfigValue(
+    'EASEY_STREAMING_SERVICES_SECRET_TOKEN',
+  ),
+  enableSecretToken: getConfigValueBoolean(
+    'EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN',
+  ),
+  enableCors: getConfigValueBoolean(
+    'EASEY_STREAMING_SERVICES_ENABLE_CORS', true,
   ),
   enableGlobalValidationPipes: getConfigValueBoolean(
     'EASEY_STREAMING_SERVICES_ENABLE_GLOBAL_VALIDATION_PIPE', true,
@@ -64,14 +69,10 @@ export default registerAs('app', () => ({
   connectionTimeout: getConfigValueNumber(
     'EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT', 10000,
   ),
-  secretToken: getConfigValue(
-    'EASEY_STREAMING_SERVICES_SECRET_TOKEN',
-  ),
-  enableSecretToken: getConfigValueBoolean(
-    'EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN',
-  ),
   // ENABLES DEBUG CONSOLE LOGS
   enableDebug: getConfigValueBoolean(
     'EASEY_STREAMING_SERVICES_ENABLE_DEBUG',
   ),
+  transactionDateLimitYears: TRANSACTION_DATE_LIMIT_YEARS,
+  apiHost: apiHost,
 }));
