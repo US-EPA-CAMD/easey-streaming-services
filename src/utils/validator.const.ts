@@ -7,10 +7,7 @@ import {
   IsIsoFormat,
   IsDateGreaterThanEqualTo,
   IsYearFormat,
-  IsDateInRangeLimit,
 } from '@us-epa-camd/easey-common/pipes';
-
-import { TRANSACTION_DATE_LIMIT_YEARS } from '../config/app.config';
 
 export function TransactionBeginDate() {
   return applyDecorators(
@@ -45,16 +42,6 @@ export function TransactionEndDate() {
     IsDateGreaterThanEqualTo('transactionBeginDate', {
       message: ErrorMessages.BeginEndDate('transactionBeginDate'),
     }),
-    IsDateInRangeLimit(
-      'transactionBeginDate',
-      Number(TRANSACTION_DATE_LIMIT_YEARS),
-      {
-        message: ErrorMessages.DateRangeLimit(
-          'transactionBeginDate',
-          Number(TRANSACTION_DATE_LIMIT_YEARS),
-        ),
-      },
-    ),
     IsInDateRange(
       [new Date('1993-03-23'), 'currentDate'],
       false,
