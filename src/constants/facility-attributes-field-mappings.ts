@@ -10,6 +10,7 @@ attributes.push(
   { ...propertyMetadata.associatedStacks.fieldLabels },
   { ...propertyMetadata.year.fieldLabels },
   { ...propertyMetadata.programCodeInfo.fieldLabels },
+  { ...propertyMetadata.primaryRepInfo.fieldLabels },
   { ...propertyMetadata.epaRegion.fieldLabels },
   { ...propertyMetadata.nercRegion.fieldLabels },
   { ...propertyMetadata.county.fieldLabels },
