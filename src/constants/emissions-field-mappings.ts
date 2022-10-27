@@ -137,6 +137,7 @@ hourly.push(
   { ...propertyMetadata.noxRate.fieldLabels },
   { ...propertyMetadata.noxRateMeasureFlg.fieldLabels },
   { ...propertyMetadata.heatInput.fieldLabels },
+  { ...propertyMetadata.heatInputMeasureFlg.fieldLabels },
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
 );

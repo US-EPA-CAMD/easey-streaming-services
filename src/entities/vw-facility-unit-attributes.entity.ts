@@ -15,6 +15,9 @@ export class FacilityUnitAttributes {
   @Column({ name: 'prg_code_info' })
   programCodeInfo: string;
 
+  @Column({ name: 'primary_rep_info' })
+  primaryRepInfo: string;
+
   @Column({ name: 'state' })
   stateCode: string;
 
