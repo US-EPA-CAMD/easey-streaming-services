@@ -12,7 +12,7 @@ import {
 export function TransactionBeginDate() {
   return applyDecorators(
     IsInDateRange(
-      [new Date('1993-03-23'), 'currentDate'],
+      new Date('1993-03-23'),
       false,
       false,
       false,
@@ -43,7 +43,7 @@ export function TransactionEndDate() {
       message: ErrorMessages.BeginEndDate('transactionBeginDate'),
     }),
     IsInDateRange(
-      [new Date('1993-03-23'), 'currentDate'],
+      new Date('1993-03-23'),
       false,
       false,
       false,
@@ -76,7 +76,7 @@ export function BeginDate(isMats = false) {
     date = '1995-01-01';
   }
   return applyDecorators(
-    IsInDateRange([new Date(date), 'currentDate'], false, true, false, {
+    IsInDateRange(new Date(date), false, true, false, {
       message: ErrorMessages.DateRange(
         'beginDate',
         false,
@@ -109,7 +109,7 @@ export function EndDate(isMats = false) {
     IsDateGreaterThanEqualTo('beginDate', {
       message: ErrorMessages.BeginEndDate('beginDate'),
     }),
-    IsInDateRange([new Date(date), 'currentDate'], false, true, false, {
+    IsInDateRange(new Date(date), false, true, false, {
       message: ErrorMessages.DateRange(
         'endDate',
         false,
@@ -131,7 +131,7 @@ export function EndDate(isMats = false) {
 
 export function OpYear() {
   return applyDecorators(
-    IsInDateRange([new Date(1995, 0), 'currentDate'], true, true, false, {
+    IsInDateRange(new Date(1995, 0), true, true, false, {
       each: true,
       message: ErrorMessages.DateRange(
         'year',

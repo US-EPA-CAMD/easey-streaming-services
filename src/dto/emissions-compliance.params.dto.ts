@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   propertyMetadata,
   ErrorMessages,
@@ -17,9 +17,6 @@ import { ComplianceParamsDTO } from './compliance.params.dto';
 import { fieldMappings } from '../constants/account-field-mappings';
 
 export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
-  @ApiHideProperty()
-  currentDate: Date = this.getCurrentDate;
-
   @ApiProperty({
     isArray: true,
     description: propertyMetadata.year.description,
@@ -29,7 +26,7 @@ export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
     each: true,
     message: ErrorMessages.MultipleFormat('year', 'YYYY'),
   })
-  @IsInDateRange([new Date('1996-01-01'), 'currentDate'], true, false, false, {
+  @IsInDateRange(new Date('1996-01-01'), true, false, false, {
     each: true,
     message: ErrorMessages.DateRange(
       'year',
@@ -39,10 +36,6 @@ export class EmissionsComplianceParamsDTO extends ComplianceParamsDTO {
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   year?: number[];
-
-  private get getCurrentDate(): Date {
-    return new Date();
-  }
 }
 
 export class StreamEmissionsComplianceParamsDTO extends EmissionsComplianceParamsDTO {
