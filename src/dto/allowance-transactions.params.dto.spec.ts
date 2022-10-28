@@ -20,7 +20,6 @@ describe('-- Allowance Transactions Params DTO --', () => {
         this.transactionBeginDate = transactionBeginDate;
         this.transactionEndDate = transactionEndDate;
       }
-      currentDate: Date = this.getCurrentDate;
 
       @IsYearFormat()
       @IsYearGreater(1995)
@@ -31,10 +30,6 @@ describe('-- Allowance Transactions Params DTO --', () => {
 
       @TransactionEndDate()
       transactionEndDate: string;
-
-      private get getCurrentDate(): Date {
-        return new Date();
-      }
     }
 
     it('should pass all validation pipes', async () => {
