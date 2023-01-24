@@ -20,6 +20,7 @@ export class FacilityUnitAttributesRepository extends Repository<
       'fua.associatedStacks',
       'fua.year',
       'fua.programCodeInfo',
+      'fua.primaryRepInfo',
       'fua.epaRegion',
       'fua.nercRegion',
       'fua.county',

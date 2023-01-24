@@ -1,11 +1,12 @@
 #THIS FILE SHOULD CONTAIN DEV SETTINGS AND CI/CD WORKFLOW WILL CHANGE SETTINGS BASED ON ENV
-name: streaming-services
-title: Streaming Services
-path: streaming-services
-port: 8080
-memory: 2048
 disk: 1024
-instances: 1
-environment: development
+memory: 2048
+instances: 2
+name: streaming-services
 host: api-easey-dev.app.cloud.gov
+port: 8080
+path: streaming-services
+title: Streaming Services
+description: Streaming services API contains endpoints to stream account, allowance, facilities, and emissions data
+environment: development
 apiHost: api.epa.gov/easey/dev
