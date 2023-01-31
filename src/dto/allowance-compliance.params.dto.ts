@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 import {
   AllowanceProgram,
@@ -19,9 +19,6 @@ import { ComplianceParamsDTO } from './compliance.params.dto';
 import { fieldMappings } from '../constants/account-field-mappings';
 
 export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
-  @ApiHideProperty()
-  currentDate: Date = this.getCurrentDate;
-
   @ApiProperty({
     enum: AllowanceProgram,
     description: propertyMetadata.programCodeInfo.description,
@@ -45,7 +42,7 @@ export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
     each: true,
     message: ErrorMessages.MultipleFormat('year', 'YYYY'),
   })
-  @IsInDateRange([new Date('1995-01-01'), 'currentDate'], true, false, false, {
+  @IsInDateRange(new Date('1995-01-01'), true, false, false, {
     each: true,
     message: ErrorMessages.DateRange(
       'year',
@@ -55,10 +52,6 @@ export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
   year?: number[];
-
-  private get getCurrentDate(): Date {
-    return new Date();
-  }
 }
 
 export class StreamAllowanceComplianceParamsDTO extends AllowanceComplianceParamsDTO {

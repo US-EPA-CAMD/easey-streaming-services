@@ -53,6 +53,13 @@ export class FacilityAttributesDTO {
   programCodeInfo: string;
 
   @ApiProperty({
+    description: propertyMetadata.primaryRepInfo.description,
+    example: propertyMetadata.primaryRepInfo.example,
+    name: propertyMetadata.primaryRepInfo.fieldLabels.value,
+  })
+  primaryRepInfo: string;
+
+  @ApiProperty({
     description: propertyMetadata.epaRegion.description,
     example: propertyMetadata.epaRegion.example,
     name: propertyMetadata.epaRegion.fieldLabels.value,
