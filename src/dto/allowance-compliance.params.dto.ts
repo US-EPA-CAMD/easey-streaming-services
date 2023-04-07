@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsArray, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 import {
@@ -51,6 +51,7 @@ export class AllowanceComplianceParamsDTO extends ComplianceParamsDTO {
     ),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @IsArray()
   year?: number[];
 }
 

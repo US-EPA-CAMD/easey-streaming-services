@@ -1,4 +1,4 @@
-import { IsOptional } from 'class-validator';
+import { IsDateString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 import {
@@ -19,12 +19,14 @@ export class DailyApportionedEmissionsParamsDTO extends ApportionedEmissionsPara
     description: propertyMetadata.beginDate.description,
   })
   @BeginDate()
+  @IsDateString()
   beginDate: Date;
 
   @ApiProperty({
     description: propertyMetadata.endDate.description,
   })
   @EndDate()
+  @IsDateString()
   endDate: Date;
 }
 

@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsDefined, IsOptional } from 'class-validator';
+import { IsArray, IsDefined, IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 import {
@@ -14,7 +14,7 @@ import {
   ControlTechnology,
   Program,
   SourceCategory,
-  ExcludeFacilityAttributes
+  ExcludeFacilityAttributes,
 } from '@us-epa-camd/easey-common/enums';
 
 import {
@@ -22,7 +22,7 @@ import {
   IsOrisCode,
   IsYearFormat,
   IsInEnum,
-  IsInResponse
+  IsInResponse,
 } from '@us-epa-camd/easey-common/pipes';
 
 import { IsProgram } from '../pipes/is-program.pipe';
@@ -52,6 +52,7 @@ export class FacilityAttributesParamsDTO {
     ),
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  @IsArray()
   year: number[];
 
   @ApiProperty({
@@ -64,6 +65,7 @@ export class FacilityAttributesParamsDTO {
     message: ErrorMessages.UnitCharacteristics(true, 'facilityId'),
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  @IsArray()
   facilityId?: number[];
 
   @ApiProperty({
@@ -133,8 +135,7 @@ export class FacilityAttributesParamsDTO {
   @IsOptional()
   @IsProgram('Facilities', {
     each: true,
-    message:
-      ErrorMessages.UnitCharacteristics(true, 'programCodeInfo'),
+    message: ErrorMessages.UnitCharacteristics(true, 'programCodeInfo'),
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
   programCodeInfo?: Program[];
