@@ -1,4 +1,4 @@
-import { IsDefined, IsOptional } from 'class-validator';
+import { IsArray, IsDefined, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import {
@@ -26,6 +26,7 @@ export class QuarterlyApportionedEmissionsParamsDTO extends ApportionedEmissions
   @OpYear()
   @IsDefined({ message: ErrorMessages.RequiredProperty() })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  @IsArray()
   year: number[];
 
   @ApiProperty({
@@ -49,6 +50,7 @@ export class QuarterlyApportionedEmissionsParamsDTO extends ApportionedEmissions
     ),
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  @IsArray()
   quarter: number[];
 }
 

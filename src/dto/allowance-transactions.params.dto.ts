@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsArray, IsDateString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   propertyMetadata,
@@ -47,18 +47,21 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
   })
   @IsOptional()
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @IsArray()
   ownerOperator?: string[];
 
   @ApiProperty({
     description: propertyMetadata.transactionBeginDate.description,
   })
   @TransactionBeginDate()
+  @IsDateString()
   transactionBeginDate: Date;
 
   @ApiProperty({
     description: propertyMetadata.transactionEndDate.description,
   })
   @TransactionEndDate()
+  @IsDateString()
   transactionEndDate: Date;
 
   @ApiProperty({
@@ -87,6 +90,7 @@ export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {
     message: ErrorMessages.YearRange('vintageYear', '1995'),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @IsArray()
   vintageYear?: number[];
 }
 

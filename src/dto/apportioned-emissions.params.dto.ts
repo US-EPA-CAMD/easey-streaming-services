@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsArray, IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   State,
@@ -31,6 +31,7 @@ export class MatsApportionedEmissionsParamsDTO {
     message: ErrorMessages.UnitCharacteristics(true, 'stateCode'),
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  @IsArray()
   stateCode?: State[];
 
   @ApiProperty({
@@ -43,6 +44,7 @@ export class MatsApportionedEmissionsParamsDTO {
     message: ErrorMessages.UnitCharacteristics(true, 'facilityId'),
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
+  @IsNumber()
   facilityId?: number[];
 
   @ApiProperty({
