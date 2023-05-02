@@ -1,4 +1,4 @@
-import { IsOptional } from 'class-validator';
+import { IsBoolean, IsDateString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInEnum, IsInResponse } from '@us-epa-camd/easey-common/pipes';
 
@@ -18,18 +18,21 @@ export class HourlyApportionedEmissionsParamsDTO extends ApportionedEmissionsPar
     description: propertyMetadata.beginDate.description,
   })
   @BeginDate()
+  @IsDateString()
   beginDate: Date;
 
   @ApiProperty({
     description: propertyMetadata.endDate.description,
   })
   @EndDate()
+  @IsDateString()
   endDate: Date;
 
   @ApiProperty({
     description: propertyMetadata.operatingHoursOnly.description,
   })
   @IsOptional()
+  @IsBoolean()
   operatingHoursOnly?: boolean;
 }
 

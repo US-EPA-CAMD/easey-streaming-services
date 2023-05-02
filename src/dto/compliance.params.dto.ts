@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   propertyMetadata,
@@ -33,6 +33,7 @@ export class ComplianceParamsDTO {
     message: ErrorMessages.AccountCharacteristics(true, 'facilityId'),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @IsNumber()
   facilityId?: number[];
 
   @ApiProperty({
@@ -41,5 +42,6 @@ export class ComplianceParamsDTO {
   })
   @IsOptional()
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @IsString()
   ownerOperator?: string[];
 }

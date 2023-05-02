@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsArray, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   propertyMetadata,
@@ -35,6 +35,7 @@ export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
     message: ErrorMessages.YearRange('vintageYear', '1995'),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @IsArray()
   vintageYear?: number[];
 
   @ApiProperty({
@@ -43,6 +44,7 @@ export class AllowanceHoldingsParamsDTO extends AllowanceParamsDTO {
   })
   @IsOptional()
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @IsArray()
   ownerOperator?: string[];
 
   @ApiProperty({

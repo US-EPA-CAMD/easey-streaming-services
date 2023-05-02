@@ -1,4 +1,4 @@
-import { IsOptional } from 'class-validator';
+import { IsArray, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import {
@@ -22,6 +22,7 @@ export class AccountAttributesParamsDTO extends AllowanceParamsDTO {
   })
   @IsOptional()
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
+  @IsArray()
   ownerOperator?: string[];
 
   @ApiProperty({
