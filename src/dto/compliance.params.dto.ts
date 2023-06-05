@@ -33,7 +33,6 @@ export class ComplianceParamsDTO {
     message: ErrorMessages.AccountCharacteristics(true, 'facilityId'),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
-  @IsNumber()
   facilityId?: number[];
 
   @ApiProperty({
@@ -42,6 +41,5 @@ export class ComplianceParamsDTO {
   })
   @IsOptional()
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
-  @IsString()
   ownerOperator?: string[];
 }

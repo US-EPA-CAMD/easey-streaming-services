@@ -64,10 +64,6 @@ export class StreamQuarterlyApportionedEmissionsParamsDTO extends QuarterlyAppor
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.emissions.quarterly, {
-    each: true,
-    message: ErrorMessages.ValidParameter(),
-  })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
   exclude?: ExcludeApportionedEmissions[];
 }

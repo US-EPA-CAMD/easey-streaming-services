@@ -1,4 +1,4 @@
-import { IsBoolean, IsDateString, IsOptional } from 'class-validator';
+import { IsBooleanString, IsDateString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInEnum, IsInResponse } from '@us-epa-camd/easey-common/pipes';
 
@@ -32,7 +32,7 @@ export class HourlyApportionedEmissionsParamsDTO extends ApportionedEmissionsPar
     description: propertyMetadata.operatingHoursOnly.description,
   })
   @IsOptional()
-  @IsBoolean()
+  @IsBooleanString()
   operatingHoursOnly?: boolean;
 }
 
