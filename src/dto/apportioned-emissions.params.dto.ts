@@ -44,7 +44,6 @@ export class MatsApportionedEmissionsParamsDTO {
     message: ErrorMessages.UnitCharacteristics(true, 'facilityId'),
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
-  @IsNumber()
   facilityId?: number[];
 
   @ApiProperty({

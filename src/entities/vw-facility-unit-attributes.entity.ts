@@ -51,10 +51,20 @@ export class FacilityUnitAttributes {
   @Column({ name: 'source_cat' })
   sourceCategory: string;
 
-  @Column({ name: 'latitude', scale: 2, precision: 4, transformer: new NumericColumnTransformer() })
+  @Column({
+    name: 'latitude',
+    scale: 2,
+    precision: 4,
+    transformer: new NumericColumnTransformer(),
+  })
   latitude: number;
 
-  @Column({ name: 'longitude', scale: 2, precision: 4, transformer: new NumericColumnTransformer() })
+  @Column({
+    name: 'longitude',
+    scale: 2,
+    precision: 4,
+    transformer: new NumericColumnTransformer(),
+  })
   longitude: number;
 
   @Column({ name: 'so2_phase' })
@@ -90,7 +100,12 @@ export class FacilityUnitAttributes {
   @Column({ name: 'op_status_info' })
   operatingStatus: string;
 
-  @Column({ name: 'capacity_input', scale: 4, precision: 1, transformer: new NumericColumnTransformer() })
+  @Column({
+    name: 'capacity_input',
+    scale: 4,
+    precision: 1,
+    transformer: new NumericColumnTransformer(),
+  })
   maxHourlyHIRate: number;
 
   @Column({ name: 'own_display' })
