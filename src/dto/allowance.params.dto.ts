@@ -48,7 +48,6 @@ export class AllowanceParamsDTO {
     message: ErrorMessages.AccountCharacteristics(true, 'facilityId'),
   })
   @Transform(({ value }) => value.split('|').map(item => item.trim()))
-  @IsNumber()
   facilityId?: number[];
 
   @ApiProperty({
