@@ -18,6 +18,7 @@ import { TypeOrmConfigService } from './config/typeorm.config';
 import { EmissionsComplianceModule } from './emissions-compliance/emissions-compliance.module';
 import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
 import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings.module';
+import { SummaryValueModule } from './summary-value/summary-value.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings
     AllowanceComplianceModule,
     EmissionsComplianceModule,
     ApportionedEmissionsModule,
+    SummaryValueModule,
   ],
 })
 export class AppModule {}

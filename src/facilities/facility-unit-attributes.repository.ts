@@ -9,7 +9,6 @@ import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-pa
 export class FacilityUnitAttributesRepository extends Repository<
   FacilityUnitAttributes
 > {
-
   private getColumns(): string[] {
     const columns = [
       'fua.id',
@@ -62,8 +61,7 @@ export class FacilityUnitAttributesRepository extends Repository<
   async buildQuery(
     params: StreamFacilityAttributesParamsDTO,
   ): Promise<[string, any[]]> {
-    let query = this.createQueryBuilder('fua')
-      .select(this.getColumns());
+    let query = this.createQueryBuilder('fua').select(this.getColumns());
 
     if (params.unitFuelType) {
       let string = '(';
