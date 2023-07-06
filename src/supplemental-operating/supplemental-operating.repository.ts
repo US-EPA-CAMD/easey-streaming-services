@@ -1,6 +1,6 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
-import { SupplementalOperating } from 'src/entities/supplemental-operating.entity';
+import { SupplementalOperating } from '../entities/supplemental-operating.entity';
 
 @EntityRepository(SupplementalOperating)
 export class SupplementalOperatingRepository extends Repository<
