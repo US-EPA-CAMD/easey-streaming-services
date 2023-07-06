@@ -1,27 +1,25 @@
 import { Repository, EntityRepository } from 'typeorm';
-import { SummaryValue } from '../entities/summary-value.entity';
 import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
+import { SupplementalOperating } from 'src/entities/supplemental-operating.entity';
 
-@EntityRepository(SummaryValue)
-export class SummaryValueRepository extends Repository<SummaryValue> {
+@EntityRepository(SupplementalOperating)
+export class SupplementalOperatingRepository extends Repository<
+  SupplementalOperating
+> {
   private getColumns(): string[] {
     const columns = [];
     columns.push(
-      'sv.id',
+      'so.id',
       'ml.stackPipeId',
       'ml.unitId',
-      'sv.parameterCode',
-      'sv.currentReportingPeriodTotal',
-      'sv.ozoneSeasonToDateTotal',
-      'sv.yearToDateTotal',
-      'sv.reportingPeriodId',
-      'sv.monitoringLocationId',
-      'sv.calcCurrentRptPeriodTotal',
-      'sv.calcOsTotal',
-      'sv.calcYearTotal',
-      'sv.userId',
-      'sv.addDate',
-      'sv.updateDate',
+      'so.monLocIdentifier',
+      'so.fuelCode',
+      'so.opTypeCode',
+      'so.rptPeriodIdentifier',
+      'so.opValue',
+      'so.userid',
+      'so.addDate',
+      'so.updateDate',
     );
     return columns.map(col => {
       return `${col} AS "${col.split('.')[1]}"`;
@@ -40,13 +38,13 @@ export class SummaryValueRepository extends Repository<SummaryValue> {
         reportingPeriod.quarter <= ${params.endQuarter}
       `;
 
-    const query = this.createQueryBuilder('sv')
+    const query = this.createQueryBuilder('so')
       .select(this.getColumns())
-      .innerJoin('sv.monitorLocation', 'ml')
+      .innerJoin('so.monitorLocation', 'ml')
       .innerJoin('ml.monitorPlans', 'monitorPlans')
       .innerJoin('monitorPlans.plant', 'plant', plantConditons)
       .innerJoin(
-        'sv.reportingPeriod',
+        'so.reportingPeriod',
         'reportingPeriod',
         reportingPeriodConditions,
       );

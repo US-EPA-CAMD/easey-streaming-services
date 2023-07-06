@@ -6,34 +6,34 @@ import {
   ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
-import { SummaryValueService } from './summary-value.service';
+import { SupplementalOperatingService } from './supplemental-operating.service';
 import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
 
 import { Request } from 'express';
-import { SummaryValueBaseDTO } from '../dto/summary-value.dto';
+import { SupplementalOperatingDTO } from '../dto/supplemental-operating.dto';
 
 @ApiTags('Emissions')
 @Controller('emissions')
 @ApiSecurity('APIKey')
-export class SummaryValueController {
-  constructor(private readonly service: SummaryValueService) {}
+export class SupplementalOperatingController {
+  constructor(private readonly service: SupplementalOperatingService) {}
 
-  @Get('summary-values')
+  @Get('supplemental-operating')
   @ApiOkResponse({
-    description: 'Exports summary values',
+    description: 'Exports supplemental operating values',
     content: {
       'application/json': {
         schema: {
-          $ref: getSchemaPath(SummaryValueBaseDTO),
+          $ref: getSchemaPath(SupplementalOperatingDTO),
         },
       },
     },
   })
-  @ApiExtraModels(SummaryValueBaseDTO)
-  summaryValueStream(
+  @ApiExtraModels(SupplementalOperatingDTO)
+  supplementalOperatingStream(
     @Req() req: Request,
     @Query() params: OrisQuarterParamsDto,
   ): Promise<StreamableFile> {
-    return this.service.streamSummaryValues(req, params);
+    return this.service.streamValues(req, params);
   }
 }

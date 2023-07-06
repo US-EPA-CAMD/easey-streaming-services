@@ -1,18 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 import {
-  IsInEnum,
-  IsInResponse,
   IsNotEmptyString,
   IsValidNumber,
   IsYearFormat,
 } from '@us-epa-camd/easey-common/pipes';
 import { IsInYearAndQuarterRange } from '../pipes/is-in-year-and-quarter-range.pipe';
-import { IsArray, IsOptional, Length } from 'class-validator';
+import { IsArray, Length } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { fieldMappings } from 'src/constants/emissions-field-mappings';
 
-export class SummaryValueParamsDto {
+export class OrisQuarterParamsDto {
   @ApiProperty()
   @Transform(data => {
     let value = data.obj.orisCode;

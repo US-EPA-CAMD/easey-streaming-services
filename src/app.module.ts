@@ -19,6 +19,7 @@ import { EmissionsComplianceModule } from './emissions-compliance/emissions-comp
 import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
 import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings.module';
 import { SummaryValueModule } from './summary-value/summary-value.module';
+import { SupplementalOperatingModule } from './supplemental-operating/supplemental-operating.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { SummaryValueModule } from './summary-value/summary-value.module';
     EmissionsComplianceModule,
     ApportionedEmissionsModule,
     SummaryValueModule,
+    SupplementalOperatingModule,
   ],
 })
 export class AppModule {}
