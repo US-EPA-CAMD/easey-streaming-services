@@ -2,6 +2,7 @@ import { Controller, Get, Query, Req, StreamableFile } from '@nestjs/common';
 import {
   ApiExtraModels,
   ApiOkResponse,
+  ApiQuery,
   ApiSecurity,
   ApiTags,
   getSchemaPath,
@@ -28,6 +29,12 @@ export class SummaryValueController {
         },
       },
     },
+  })
+  @ApiQuery({
+    style: 'pipeDelimited',
+    name: 'orisCode',
+    required: false,
+    explode: false,
   })
   @ApiExtraModels(SummaryValueBaseDTO)
   summaryValueStream(

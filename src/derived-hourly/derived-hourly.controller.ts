@@ -2,30 +2,29 @@ import { Controller, Get, Query, Req, StreamableFile } from '@nestjs/common';
 import {
   ApiExtraModels,
   ApiOkResponse,
-  ApiQuery,
   ApiSecurity,
   ApiTags,
   getSchemaPath,
+  ApiQuery,
 } from '@nestjs/swagger';
-import { SupplementalOperatingService } from './supplemental-operating.service';
-import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
 
 import { Request } from 'express';
-import { SupplementalOperatingDTO } from '../dto/supplemental-operating.dto';
+import { DerivedHourlyValueParamsDto } from '../dto/derived-hourly-value.params.dto';
+import { DerivedHourlyValueBaseDTO } from '../dto/derived-hourly-value.dto';
+import { DerivedHourlyService } from './derived-hourly.service';
 
 @ApiTags('Emissions')
 @Controller('emissions')
 @ApiSecurity('APIKey')
-export class SupplementalOperatingController {
-  constructor(private readonly service: SupplementalOperatingService) {}
-
-  @Get('supplemental-operating')
+export class DerivedHourlyController {
+  constructor(private readonly service: DerivedHourlyService) {}
+  @Get('hourly/derived-values')
   @ApiOkResponse({
     description: 'Exports supplemental operating values',
     content: {
       'application/json': {
         schema: {
-          $ref: getSchemaPath(SupplementalOperatingDTO),
+          $ref: getSchemaPath(DerivedHourlyValueBaseDTO),
         },
       },
     },
@@ -36,10 +35,16 @@ export class SupplementalOperatingController {
     required: false,
     explode: false,
   })
-  @ApiExtraModels(SupplementalOperatingDTO)
-  supplementalOperatingStream(
+  @ApiQuery({
+    style: 'pipeDelimited',
+    name: 'locationName',
+    required: false,
+    explode: false,
+  })
+  @ApiExtraModels(DerivedHourlyValueBaseDTO)
+  derivedHourlyStream(
     @Req() req: Request,
-    @Query() params: OrisQuarterParamsDto,
+    @Query() params: DerivedHourlyValueParamsDto,
   ): Promise<StreamableFile> {
     return this.service.streamValues(req, params);
   }
