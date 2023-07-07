@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
-import { DerivedHourlyRepository } from './derived-hourly.repository';
+import { HourlyOperatingRepository } from './hourly-operating.repository';
 import { SelectQueryBuilder } from 'typeorm';
-import { DerivedHrlyValue } from '../entities/derived-hrly-value.entity';
 import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
+import { HrlyOpData } from '../entities/hrly-op-data.entity';
 
 const mockedQueryBuilder = {
   innerJoin: jest.fn().mockReturnThis(),
@@ -10,15 +10,15 @@ const mockedQueryBuilder = {
   getQueryAndParameters: jest.fn(),
 };
 
-describe('-- Derived Hourly Value Repository --', () => {
-  let repo: DerivedHourlyRepository;
+describe('-- Hourly Operating Repository --', () => {
+  let repo: HourlyOperatingRepository;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [DerivedHourlyRepository],
+      providers: [HourlyOperatingRepository],
     }).compile();
 
-    repo = module.get(DerivedHourlyRepository);
+    repo = module.get(HourlyOperatingRepository);
   });
 
   afterEach(() => {
@@ -32,9 +32,7 @@ describe('-- Derived Hourly Value Repository --', () => {
       jest
         .spyOn(repo, 'createQueryBuilder')
         .mockReturnValue(
-          (mockedQueryBuilder as unknown) as SelectQueryBuilder<
-            DerivedHrlyValue
-          >,
+          (mockedQueryBuilder as unknown) as SelectQueryBuilder<HrlyOpData>,
         ); //Mock query builder here
       repo.buildQuery(params);
       expect(mockedQueryBuilder.getQueryAndParameters).toHaveBeenCalled();

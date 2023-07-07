@@ -5,7 +5,7 @@ import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 import moment from 'moment/moment';
 import { IsOptional } from 'class-validator';
 
-export class DerivedHourlyValueParamsDto {
+export class HourlyParamsDto {
   @ApiProperty()
   @Transform(({ value }) => {
     if (value) {

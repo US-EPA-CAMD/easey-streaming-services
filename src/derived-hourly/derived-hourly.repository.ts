@@ -1,5 +1,5 @@
 import { Repository, EntityRepository } from 'typeorm';
-import { DerivedHourlyValueParamsDto } from '../dto/derived-hourly-value.params.dto';
+import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
 import { DerivedHrlyValue } from '../entities/derived-hrly-value.entity';
 
 @EntityRepository(DerivedHrlyValue)
@@ -40,9 +40,7 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
     });
   }
 
-  async buildQuery(
-    params: DerivedHourlyValueParamsDto,
-  ): Promise<[string, any[]]> {
+  async buildQuery(params: HourlyParamsDto): Promise<[string, any[]]> {
     const reportingPeriodConditions = `rp.beginDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
 
     let query = this.createQueryBuilder('dh')
