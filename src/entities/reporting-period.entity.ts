@@ -9,6 +9,7 @@ import {
 
 import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
 import { SummaryValue } from './summary-value.entity';
+import { DerivedHrlyValue } from './derived-hrly-value.entity';
 
 @Entity({ name: 'camdecmpsmd.reporting_period' })
 export class ReportingPeriod extends BaseEntity {
@@ -71,4 +72,11 @@ export class ReportingPeriod extends BaseEntity {
   )
   @JoinColumn({ name: 'rpt_period_id' })
   summaryValues: SummaryValue[];
+
+  @OneToMany(
+    () => SummaryValue,
+    c => c.monitorLocation,
+  )
+  @JoinColumn({ name: 'mon_loc_id' })
+  derivedHrlyValues: DerivedHrlyValue[];
 }
