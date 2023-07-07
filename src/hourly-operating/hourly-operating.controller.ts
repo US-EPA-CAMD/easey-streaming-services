@@ -9,22 +9,22 @@ import {
 } from '@nestjs/swagger';
 
 import { Request } from 'express';
-import { DerivedHourlyValueBaseDTO } from '../dto/derived-hourly-value.dto';
-import { DerivedHourlyService } from './derived-hourly.service';
+import { HourlyOperatingService } from './hourly-operating.service';
 import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
+import { HourlyOperatingDTO } from '../dto/hourly-op.dto';
 
 @ApiTags('Emissions')
 @Controller('emissions')
 @ApiSecurity('APIKey')
-export class DerivedHourlyController {
-  constructor(private readonly service: DerivedHourlyService) {}
-  @Get('hourly/derived-values')
+export class HourlyOperatingController {
+  constructor(private readonly service: HourlyOperatingService) {}
+  @Get('hourly/operating')
   @ApiOkResponse({
-    description: 'Exports supplemental operating values',
+    description: 'Exports hourly operating values',
     content: {
       'application/json': {
         schema: {
-          $ref: getSchemaPath(DerivedHourlyValueBaseDTO),
+          $ref: getSchemaPath(HourlyOperatingDTO),
         },
       },
     },
@@ -41,8 +41,8 @@ export class DerivedHourlyController {
     required: false,
     explode: false,
   })
-  @ApiExtraModels(DerivedHourlyValueBaseDTO)
-  derivedHourlyStream(
+  @ApiExtraModels(HourlyOperatingDTO)
+  hourlyOperatingStream(
     @Req() req: Request,
     @Query() params: HourlyParamsDto,
   ): Promise<StreamableFile> {

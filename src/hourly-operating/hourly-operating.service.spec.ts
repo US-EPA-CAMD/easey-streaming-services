@@ -1,17 +1,17 @@
 import { Test } from '@nestjs/testing';
-import { DerivedHourlyService } from './derived-hourly.service';
+import { HourlyOperatingService } from './hourly-operating.service';
 import { StreamingService } from '../streaming/streaming.service';
-import { DerivedHourlyRepository } from './derived-hourly.repository';
+import { HourlyOperatingRepository } from './hourly-operating.repository';
 import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
 
-describe('-- Derived Hourly Value Service --', () => {
-  let service: DerivedHourlyService;
+describe('-- Hourly Operating Service --', () => {
+  let service: HourlyOperatingService;
   let streamingService: StreamingService;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
-        DerivedHourlyService,
+        HourlyOperatingService,
         {
           provide: StreamingService,
           useFactory: () => ({
@@ -19,7 +19,7 @@ describe('-- Derived Hourly Value Service --', () => {
           }),
         },
         {
-          provide: DerivedHourlyRepository,
+          provide: HourlyOperatingRepository,
           useFactory: () => ({
             buildQuery: jest.fn().mockResolvedValue(['', '']),
           }),
@@ -27,7 +27,7 @@ describe('-- Derived Hourly Value Service --', () => {
       ],
     }).compile();
 
-    service = module.get(DerivedHourlyService);
+    service = module.get(HourlyOperatingService);
     streamingService = module.get(StreamingService);
   });
 

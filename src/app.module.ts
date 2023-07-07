@@ -21,6 +21,7 @@ import { AllowanceHoldingsModule } from './allowance-holdings/allowance-holdings
 import { SummaryValueModule } from './summary-value/summary-value.module';
 import { SupplementalOperatingModule } from './supplemental-operating/supplemental-operating.module';
 import { DerivedHourlyModule } from './derived-hourly/derived-hourly.module';
+import { HourlyOperatingModule } from './hourly-operating/hourly-operating.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { DerivedHourlyModule } from './derived-hourly/derived-hourly.module';
     SummaryValueModule,
     SupplementalOperatingModule,
     DerivedHourlyModule,
+    HourlyOperatingModule,
   ],
 })
 export class AppModule {}

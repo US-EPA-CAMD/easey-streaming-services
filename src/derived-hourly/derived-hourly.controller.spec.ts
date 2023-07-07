@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { DerivedHourlyController } from './derived-hourly.controller';
 import { DerivedHourlyService } from './derived-hourly.service';
-import { DerivedHourlyValueParamsDto } from '../dto/derived-hourly-value.params.dto';
+import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
 
 describe('-- Derived Hourly Value Controller --', () => {
   let controller: DerivedHourlyController;
@@ -28,7 +28,7 @@ describe('-- Derived Hourly Value Controller --', () => {
 
   describe('derivedHourlyStream', () => {
     it('Should call the service stream function', () => {
-      controller.derivedHourlyStream(null, new DerivedHourlyValueParamsDto());
+      controller.derivedHourlyStream(null, new HourlyParamsDto());
       expect(service.streamValues).toHaveBeenCalled();
     });
   });

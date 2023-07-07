@@ -14,6 +14,7 @@ import { StackPipe } from './stack-pipe.entity';
 import { MonitorPlan } from './monitor-plan.entity';
 import { SummaryValue } from './summary-value.entity';
 import { DerivedHrlyValue } from './derived-hrly-value.entity';
+import { HrlyOpData } from './hrly-op-data.entity';
 
 @Entity({ name: 'camdecmps.monitor_location' })
 export class MonitorLocation extends BaseEntity {
@@ -88,4 +89,11 @@ export class MonitorLocation extends BaseEntity {
   )
   @JoinColumn({ name: 'mon_loc_id' })
   derivedHrlyValues: DerivedHrlyValue[];
+
+  @OneToMany(
+    () => HrlyOpData,
+    c => c.monitorLocation,
+  )
+  @JoinColumn({ name: 'mon_loc_id' })
+  hrlyOpData: HrlyOpData[];
 }

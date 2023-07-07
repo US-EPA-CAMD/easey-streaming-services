@@ -10,6 +10,7 @@ import {
 import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
 import { SummaryValue } from './summary-value.entity';
 import { DerivedHrlyValue } from './derived-hrly-value.entity';
+import { HrlyOpData } from './hrly-op-data.entity';
 
 @Entity({ name: 'camdecmpsmd.reporting_period' })
 export class ReportingPeriod extends BaseEntity {
@@ -79,4 +80,11 @@ export class ReportingPeriod extends BaseEntity {
   )
   @JoinColumn({ name: 'mon_loc_id' })
   derivedHrlyValues: DerivedHrlyValue[];
+
+  @OneToMany(
+    () => HrlyOpData,
+    o => o.reportingPeriod,
+  )
+  @JoinColumn({ name: 'rpt_period_id' })
+  hrlyOpData: HrlyOpData[];
 }

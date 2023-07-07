@@ -3,10 +3,13 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
 import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
+import { MonitorLocation } from './monitor-location.entity';
+import { ReportingPeriod } from './reporting-period.entity';
 import { DerivedHrlyValue } from './derived-hrly-value.entity';
 
 @Entity({ name: 'camdecmps.hrly_op_data' })
@@ -123,6 +126,20 @@ export class HrlyOpData extends BaseEntity {
 
   @Column({ name: 'mats_startup_shutdown_flg', nullable: true })
   matsStartupShutdownFlag: string;
+
+  @ManyToOne(
+    () => MonitorLocation,
+    o => o.hrlyOpData,
+  )
+  @JoinColumn({ name: 'mon_loc_id' })
+  monitorLocation: MonitorLocation;
+
+  @ManyToOne(
+    () => ReportingPeriod,
+    o => o.hrlyOpData,
+  )
+  @JoinColumn({ name: 'rpt_period_id' })
+  reportingPeriod: ReportingPeriod;
 
   @OneToMany(
     () => DerivedHrlyValue,
