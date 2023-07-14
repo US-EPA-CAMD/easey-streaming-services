@@ -52,4 +52,13 @@ export class StreamHourlyApportionedEmissionsParamsDTO extends HourlyApportioned
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
   exclude?: ExcludeHourlyApportionedEmissions[];
+
+  @ApiProperty()
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (value) {
+      return value.split('|').map((item: string) => item.trim());
+    }
+  })
+  locationName?: string[];
 }

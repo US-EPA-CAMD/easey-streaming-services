@@ -6,7 +6,6 @@ import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportione
 
 @EntityRepository(HourUnitDataView)
 export class HourUnitDataRepository extends Repository<HourUnitDataView> {
-
   buildQuery(
     columns: any[],
     params: HourlyApportionedEmissionsParamsDTO,
@@ -44,9 +43,14 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
   buildFacilityAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
-    const selectColumns = ['hud.stateCode', 'hud.facilityName', 'hud.facilityId', 'hud.date', 'hud.hour',];
-    const orderByColumns = ['hud.facilityId', 'hud.date', 'hud.hour',];
+    const selectColumns = [
+      'hud.stateCode',
+      'hud.facilityName',
+      'hud.facilityId',
+      'hud.date',
+      'hud.hour',
+    ];
+    const orderByColumns = ['hud.facilityId', 'hud.date', 'hud.hour'];
 
     const query = this.buildAggregationQuery(
       params,
@@ -60,7 +64,6 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
   buildStateAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
     const selectColumns = ['hud.stateCode', 'hud.date', 'hud.hour'];
     const orderByColumns = ['hud.stateCode', 'hud.date', 'hud.hour'];
 
@@ -76,7 +79,6 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
   buildNationalAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
     const selectColumns = ['hud.date', 'hud.hour'];
     const orderByColumns = ['hud.date', 'hud.hour'];
 
@@ -94,7 +96,6 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     selectColumns: string[],
     orderByColumns: string[],
   ): SelectQueryBuilder<HourUnitDataView> {
-
     let query = this.createQueryBuilder('hud').select(
       selectColumns.map(col => {
         return `${col} AS "${col.split('.')[1]}"`;
@@ -131,6 +132,4 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
 
     return query;
   }
-
-
 }
