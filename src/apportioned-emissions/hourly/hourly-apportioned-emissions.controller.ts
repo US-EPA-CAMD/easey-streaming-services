@@ -17,6 +17,7 @@ import {
   ApiQueryEmissionsMultiSelect,
   ApiProgramQuery,
   ExcludeQuery,
+  ApiLocationNameQuery,
 } from '../../utils/swagger-decorator.const';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
@@ -64,12 +65,7 @@ export class HourlyApportionedEmissionsController {
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
   @ExcludeQuery()
-  @ApiQuery({
-    style: 'pipeDelimited',
-    name: 'locationName',
-    required: false,
-    explode: false,
-  })
+  @ApiLocationNameQuery()
   async streamEmissions(
     @Req() req: Request,
     @Query() params: StreamHourlyApportionedEmissionsParamsDTO,
@@ -101,6 +97,7 @@ export class HourlyApportionedEmissionsController {
   @NotFoundResponse()
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
+  @ApiLocationNameQuery()
   async streamEmissionsFacilityAggregation(
     @Req() req: Request,
     @Query() params: HourlyApportionedEmissionsParamsDTO,
@@ -132,6 +129,7 @@ export class HourlyApportionedEmissionsController {
   @NotFoundResponse()
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
+  @ApiLocationNameQuery()
   async streamEmissionsStateAggregation(
     @Req() req: Request,
     @Query() params: HourlyApportionedEmissionsParamsDTO,
@@ -163,6 +161,7 @@ export class HourlyApportionedEmissionsController {
   @NotFoundResponse()
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
+  @ApiLocationNameQuery()
   async streamEmissionsNationalAggregation(
     @Req() req: Request,
     @Query() params: HourlyApportionedEmissionsParamsDTO,

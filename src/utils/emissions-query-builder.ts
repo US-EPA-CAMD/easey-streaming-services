@@ -239,22 +239,15 @@ export class EmissionsQueryBuilder {
     locations: string[],
     alias: string,
   ) {
-    console.log(
-      `( ${alias}.associatedStacks IN (${locations
-        .map(l => `'${l}'`)
-        .join(',')}) ) OR ( ${alias}.unitId IN (${locations
-        .map(l => `'${l}'`)
-        .join(',')}) )`,
-    );
-
-    query.andWhere(
-      `( ${alias}.associatedStacks IN (${locations
-        .map(l => `'${l}'`)
-        .join(',')}) ) OR ( ${alias}.unitId IN (${locations
-        .map(l => `'${l}'`)
-        .join(',')}) )`,
-    );
-
+    if (locations) {
+      query.andWhere(
+        `( ${alias}.associatedStacks IN (${locations
+          .map(l => `'${l}'`)
+          .join(',')}) OR ${alias}.unitId IN (${locations
+          .map(l => `'${l}'`)
+          .join(',')}))`,
+      );
+    }
     return query;
   }
 
@@ -287,9 +280,7 @@ export class EmissionsQueryBuilder {
       alias,
     );
 
-    if (dto.locationName) {
-      query = this.whereLocationName(query, dto.locationName, alias);
-    }
+    query = this.whereLocationName(query, dto.locationName, alias);
 
     if (dto.page && dto.perPage) {
       query = query.skip((dto.page - 1) * dto.perPage).take(dto.perPage);
