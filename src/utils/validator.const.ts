@@ -11,19 +11,13 @@ import {
 
 export function TransactionBeginDate() {
   return applyDecorators(
-    IsInDateRange(
-      new Date('1993-03-23'),
-      false,
-      false,
-      false,
-      {
-        message: ErrorMessages.DateRange(
-          'transactionBeginDate',
-          false,
-          `a date between 03/23/1993 and the current date`,
-        ),
-      },
-    ),
+    IsInDateRange(new Date('1993-03-23'), false, false, false, {
+      message: ErrorMessages.DateRange(
+        'transactionBeginDate',
+        false,
+        `a date between 03/23/1993 and the current date`,
+      ),
+    }),
     IsValidDate({
       message: ErrorMessages.DateValidity(),
     }),
@@ -42,19 +36,13 @@ export function TransactionEndDate() {
     IsDateGreaterThanEqualTo('transactionBeginDate', {
       message: ErrorMessages.BeginEndDate('transactionBeginDate'),
     }),
-    IsInDateRange(
-      new Date('1993-03-23'),
-      false,
-      false,
-      false,
-      {
-        message: ErrorMessages.DateRange(
-          'transactionEndDate',
-          false,
-          `a date between 03/23/1993 and the current date`,
-        ),
-      },
-    ),
+    IsInDateRange(new Date('1993-03-23'), false, false, false, {
+      message: ErrorMessages.DateRange(
+        'transactionEndDate',
+        false,
+        `a date between 03/23/1993 and the current date`,
+      ),
+    }),
     IsValidDate({
       message: ErrorMessages.DateValidity(),
     }),
@@ -145,4 +133,8 @@ export function OpYear() {
     }),
     IsDefined({ message: ErrorMessages.RequiredProperty() }),
   );
+}
+
+export function ImportCodeErrorMessage(property, value) {
+  return `You reported an invalid ${property} of ${value}.`;
 }
