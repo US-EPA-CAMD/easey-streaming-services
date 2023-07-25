@@ -26,7 +26,6 @@ export class SummaryValueService {
     const json2Dto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
-        delete data.id;
         const dto = plainToClass(SummaryValueBaseDTO, data, {
           enableImplicitConversion: false,
         });
