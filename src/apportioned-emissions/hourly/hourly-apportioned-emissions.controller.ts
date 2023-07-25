@@ -1,12 +1,6 @@
 import { Request } from 'express';
 
-import {
-  Get,
-  Req,
-  Query,
-  Controller,
-  StreamableFile,
-} from '@nestjs/common';
+import { Get, Req, Query, Controller, StreamableFile } from '@nestjs/common';
 
 import {
   ApiTags,
@@ -14,6 +8,7 @@ import {
   getSchemaPath,
   ApiSecurity,
   ApiExtraModels,
+  ApiQuery,
 } from '@nestjs/swagger';
 
 import {
@@ -22,12 +17,16 @@ import {
   ApiQueryEmissionsMultiSelect,
   ApiProgramQuery,
   ExcludeQuery,
+  ApiLocationNameQuery,
 } from '../../utils/swagger-decorator.const';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { HourlyApportionedEmissionsDTO } from '../../dto/hourly-apportioned-emissions.dto';
 import { HourlyApportionedEmissionsService } from './hourly-apportioned-emissions.service';
-import { HourlyApportionedEmissionsParamsDTO, StreamHourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import {
+  HourlyApportionedEmissionsParamsDTO,
+  StreamHourlyApportionedEmissionsParamsDTO,
+} from '../../dto/hourly-apportioned-emissions.params.dto';
 import { HourlyApportionedEmissionsFacilityAggregationDTO } from '../../dto/hourly-apportioned-emissions-facility-aggregation.dto';
 import { HourlyApportionedEmissionsStateAggregationDTO } from '../../dto/hourly-apportioned-emissions-state-aggregation.dto';
 import { HourlyApportionedEmissionsNationalAggregationDTO } from '../../dto/hourly-apportioned-emissions-national-aggregation.dto';
@@ -40,10 +39,7 @@ import { HourlyApportionedEmissionsNationalAggregationDTO } from '../../dto/hour
 @ApiExtraModels(HourlyApportionedEmissionsStateAggregationDTO)
 @ApiExtraModels(HourlyApportionedEmissionsNationalAggregationDTO)
 export class HourlyApportionedEmissionsController {
-
-  constructor(
-    private readonly service: HourlyApportionedEmissionsService
-  ) { }
+  constructor(private readonly service: HourlyApportionedEmissionsService) {}
 
   @Get()
   @ApiOkResponse({
@@ -57,7 +53,9 @@ export class HourlyApportionedEmissionsController {
       'text/csv': {
         schema: {
           type: 'string',
-          example: fieldMappings.emissions.hourly.data.aggregation.unit.map(i => i.label).join(','),
+          example: fieldMappings.emissions.hourly.data.aggregation.unit
+            .map(i => i.label)
+            .join(','),
         },
       },
     },
@@ -67,6 +65,7 @@ export class HourlyApportionedEmissionsController {
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
   @ExcludeQuery()
+  @ApiLocationNameQuery()
   async streamEmissions(
     @Req() req: Request,
     @Query() params: StreamHourlyApportionedEmissionsParamsDTO,
@@ -98,6 +97,7 @@ export class HourlyApportionedEmissionsController {
   @NotFoundResponse()
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
+  @ApiLocationNameQuery()
   async streamEmissionsFacilityAggregation(
     @Req() req: Request,
     @Query() params: HourlyApportionedEmissionsParamsDTO,
@@ -129,6 +129,7 @@ export class HourlyApportionedEmissionsController {
   @NotFoundResponse()
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
+  @ApiLocationNameQuery()
   async streamEmissionsStateAggregation(
     @Req() req: Request,
     @Query() params: HourlyApportionedEmissionsParamsDTO,
@@ -160,6 +161,7 @@ export class HourlyApportionedEmissionsController {
   @NotFoundResponse()
   @ApiQueryEmissionsMultiSelect()
   @ApiProgramQuery()
+  @ApiLocationNameQuery()
   async streamEmissionsNationalAggregation(
     @Req() req: Request,
     @Query() params: HourlyApportionedEmissionsParamsDTO,
