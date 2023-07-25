@@ -6,7 +6,7 @@ import {
   IsYearFormat,
 } from '@us-epa-camd/easey-common/pipes';
 import { IsInYearAndQuarterRange } from '../pipes/is-in-year-and-quarter-range.pipe';
-import { IsArray, Length } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class OrisQuarterParamsDto {
@@ -15,14 +15,15 @@ export class OrisQuarterParamsDto {
     let value = data.obj.orisCode;
 
     if (data.key === 'orisCode' && !Array.isArray(data.obj.orisCode)) {
-      value = [data.obj.orisCode];
+      value = data.obj.orisCode.split('|').map(Number);
     }
-
     return value;
   })
+
   @IsArray()
-  @IsNotEmptyString({ message: ErrorMessages.RequiredProperty(), each: true })
-  @Length(1, 6, { each: true })
+  @ArrayMinSize(1, { message: ErrorMessages.RequiredProperty() })
+  @ArrayMaxSize(6, { message: 'The orisCode array must have at most 6 elements' })
+
   orisCode: number[];
 
   @ApiProperty()

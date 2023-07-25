@@ -5,37 +5,22 @@ export class SummaryValueBaseDTO {
   id: string;
 
   @IsString()
-  stackPipeId?: string;
-
-  @IsString()
-  unitId?: string;
-
-  @IsString()
-  parameterCode: string;
-
-  @IsNumber()
-  currentReportingPeriodTotal?: number;
-
-  @IsNumber()
-  ozoneSeasonToDateTotal?: number;
-
-  @IsNumber()
-  yearToDateTotal?: number;
+  locationId: string;
 
   @IsNumber()
   reportingPeriodId: number;
 
   @IsString()
-  monitoringLocationId: string;
+  parameterCode: string;
 
   @IsNumber()
-  calcCurrentRptPeriodTotal?: number;
+  quarterlyValue?: number;
 
   @IsNumber()
-  calcOsTotal?: number;
+  yearTotal?: number;
 
   @IsNumber()
-  calcYearTotal?: number;
+  ozoneSeasonTotal?: number;
 
   @IsString()
   userId?: string;

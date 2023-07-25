@@ -26,7 +26,7 @@ export class SummaryValue extends BaseEntity {
   reportingPeriodId: number;
 
   @Column({ name: 'mon_loc_id', nullable: false })
-  monitoringLocationId: string;
+  locationId: string;
 
   @Column({ name: 'parameter_cd', nullable: false })
   parameterCode: string;
@@ -36,21 +36,14 @@ export class SummaryValue extends BaseEntity {
     transformer: new NumericColumnTransformer(),
     nullable: true,
   })
-  currentReportingPeriodTotal: number;
-
-  @Column({
-    name: 'calc_current_rpt_period_total',
-    transformer: new NumericColumnTransformer(),
-    nullable: true,
-  })
-  calcCurrentRptPeriodTotal: number;
+  quarterlyValue: number;
 
   @Column({
     name: 'os_total',
     transformer: new NumericColumnTransformer(),
     nullable: true,
   })
-  ozoneSeasonToDateTotal: number;
+  ozoneSeasonTotal: number;
 
   @Column({
     name: 'calc_os_total',
@@ -64,7 +57,7 @@ export class SummaryValue extends BaseEntity {
     transformer: new NumericColumnTransformer(),
     nullable: true,
   })
-  yearToDateTotal: number;
+  yearTotal: number;
 
   @Column({
     name: 'calc_year_total',
