@@ -33,7 +33,7 @@ export class SummaryValueController {
   @ApiQuery({
     style: 'pipeDelimited',
     name: 'orisCode',
-    required: true,
+    required: false,
     explode: false,
   })
   @ApiExtraModels(SummaryValueBaseDTO)

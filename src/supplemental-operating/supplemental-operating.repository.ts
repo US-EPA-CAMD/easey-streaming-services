@@ -10,14 +10,12 @@ export class SupplementalOperatingRepository extends Repository<
     const columns = [];
     columns.push(
       'so.id',
-      'ml.stackPipeId',
-      'ml.unitId',
-      'so.monLocIdentifier',
+      'so.locationId',
+      'so.reportPeriodId',
+      'so.operatingTypeCode',
       'so.fuelCode',
-      'so.opTypeCode',
-      'so.rptPeriodIdentifier',
-      'so.opValue',
-      'so.userid',
+      'so.operatingValue',
+      'so.userId',
       'so.addDate',
       'so.updateDate',
     );
@@ -27,9 +25,12 @@ export class SupplementalOperatingRepository extends Repository<
   }
 
   async buildQuery(params: OrisQuarterParamsDto): Promise<[string, any[]]> {
-    const plantConditons = `plant.oris_code IN (${params.orisCode.join(
-      ', ',
-    )}) AND plant.oris_code NOTNULL`;
+    let plantConditons = '';
+    if (params.orisCode) {
+      plantConditons = `plant.oris_code IN (${params.orisCode.join(
+        ', ',
+      )}) AND plant.oris_code NOTNULL`;
+    }
 
     const reportingPeriodConditions = `
         reportingPeriod.calendar_year >= ${params.beginYear} AND
@@ -41,13 +42,15 @@ export class SupplementalOperatingRepository extends Repository<
     const query = this.createQueryBuilder('so')
       .select(this.getColumns())
       .innerJoin('so.monitorLocation', 'ml')
-      .innerJoin('ml.monitorPlans', 'monitorPlans')
-      .innerJoin('monitorPlans.plant', 'plant', plantConditons)
-      .innerJoin(
-        'so.reportingPeriod',
-        'reportingPeriod',
-        reportingPeriodConditions,
-      );
+      .innerJoin('ml.monitorPlans', 'monitorPlans');
+    if (plantConditons) {
+      query.innerJoin('monitorPlans.plant', 'plant', plantConditons);
+    }
+    query.innerJoin(
+      'so.reportingPeriod',
+      'reportingPeriod',
+      reportingPeriodConditions,
+    );
 
     return query.getQueryAndParameters();
   }

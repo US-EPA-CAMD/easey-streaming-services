@@ -26,9 +26,8 @@ export class SupplementalOperatingService {
     const json2Dto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
-        delete data.id;
         const dto = plainToClass(SupplementalOperatingDTO, data, {
-          enableImplicitConversion: false,
+          enableImplicitConversion: true,
         });
         callback(null, dto);
       },

@@ -14,20 +14,20 @@ export class SummaryValueBaseDTO {
   parameterCode: string;
 
   @IsNumber()
-  quarterlyValue?: number;
+  quarterlyValue: number;
 
   @IsNumber()
-  yearTotal?: number;
+  yearTotal: number;
 
   @IsNumber()
-  ozoneSeasonTotal?: number;
+  ozoneSeasonTotal: number;
 
   @IsString()
-  userId?: string;
+  userId: string;
 
   @IsString()
-  addDate?: string;
+  addDate: string;
 
   @IsString()
-  updateDate?: string;
+  updateDate: string;
 }

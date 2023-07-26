@@ -1,21 +1,17 @@
 export class SupplementalOperatingDTO {
-  opSuppDataIdentifier: string;
+  id: string;
 
-  stackPipeId?: string;
+  locationId?: string;
 
-  unitId?: string;
+  reportPeriodId: number;
 
-  monLocIdentifier: string;
+  operatingTypeCode: string;
 
   fuelCode: string;
 
-  opTypeCode: string;
+  operatingValue: number;
 
-  rptPeriodIdentifier: number;
-
-  opValue: number;
-
-  userid: string;
+  userId: string;
 
   addDate: string;
 
