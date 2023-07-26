@@ -6,11 +6,12 @@ import {
   IsYearFormat,
 } from '@us-epa-camd/easey-common/pipes';
 import { IsInYearAndQuarterRange } from '../pipes/is-in-year-and-quarter-range.pipe';
-import { ArrayMaxSize, ArrayMinSize, IsArray } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class OrisQuarterParamsDto {
   @ApiProperty()
+  @IsOptional()
   @Transform(data => {
     let value = data.obj.orisCode;
 

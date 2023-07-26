@@ -27,7 +27,7 @@ export class SummaryValueService {
       objectMode: true,
       transform(data, _enc, callback) {
         const dto = plainToClass(SummaryValueBaseDTO, data, {
-          enableImplicitConversion: false,
+          enableImplicitConversion: true,
         });
         callback(null, dto);
       },

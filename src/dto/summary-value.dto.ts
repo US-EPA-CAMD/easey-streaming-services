@@ -1,4 +1,6 @@
+import { Transform } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
+import moment from 'moment';
 
 export class SummaryValueBaseDTO {
   @IsString()
@@ -14,20 +16,22 @@ export class SummaryValueBaseDTO {
   parameterCode: string;
 
   @IsNumber()
-  quarterlyValue?: number;
+  quarterlyValue: number;
 
   @IsNumber()
-  yearTotal?: number;
+  yearTotal: number;
 
   @IsNumber()
-  ozoneSeasonTotal?: number;
+  ozoneSeasonTotal: number;
 
   @IsString()
-  userId?: string;
+  userId: string;
 
   @IsString()
-  addDate?: string;
+  @Transform(date => moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss'))
+  addDate: string;
 
   @IsString()
-  updateDate?: string;
+  @Transform(date => date.value? moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss') : null)
+  updateDate: string;
 }
