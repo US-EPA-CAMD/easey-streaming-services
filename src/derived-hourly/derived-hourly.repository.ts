@@ -9,31 +9,14 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
     columns.push(
       'dh.id',
       'dh.hourId',
-      'dh.applicableBiasAdjFactor',
-      'dh.calcUnadjustedHrlyValue',
-      'dh.calcAdjustedHrlyValue',
-      'dh.diluentCapInd',
+      'dh.parameterCode',
+      'dh.adjustedHourlyValue',
+      'dh.modcCode',
+      'dh.locationId',
+      'dh.reportPeriodId',
       'dh.userId',
       'dh.addDate',
       'dh.updateDate',
-      'dh.calcPctDiluent',
-      'dh.calcPctMoisture',
-      'dh.calcRataStatus',
-      'dh.calcAppeStatus',
-      'dh.rptPeriodId',
-      'dh.monitorLocationId',
-      'dh.calcFuelFlowTotal',
-      'dh.calcHourMeasureCode',
-      'dh.parameterCode',
-      'dh.modcCode',
-      'dh.unadjustedHrlyValue',
-      'dh.adjustedHrlyValue',
-      'ms.monitoringSystemId',
-      'mf.formulaId',
-      'dh.pctAvailable',
-      'dh.operatingConditionCode',
-      'dh.segmentNum',
-      'dh.fuelCode',
     );
     return columns.map(col => {
       return `${col} AS "${col.split('.')[1]}"`;
@@ -53,7 +36,7 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
     if (Array.isArray(params.orisCode) && params.orisCode.length > 0) {
       const plantConditions = `p.orisCode IN (${params.orisCode.join(
         ', ',
-      )}) AND plant.orisCode NOTNULL`;
+      )}) AND p.orisCode NOTNULL`;
 
       query = query
         .innerJoin('ml.monitorPlans', 'mp')
