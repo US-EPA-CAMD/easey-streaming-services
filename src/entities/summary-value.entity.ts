@@ -23,7 +23,7 @@ export class SummaryValue extends BaseEntity {
     transformer: new NumericColumnTransformer(),
     nullable: false,
   })
-  reportingPeriodId: number;
+  reportPeriodId: number;
 
   @Column({ name: 'mon_loc_id', nullable: false })
   locationId: string;
