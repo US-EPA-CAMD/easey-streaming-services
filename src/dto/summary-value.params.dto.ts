@@ -12,15 +12,11 @@ import { Transform } from 'class-transformer';
 export class OrisQuarterParamsDto {
   @ApiProperty()
   @IsOptional()
-  @Transform(data => {
-    let value = data.obj.orisCode;
-
-    if (data.key === 'orisCode' && !Array.isArray(data.obj.orisCode)) {
-      value = data.obj.orisCode.split('|').map(Number);
+  @Transform(({ value }) => {
+    if (value) {
+      return value.split('|').map((item: string) => Number(item.trim()));
     }
-    return value;
   })
-
   @IsArray()
   @ArrayMinSize(1, { message: ErrorMessages.RequiredProperty() })
   @ArrayMaxSize(6, { message: 'The orisCode array must have at most 6 elements' })

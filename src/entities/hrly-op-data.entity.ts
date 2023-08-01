@@ -17,25 +17,25 @@ export class HrlyOpData extends BaseEntity {
   @PrimaryColumn({ name: 'hour_id', nullable: false })
   id: string;
 
+  @Column({ name: 'mon_loc_id', nullable: false })
+  locationId: string;
+
   @Column({
     name: 'rpt_period_id',
     transformer: new NumericColumnTransformer(),
     nullable: false,
   })
-  reportingPeriodId: number;
-
-  @Column({ name: 'mon_loc_id', nullable: false })
-  monitoringLocationId: string;
+  reportPeriodId: number;
 
   @Column({ name: 'begin_date', type: 'date', nullable: false })
-  date: Date;
+  beginDate: Date;
 
   @Column({
     name: 'begin_hour',
     transformer: new NumericColumnTransformer(),
     nullable: false,
   })
-  hour: number;
+  beginHour: number;
 
   @Column({
     name: 'op_time',
@@ -51,46 +51,8 @@ export class HrlyOpData extends BaseEntity {
   })
   hourLoad: number;
 
-  @Column({
-    name: 'load_range',
-    transformer: new NumericColumnTransformer(),
-    nullable: true,
-  })
-  loadRange: number;
-
-  @Column({
-    name: 'common_stack_load_range',
-    transformer: new NumericColumnTransformer(),
-    nullable: true,
-  })
-  commonStackLoadRange: number;
-
-  @Column({
-    name: 'fc_factor',
-    transformer: new NumericColumnTransformer(),
-    nullable: true,
-  })
-  fcFactor: number;
-
-  @Column({
-    name: 'fd_factor',
-    transformer: new NumericColumnTransformer(),
-    nullable: true,
-  })
-  fdFactor: number;
-
-  @Column({
-    name: 'fw_factor',
-    transformer: new NumericColumnTransformer(),
-    nullable: true,
-  })
-  fwFactor: number;
-
-  @Column({ name: 'fuel_cd', nullable: true })
-  fuelCode: string;
-
-  @Column({ name: 'multi_fuel_flg', nullable: true })
-  multiFuelFlg: string;
+  @Column({ name: 'load_uom_cd', nullable: true })
+  loadUnitsOfMeasureCode: string;
 
   @Column({ name: 'userid', nullable: true })
   userId: string;
@@ -100,32 +62,6 @@ export class HrlyOpData extends BaseEntity {
 
   @Column({ name: 'update_date', nullable: true })
   updateDate: Date;
-
-  @Column({ name: 'load_uom_cd', nullable: true })
-  loadUnitsOfMeasureCode: string;
-
-  @Column({ name: 'operating_condition_cd', nullable: true })
-  operatingConditionCode: string;
-
-  @Column({ name: 'fuel_cd_list', nullable: true })
-  fuelCdList: string;
-
-  @Column({
-    name: 'mhhi_indicator',
-    transformer: new NumericColumnTransformer(),
-    nullable: true,
-  })
-  mhhiIndicator: number;
-
-  @Column({
-    name: 'mats_load',
-    transformer: new NumericColumnTransformer(),
-    nullable: true,
-  })
-  matsHourLoad: number;
-
-  @Column({ name: 'mats_startup_shutdown_flg', nullable: true })
-  matsStartupShutdownFlag: string;
 
   @ManyToOne(
     () => MonitorLocation,

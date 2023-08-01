@@ -8,28 +8,16 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
     const columns = [];
     columns.push(
       'ho.id',
-      'ho.reportingPeriodId',
-      'ho.monitoringLocationId',
-      'ho.date',
-      'ho.hour',
+      'ho.locationId',
+      'ho.reportPeriodId',
+      'ho.beginDate',
+      'ho.beginHour',
       'ho.operatingTime',
       'ho.hourLoad',
-      'ho.loadRange',
-      'ho.commonStackLoadRange',
-      'ho.fcFactor',
-      'ho.fdFactor',
-      'ho.fwFactor',
-      'ho.fuelCode',
-      'ho.multiFuelFlg',
+      'ho.loadUnitsOfMeasureCode',
       'ho.userId',
       'ho.addDate',
       'ho.updateDate',
-      'ho.loadUnitsOfMeasureCode',
-      'ho.operatingConditionCode',
-      'ho.fuelCdList',
-      'ho.mhhiIndicator',
-      'ho.matsHourLoad',
-      'ho.matsStartupShutdownFlag',
     );
     return columns.map(col => {
       return `${col} AS "${col.split('.')[1]}"`;
