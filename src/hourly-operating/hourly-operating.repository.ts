@@ -48,11 +48,12 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
         ?.map(location => `'${location}'`)
         .join(', ');
 
-      const locationCondition = `ml.stackPipe IN (${locationStrings}) OR CAST(ml.unit AS TEXT) IN (${locationStrings})`;
+      const locationCondition = `stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings})`;
 
       query = query
-        .andWhere(locationCondition);
-    }
+      .leftJoin('ml.stackPipe', 'stackPipe')
+      .leftJoin('ml.unit', 'unit')
+      .andWhere(locationCondition);    }
 
     return query.getQueryAndParameters();
   }
