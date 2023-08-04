@@ -9,7 +9,7 @@ export class SummaryValueRepository extends Repository<SummaryValue> {
     columns.push(
       'sv.id',
       'sv.locationId',
-      'sv.reportingPeriodId',
+      'sv.reportPeriodId',
       'sv.parameterCode',
       'sv.quarterlyValue',
       'sv.yearTotal',

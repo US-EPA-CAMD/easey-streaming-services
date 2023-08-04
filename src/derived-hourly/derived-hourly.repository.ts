@@ -33,7 +33,8 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
       .innerJoin('dh.monitorSystem', 'ms')
       .innerJoin('dh.reportingPeriod', 'rp', reportingPeriodConditions);
 
-    if (Array.isArray(params.orisCode) && params.orisCode.length > 0) {
+    const locationNameParams = Array.isArray(params.locationName) && params.locationName.length > 0;
+    if (Array.isArray(params.orisCode) && params.orisCode.length > 0 && !locationNameParams) {
       const plantConditions = `p.orisCode IN (${params.orisCode.join(
         ', ',
       )}) AND p.orisCode NOTNULL`;
@@ -43,19 +44,22 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
         .innerJoin('mp.plant', 'p', plantConditions);
     }
 
-    if (Array.isArray(params.locationName) && params.locationName.length > 0) {
+    if (locationNameParams) {
       const locationStrings = params.locationName
         ?.map(location => `'${location}'`)
         .join(', ');
 
-      const stackPipeCondition = `stackPipe.stack_name IN (${locationStrings})`;
-      const unitCondition = `unit.unitid IN (${locationStrings})`;
+ 
+      const locationCondition = `stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings})`;
 
       query = query
-        .leftJoin('ml.stackPipe', 'stackPipe', stackPipeCondition)
-        .leftJoin('ml.unit', 'unit', unitCondition);
+        .leftJoin('ml.stackPipe', 'stackPipe')
+        .leftJoin('ml.unit', 'unit')
+        .andWhere(locationCondition);
+
     }
 
     return query.getQueryAndParameters();
   }
 }
+

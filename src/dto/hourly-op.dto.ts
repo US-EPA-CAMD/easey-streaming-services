@@ -1,25 +1,44 @@
+import { Transform } from 'class-transformer';
+import { IsNumber, IsString } from 'class-validator';
+import moment from 'moment';
+
 export class HourlyOperatingDTO {
+  @IsString()
   id: string;
-  reportingPeriodId: number;
-  monitoringLocationId: string;
-  date: Date;
-  hour: number;
+
+  @IsString()
+  locationId: string;
+
+  @IsNumber()
+  reportPeriodId: number;
+
+  @IsString()
+  @Transform(date => moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss'))
+
+  beginDate: Date;
+
+  @IsNumber()
+  beginHour: number;
+
+  @IsNumber()
   operatingTime: number;
+
+  @IsNumber()
   hourLoad: number;
-  loadRange: number;
-  commonStackLoadRange: number;
-  fcFactor: number;
-  fdFactor: number;
-  fwFactor: number;
-  fuelCode: string;
-  multiFuelFlg: string;
-  userId: string;
-  addDate: Date;
-  updateDate: Date;
+
+  @IsString()
   loadUnitsOfMeasureCode: string;
-  operatingConditionCode: string;
-  fuelCdList: string;
-  mhhiIndicator: number;
-  matsHourLoad: number;
-  matsStartupShutdownFlag: string;
+
+  @IsString()
+  userId: string;
+  @IsString()
+  @Transform(date => moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss'))
+  addDate: Date;
+  @IsString()
+  @Transform(date =>
+    date.value
+      ? moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss')
+      : null,
+  )
+  updateDate: Date;
 }

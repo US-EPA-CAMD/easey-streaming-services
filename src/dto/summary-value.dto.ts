@@ -10,7 +10,7 @@ export class SummaryValueBaseDTO {
   locationId: string;
 
   @IsNumber()
-  reportingPeriodId: number;
+  reportPeriodId: number;
 
   @IsString()
   parameterCode: string;
