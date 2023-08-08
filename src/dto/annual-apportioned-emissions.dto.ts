@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 import { ApportionedEmissionsDTO } from './apportioned-emissions.dto';
+import { IsNumber } from 'class-validator';
 
 export class AnnualApportionedEmissionsDTO extends ApportionedEmissionsDTO {
   @ApiProperty({
@@ -9,6 +10,7 @@ export class AnnualApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.year.example,
     name: propertyMetadata.year.fieldLabels.value,
   })
+  @IsNumber()
   year: number;
 
   @ApiProperty({
@@ -16,6 +18,7 @@ export class AnnualApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.sumOpTime.example,
     name: propertyMetadata.sumOpTime.fieldLabels.value,
   })
+  @IsNumber()
   sumOpTime?: number;
 
   @ApiProperty({
@@ -23,5 +26,9 @@ export class AnnualApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.countOpTime.example,
     name: propertyMetadata.countOpTime.fieldLabels.value,
   })
+  @IsNumber()
   countOpTime?: number;
+
+  @IsNumber()
+  unit_id: number;
 }
