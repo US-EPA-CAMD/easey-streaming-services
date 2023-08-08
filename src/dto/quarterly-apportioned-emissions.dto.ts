@@ -10,6 +10,7 @@ export class QuarterlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.year.example,
     name: propertyMetadata.year.fieldLabels.value,
   })
+  @IsNumber()
   year: number;
 
   @ApiProperty({
@@ -17,6 +18,7 @@ export class QuarterlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.quarter.example,
     name: propertyMetadata.quarter.fieldLabels.value,
   })
+  @IsNumber()
   quarter: number;
 
   @ApiProperty({
@@ -24,6 +26,7 @@ export class QuarterlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.sumOpTime.example,
     name: propertyMetadata.sumOpTime.fieldLabels.value,
   })
+  @IsNumber()
   sumOpTime?: number;
 
   @ApiProperty({
@@ -31,6 +34,7 @@ export class QuarterlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.countOpTime.example,
     name: propertyMetadata.countOpTime.fieldLabels.value,
   })
+  @IsNumber()
   countOpTime?: number;
 
   @ApiProperty({
