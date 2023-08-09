@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { propertyMetadata } from '@us-epa-camd/easey-common/constants';
 
 import { ApportionedEmissionsDTO } from './apportioned-emissions.dto';
+import { IsNumber, IsString } from 'class-validator';
 
 export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
   constructor() {
@@ -13,6 +14,7 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.so2MassMeasureFlg.example,
     name: propertyMetadata.so2MassMeasureFlg.fieldLabels.value,
   })
+  @IsString()
   so2MassMeasureFlg: string;
 
   @ApiProperty({
@@ -20,6 +22,7 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.so2RateMeasureFlg.example,
     name: propertyMetadata.so2RateMeasureFlg.fieldLabels.value,
   })
+  @IsString()
   so2RateMeasureFlg: string;
 
   @ApiProperty({
@@ -27,6 +30,7 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.noxMassMeasureFlg.example,
     name: propertyMetadata.noxMassMeasureFlg.fieldLabels.value,
   })
+  @IsString()
   noxMassMeasureFlg: string;
 
   @ApiProperty({
@@ -34,6 +38,7 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.noxRateMeasureFlg.example,
     name: propertyMetadata.noxRateMeasureFlg.fieldLabels.value,
   })
+  @IsString()
   noxRateMeasureFlg: string;
 
   @ApiProperty({
@@ -41,6 +46,7 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.co2MassMeasureFlg.example,
     name: propertyMetadata.co2MassMeasureFlg.fieldLabels.value,
   })
+  @IsString()
   co2MassMeasureFlg: string;
 
   @ApiProperty({
@@ -48,6 +54,7 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.co2RateMeasureFlg.example,
     name: propertyMetadata.co2RateMeasureFlg.fieldLabels.value,
   })
+  @IsString()
   co2RateMeasureFlg: string;
 
   @ApiProperty({
@@ -55,6 +62,7 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.date.example,
     name: propertyMetadata.date.fieldLabels.value,
   })
+  @IsString()
   date: string;
 
   @ApiProperty({
@@ -62,6 +70,7 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.hour.example,
     name: propertyMetadata.hour.fieldLabels.value,
   })
+  @IsNumber()
   hour: number;
 
   @ApiProperty({
@@ -69,5 +78,14 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
     example: propertyMetadata.opTime.example,
     name: propertyMetadata.opTime.fieldLabels.value,
   })
+  @IsNumber()
   opTime?: number;
+
+  @ApiProperty({
+    description: propertyMetadata.unit_id.description,
+    example: propertyMetadata.unit_id.example,
+    name: propertyMetadata.unit_id.fieldLabels.value,
+  })
+  @IsNumber()
+  unit_id: number
 }

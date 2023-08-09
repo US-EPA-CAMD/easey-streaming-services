@@ -29,6 +29,11 @@ export class AnnualApportionedEmissionsDTO extends ApportionedEmissionsDTO {
   @IsNumber()
   countOpTime?: number;
 
+  @ApiProperty({
+    description: propertyMetadata.unit_id.description,
+    example: propertyMetadata.unit_id.example,
+    name: propertyMetadata.unit_id.fieldLabels.value,
+  })
   @IsNumber()
   unit_id: number;
 }
