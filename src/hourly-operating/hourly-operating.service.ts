@@ -28,7 +28,7 @@ export class HourlyOperatingService {
       transform(data, _enc, callback) {
         delete data.id;
         const dto = plainToClass(HourlyOperatingDTO, data, {
-          enableImplicitConversion: false,
+          enableImplicitConversion: true,
         });
         callback(null, dto);
       },

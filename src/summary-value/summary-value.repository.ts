@@ -8,17 +8,12 @@ export class SummaryValueRepository extends Repository<SummaryValue> {
     const columns = [];
     columns.push(
       'sv.id',
-      'ml.stackPipeId',
-      'ml.unitId',
+      'sv.locationId',
+      'sv.reportPeriodId',
       'sv.parameterCode',
-      'sv.currentReportingPeriodTotal',
-      'sv.ozoneSeasonToDateTotal',
-      'sv.yearToDateTotal',
-      'sv.reportingPeriodId',
-      'sv.monitoringLocationId',
-      'sv.calcCurrentRptPeriodTotal',
-      'sv.calcOsTotal',
-      'sv.calcYearTotal',
+      'sv.quarterlyValue',
+      'sv.yearTotal',
+      'sv.ozoneSeasonTotal',
       'sv.userId',
       'sv.addDate',
       'sv.updateDate',
@@ -29,10 +24,12 @@ export class SummaryValueRepository extends Repository<SummaryValue> {
   }
 
   async buildQuery(params: OrisQuarterParamsDto): Promise<[string, any[]]> {
-    const plantConditons = `plant.oris_code IN (${params.orisCode.join(
-      ', ',
-    )}) AND plant.oris_code NOTNULL`;
-
+    let plantConditons = '';
+    if (params.orisCode) {
+      plantConditons = `plant.oris_code IN (${params.orisCode.join(
+        ', ',
+      )}) AND plant.oris_code NOTNULL`;
+    }
     const reportingPeriodConditions = `
         reportingPeriod.calendar_year >= ${params.beginYear} AND
         reportingPeriod.quarter >= ${params.beginQuarter} AND
@@ -43,13 +40,15 @@ export class SummaryValueRepository extends Repository<SummaryValue> {
     const query = this.createQueryBuilder('sv')
       .select(this.getColumns())
       .innerJoin('sv.monitorLocation', 'ml')
-      .innerJoin('ml.monitorPlans', 'monitorPlans')
-      .innerJoin('monitorPlans.plant', 'plant', plantConditons)
-      .innerJoin(
-        'sv.reportingPeriod',
-        'reportingPeriod',
-        reportingPeriodConditions,
-      );
+      .innerJoin('ml.monitorPlans', 'monitorPlans');
+    if (plantConditons) {
+      query.innerJoin('monitorPlans.plant', 'plant', plantConditons);
+    }
+    query.innerJoin(
+      'sv.reportingPeriod',
+      'reportingPeriod',
+      reportingPeriodConditions,
+    );
 
     return query.getQueryAndParameters();
   }

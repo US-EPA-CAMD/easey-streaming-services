@@ -26,9 +26,8 @@ export class DerivedHourlyService {
     const json2Dto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
-        delete data.id;
         const dto = plainToClass(DerivedHourlyValueBaseDTO, data, {
-          enableImplicitConversion: false,
+          enableImplicitConversion: true,
         });
         callback(null, dto);
       },

@@ -8,28 +8,16 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
     const columns = [];
     columns.push(
       'ho.id',
-      'ho.reportingPeriodId',
-      'ho.monitoringLocationId',
-      'ho.date',
-      'ho.hour',
+      'ho.locationId',
+      'ho.reportPeriodId',
+      'ho.beginDate',
+      'ho.beginHour',
       'ho.operatingTime',
       'ho.hourLoad',
-      'ho.loadRange',
-      'ho.commonStackLoadRange',
-      'ho.fcFactor',
-      'ho.fdFactor',
-      'ho.fwFactor',
-      'ho.fuelCode',
-      'ho.multiFuelFlg',
+      'ho.loadUnitsOfMeasureCode',
       'ho.userId',
       'ho.addDate',
       'ho.updateDate',
-      'ho.loadUnitsOfMeasureCode',
-      'ho.operatingConditionCode',
-      'ho.fuelCdList',
-      'ho.mhhiIndicator',
-      'ho.matsHourLoad',
-      'ho.matsStartupShutdownFlag',
     );
     return columns.map(col => {
       return `${col} AS "${col.split('.')[1]}"`;
@@ -44,7 +32,8 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
       .innerJoin('ho.monitorLocation', 'ml')
       .innerJoin('ho.reportingPeriod', 'rp', reportingPeriodConditions);
 
-    if (Array.isArray(params.orisCode) && params.orisCode.length > 0) {
+    const locationNameParams = Array.isArray(params.locationName) && params.locationName.length > 0;
+    if (Array.isArray(params.orisCode) && params.orisCode.length > 0 && !locationNameParams) {
       const plantConditions = `plant.orisCode IN (${params.orisCode.join(
         ', ',
       )}) AND plant.orisCode NOTNULL`;
@@ -54,18 +43,17 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
         .innerJoin('mp.plant', 'plant', plantConditions);
     }
 
-    if (Array.isArray(params.locationName) && params.locationName.length > 0) {
+    if (locationNameParams) {
       const locationStrings = params.locationName
         ?.map(location => `'${location}'`)
         .join(', ');
 
-      const stackPipeCondition = `stackPipe.stack_name IN (${locationStrings})`;
-      const unitCondition = `unit.unitid IN (${locationStrings})`;
+      const locationCondition = `stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings})`;
 
       query = query
-        .leftJoin('ml.stackPipe', 'stackPipe', stackPipeCondition)
-        .leftJoin('ml.unit', 'unit', unitCondition);
-    }
+      .leftJoin('ml.stackPipe', 'stackPipe')
+      .leftJoin('ml.unit', 'unit')
+      .andWhere(locationCondition);    }
 
     return query.getQueryAndParameters();
   }

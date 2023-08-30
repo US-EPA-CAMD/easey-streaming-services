@@ -1,23 +1,33 @@
+import { Transform } from "class-transformer";
+import { IsNumber, IsString } from "class-validator";
+import moment from "moment";
+
 export class SupplementalOperatingDTO {
-  opSuppDataIdentifier: string;
+  @IsString()
+  id: string;
 
-  stackPipeId?: string;
+  @IsString()
+  locationId: string;
 
-  unitId?: string;
+  @IsNumber()
+  reportPeriodId: number;
 
-  monLocIdentifier: string;
+  @IsString()
+  operatingTypeCode: string;
 
+  @IsString()
   fuelCode: string;
 
-  opTypeCode: string;
+  @IsNumber()
+  operatingValue: number;
+  @IsString()
+  userId: string;
 
-  rptPeriodIdentifier: number;
-
-  opValue: number;
-
-  userid: string;
-
+  @IsString()
+  @Transform(date => moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss'))
   addDate: string;
 
+  @IsString()
+  @Transform(date => date.value? moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss') : null)
   updateDate: string;
 }

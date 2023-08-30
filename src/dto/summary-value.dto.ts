@@ -1,48 +1,37 @@
+import { Transform } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
+import moment from 'moment';
 
 export class SummaryValueBaseDTO {
   @IsString()
   id: string;
 
   @IsString()
-  stackPipeId?: string;
+  locationId: string;
 
-  @IsString()
-  unitId?: string;
+  @IsNumber()
+  reportPeriodId: number;
 
   @IsString()
   parameterCode: string;
 
   @IsNumber()
-  currentReportingPeriodTotal?: number;
+  quarterlyValue: number;
 
   @IsNumber()
-  ozoneSeasonToDateTotal?: number;
+  yearTotal: number;
 
   @IsNumber()
-  yearToDateTotal?: number;
-
-  @IsNumber()
-  reportingPeriodId: number;
+  ozoneSeasonTotal: number;
 
   @IsString()
-  monitoringLocationId: string;
-
-  @IsNumber()
-  calcCurrentRptPeriodTotal?: number;
-
-  @IsNumber()
-  calcOsTotal?: number;
-
-  @IsNumber()
-  calcYearTotal?: number;
+  userId: string;
 
   @IsString()
-  userId?: string;
+  @Transform(date => moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss'))
+  addDate: string;
 
   @IsString()
-  addDate?: string;
-
-  @IsString()
-  updateDate?: string;
+  @Transform(date => date.value? moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss') : null)
+  updateDate: string;
 }

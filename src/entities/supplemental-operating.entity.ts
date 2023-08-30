@@ -17,30 +17,30 @@ export class SupplementalOperating extends BaseEntity {
   id: string;
 
   @Column({ name: 'mon_loc_id' })
-  monLocIdentifier: string;
-
-  @Column({ name: 'fuel_cd' })
-  fuelCode: string;
-
-  @Column({ name: 'op_type_cd' })
-  opTypeCode: string;
+  locationId: string;
 
   @Column({
     name: 'rpt_period_id',
     type: 'numeric',
     transformer: new NumericColumnTransformer(),
   })
-  rptPeriodIdentifier: number;
+  reportPeriodId: number;
+
+  @Column({ name: 'op_type_cd' })
+  operatingTypeCode: string;
+
+  @Column({ name: 'fuel_cd' })
+  fuelCode: string;
 
   @Column({
     name: 'op_value',
     type: 'numeric',
     transformer: new NumericColumnTransformer(),
   })
-  opValue: number;
+  operatingValue: number;
 
   @Column({ name: 'userid' })
-  userid: string;
+  userId: string;
 
   @Column({ name: 'add_date' })
   addDate: string;

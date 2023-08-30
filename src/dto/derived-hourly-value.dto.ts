@@ -1,55 +1,37 @@
+import { Transform } from "class-transformer";
+import { IsNumber, IsString } from "class-validator";
+import moment from "moment";
+
 export class DerivedHourlyValueBaseDTO {
+  @IsString()
   id: string;
 
+  @IsString()
   hourId: string;
 
-  applicableBiasAdjFactor: number;
-
-  calcUnadjustedHrlyValue: number;
-
-  calcAdjustedHrlyValue: number;
-
-  diluentCapInd: number;
-
-  userId: string;
-
-  addDate?: string;
-
-  updateDate?: string;
-
-  calcPctDiluent: string;
-
-  calcPctMoisture: string;
-
-  calcRataStatus: string;
-
-  calcAppeStatus: string;
-
-  rptPeriodId: number;
-
-  monitorLocationId: string;
-
-  calcFuelFlowTotal: number;
-
-  calcHourMeasureCode: string;
-
+  @IsString()
   parameterCode: string;
 
+  @IsString()
+  adjustedHourlyValue: string;
+
+  @IsString()
   modcCode: string;
 
-  unadjustedHourlyValue: number;
+  @IsString()
+  locationId: string;
 
-  adjustedHourlyValue: number;
+  @IsNumber()
+  reportPeriodId: number;
 
-  monitoringSystemId: string;
+  @IsString()
+  userId: string;
 
-  formulaId: string;
+  @IsString()
+  @Transform(date => moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss'))
+  addDate: string;
 
-  pctAvailable: number;
-
-  operatingConditionCode: string;
-
-  segmentNum: number;
-
-  fuelCode: string;
+  @IsString()
+  @Transform(date => date.value? moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss') : null)
+  updateDate: string;
 }
