@@ -24,24 +24,24 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
   }
 
   async buildQuery(params: HourlyParamsDto): Promise<[string, any[]]> {
-    const reportingPeriodConditions = `rp.beginDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
+    const dateCondition = `dh.addDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
+
 
     let query = this.createQueryBuilder('dh')
       .select(this.getColumns())
-      .innerJoin('dh.monitorLocation', 'ml')
-      .innerJoin('dh.monitorFormula', 'mf')
-      .innerJoin('dh.monitorSystem', 'ms')
-      .innerJoin('dh.reportingPeriod', 'rp', reportingPeriodConditions);
+      .where(dateCondition)
 
     const locationNameParams = Array.isArray(params.locationName) && params.locationName.length > 0;
-    if (Array.isArray(params.orisCode) && params.orisCode.length > 0 && !locationNameParams) {
-      const plantConditions = `p.orisCode IN (${params.orisCode.join(
-        ', ',
-      )}) AND p.orisCode NOTNULL`;
 
+    if (Array.isArray(params.orisCode) && params.orisCode.length > 0) {
+      const plantConditions = `plant.orisCode IN (${params.orisCode.join(
+        ', ',
+      )}) AND plant.orisCode NOTNULL`;
       query = query
-        .innerJoin('ml.monitorPlans', 'mp')
-        .innerJoin('mp.plant', 'p', plantConditions);
+        .innerJoin('dh.monitorLocation', 'ml')
+        .leftJoin('ml.unit', 'unit')
+        .leftJoin('ml.stackPipe', 'stackPipe')
+        .innerJoin('unit.plant', 'plant', plantConditions)
     }
 
     if (locationNameParams) {
@@ -53,6 +53,7 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
       const locationCondition = `stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings})`;
 
       query = query
+        .innerJoin('dh.monitorLocation', 'ml')
         .leftJoin('ml.stackPipe', 'stackPipe')
         .leftJoin('ml.unit', 'unit')
         .andWhere(locationCondition);
