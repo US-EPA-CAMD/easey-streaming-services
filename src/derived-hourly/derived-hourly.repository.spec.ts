@@ -6,7 +6,9 @@ import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
 
 const mockedQueryBuilder = {
   innerJoin: jest.fn().mockReturnThis(),
+  leftJoin: jest.fn().mockReturnThis(),
   select: jest.fn().mockReturnThis(),
+  where: jest.fn().mockReturnThis(),
   getQueryAndParameters: jest.fn(),
 };
 
