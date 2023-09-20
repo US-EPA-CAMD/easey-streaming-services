@@ -33,7 +33,7 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
 
     const locationNameParams = Array.isArray(params.locationName) && params.locationName.length > 0;
 
-    if (Array.isArray(params.orisCode) && params.orisCode.length > 0) {
+    if (Array.isArray(params.orisCode) && params.orisCode.length > 0 && !locationNameParams) {
       const plantConditions = `plant.orisCode IN (${params.orisCode.join(
         ', ',
       )}) AND plant.orisCode NOTNULL`;

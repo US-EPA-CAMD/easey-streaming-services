@@ -26,7 +26,6 @@ export class HourlyOperatingService {
     const json2Dto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
-        delete data.id;
         const dto = plainToClass(HourlyOperatingDTO, data, {
           enableImplicitConversion: true,
         });
