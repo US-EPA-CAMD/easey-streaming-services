@@ -26,14 +26,18 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
   async buildQuery(params: HourlyParamsDto): Promise<[string, any[]]> {
     const dateCondition = `dh.addDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
 
-
     let query = this.createQueryBuilder('dh')
       .select(this.getColumns())
-      .where(dateCondition)
+      .where(dateCondition);
 
-    const locationNameParams = Array.isArray(params.locationName) && params.locationName.length > 0;
+    const locationNameParams =
+      Array.isArray(params.locationName) && params.locationName.length > 0;
 
-    if (Array.isArray(params.orisCode) && params.orisCode.length > 0 && !locationNameParams) {
+    if (
+      Array.isArray(params.orisCode) &&
+      params.orisCode.length > 0 &&
+      !locationNameParams
+    ) {
       const plantConditions = `plant.orisCode IN (${params.orisCode.join(
         ', ',
       )}) AND plant.orisCode NOTNULL`;
@@ -41,7 +45,7 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
         .innerJoin('dh.monitorLocation', 'ml')
         .leftJoin('ml.unit', 'unit')
         .leftJoin('ml.stackPipe', 'stackPipe')
-        .innerJoin('unit.plant', 'plant', plantConditions)
+        .innerJoin('unit.plant', 'plant', plantConditions);
     }
 
     if (locationNameParams) {
@@ -49,18 +53,15 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
         ?.map(location => `'${location}'`)
         .join(', ');
 
- 
-      const locationCondition = `stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings})`;
+      const locationCondition = `(stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings}))`;
 
       query = query
         .innerJoin('dh.monitorLocation', 'ml')
         .leftJoin('ml.stackPipe', 'stackPipe')
         .leftJoin('ml.unit', 'unit')
         .andWhere(locationCondition);
-
     }
 
     return query.getQueryAndParameters();
   }
 }
-

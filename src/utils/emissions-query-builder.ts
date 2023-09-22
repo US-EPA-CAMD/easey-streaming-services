@@ -240,12 +240,9 @@ export class EmissionsQueryBuilder {
     alias: string,
   ) {
     if (locations) {
+      const locationStrings = locations.map(l => `'${l}'`).join(',');
       query.andWhere(
-        `( ${alias}.associatedStacks IN (${locations
-          .map(l => `'${l}'`)
-          .join(',')}) OR ${alias}.unitId IN (${locations
-          .map(l => `'${l}'`)
-          .join(',')}))`,
+        `( ${alias}.associatedStacks IN (${locationStrings}) OR ${alias}.unitId IN (${locationStrings}))`,
       );
     }
     return query;
