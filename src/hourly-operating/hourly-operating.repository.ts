@@ -25,22 +25,28 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
   }
 
   async buildQuery(params: HourlyParamsDto): Promise<[string, any[]]> {
-    const reportingPeriodConditions = `rp.beginDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
+    const dateCondition = `ho.beginDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
 
     let query = this.createQueryBuilder('ho')
       .select(this.getColumns())
-      .innerJoin('ho.monitorLocation', 'ml')
-      .innerJoin('ho.reportingPeriod', 'rp', reportingPeriodConditions);
+      .where(dateCondition);
 
-    const locationNameParams = Array.isArray(params.locationName) && params.locationName.length > 0;
-    if (Array.isArray(params.orisCode) && params.orisCode.length > 0 && !locationNameParams) {
+    const locationNameParams =
+      Array.isArray(params.locationName) && params.locationName.length > 0;
+    if (
+      Array.isArray(params.orisCode) &&
+      params.orisCode.length > 0 &&
+      !locationNameParams
+    ) {
       const plantConditions = `plant.orisCode IN (${params.orisCode.join(
         ', ',
       )}) AND plant.orisCode NOTNULL`;
 
       query = query
-        .innerJoin('ml.monitorPlans', 'mp')
-        .innerJoin('mp.plant', 'plant', plantConditions);
+        .innerJoin('ho.monitorLocation', 'ml')
+        .leftJoin('ml.unit', 'unit')
+        .leftJoin('ml.stackPipe', 'stackPipe')
+        .innerJoin('unit.plant', 'plant', plantConditions);
     }
 
     if (locationNameParams) {
@@ -48,12 +54,14 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
         ?.map(location => `'${location}'`)
         .join(', ');
 
-      const locationCondition = `stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings})`;
+      const locationCondition = `(stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings}))`;
 
       query = query
-      .leftJoin('ml.stackPipe', 'stackPipe')
-      .leftJoin('ml.unit', 'unit')
-      .andWhere(locationCondition);    }
+        .innerJoin('ho.monitorLocation', 'ml')
+        .leftJoin('ml.stackPipe', 'stackPipe')
+        .leftJoin('ml.unit', 'unit')
+        .andWhere(locationCondition);
+    }
 
     return query.getQueryAndParameters();
   }
