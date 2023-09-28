@@ -13,7 +13,7 @@ export class HourlyOperatingDTO {
   reportPeriodId: number;
 
   @IsString()
-  @Transform(date => moment(new Date(date.value)).format('YYYY/MM/DD HH:mm:ss'))
+  @Transform(date => moment(new Date(date.value)).format('YYYY-MM-DD'))
 
   beginDate: Date;
 

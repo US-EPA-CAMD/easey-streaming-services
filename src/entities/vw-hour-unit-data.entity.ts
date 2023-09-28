@@ -2,7 +2,7 @@ import { Column, ViewEntity } from 'typeorm';
 import { NumericColumnTransformer } from '@us-epa-camd/easey-common/transforms';
 
 @ViewEntity({
-  name: 'camddmw.vw_hour_unit_data'
+  name: 'camddmw.vw_hour_unit_data',
 })
 export class HourUnitDataView {
   @Column({ name: 'state' })
@@ -31,6 +31,9 @@ export class HourUnitDataView {
     type: 'date',
   })
   date: Date;
+
+  @Column({ name: 'op_year' })
+  year: number;
 
   @Column({
     name: 'op_hour',

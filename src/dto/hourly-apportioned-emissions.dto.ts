@@ -65,6 +65,9 @@ export class HourlyApportionedEmissionsDTO extends ApportionedEmissionsDTO {
   @IsString()
   date: string;
 
+  @IsNumber()
+  year: number;
+
   @ApiProperty({
     description: propertyMetadata.hour.description,
     example: propertyMetadata.hour.example,

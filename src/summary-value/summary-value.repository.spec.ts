@@ -6,6 +6,8 @@ import { SummaryValue } from '../entities/summary-value.entity';
 
 const mockedQueryBuilder = {
   innerJoin: jest.fn().mockReturnThis(),
+  leftJoin: jest.fn().mockReturnThis(),
+  where: jest.fn().mockReturnThis(),
   select: jest.fn().mockReturnThis(),
   getQueryAndParameters: jest.fn(),
 };
