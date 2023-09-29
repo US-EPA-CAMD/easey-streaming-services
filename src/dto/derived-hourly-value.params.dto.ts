@@ -3,10 +3,11 @@ import { Transform } from 'class-transformer';
 import { IsNotEmptyString } from '@us-epa-camd/easey-common/pipes';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 import moment from 'moment/moment';
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class HourlyParamsDto {
   @ApiProperty()
+  @IsNotEmpty()
   @Transform(({ value }) => {
     if (value) {
       return value.split('|').map((item: string) => Number(item.trim()));
@@ -15,7 +16,6 @@ export class HourlyParamsDto {
   orisCode: number[];
 
   @ApiProperty()
-  @IsOptional()
   @Transform(({ value }) => {
     if (value) {
       return value.split('|').map((item: string) => item.trim());
