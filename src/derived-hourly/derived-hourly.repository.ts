@@ -24,10 +24,11 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
   }
 
   async buildQuery(params: HourlyParamsDto): Promise<[string, any[]]> {
-    const dateCondition = `dh.addDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
+    const dateCondition = `ho.beginDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
 
     let query = this.createQueryBuilder('dh')
       .select(this.getColumns())
+      .leftJoin('dh.hrlyOpData', 'ho')
       .where(dateCondition);
 
     const plantConditions = `plant.orisCode IN (${params.orisCode.join(
