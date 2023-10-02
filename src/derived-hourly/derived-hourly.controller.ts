@@ -32,7 +32,7 @@ export class DerivedHourlyController {
   @ApiQuery({
     style: 'pipeDelimited',
     name: 'orisCode',
-    required: false,
+    required: true,
     explode: false,
   })
   @ApiQuery({

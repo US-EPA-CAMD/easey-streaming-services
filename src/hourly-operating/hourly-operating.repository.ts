@@ -31,36 +31,24 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
       .select(this.getColumns())
       .where(dateCondition);
 
-    const locationNameParams =
-      Array.isArray(params.locationName) && params.locationName.length > 0;
-    if (
-      Array.isArray(params.orisCode) &&
-      params.orisCode.length > 0 &&
-      !locationNameParams
-    ) {
-      const plantConditions = `plant.orisCode IN (${params.orisCode.join(
-        ', ',
-      )}) AND plant.orisCode NOTNULL`;
+    const plantConditions = `plant.orisCode IN (${params.orisCode.join(
+      ', ',
+    )}) AND plant.orisCode NOTNULL`;
 
-      query = query
-        .innerJoin('ho.monitorLocation', 'ml')
-        .leftJoin('ml.unit', 'unit')
-        .leftJoin('ml.stackPipe', 'stackPipe')
-        .innerJoin('unit.plant', 'plant', plantConditions);
-    }
+    query = query
+      .innerJoin('ho.monitorLocation', 'ml')
+      .leftJoin('ml.unit', 'unit')
+      .leftJoin('ml.stackPipe', 'stackPipe')
+      .innerJoin('unit.plant', 'plant', plantConditions);
 
-    if (locationNameParams) {
+    if (params.locationName) {
       const locationStrings = params.locationName
-        ?.map(location => `'${location}'`)
+        .map(location => `'${location}'`)
         .join(', ');
 
       const locationCondition = `(stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings}))`;
 
-      query = query
-        .innerJoin('ho.monitorLocation', 'ml')
-        .leftJoin('ml.stackPipe', 'stackPipe')
-        .leftJoin('ml.unit', 'unit')
-        .andWhere(locationCondition);
+      query = query.andWhere(locationCondition);
     }
 
     return query.getQueryAndParameters();
