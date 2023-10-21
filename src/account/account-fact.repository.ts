@@ -53,6 +53,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
       'atc',
     );
 
+    query.addSelect(`REPLACE(af.ownerOperator, ',', ' | ') AS "ownerOperator"`)
     query.orderBy('af.accountNumber').addOrderBy('af.programCodeInfo');
 
     return query.getQueryAndParameters();

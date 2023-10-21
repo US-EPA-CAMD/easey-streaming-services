@@ -49,7 +49,7 @@ export class FacilityUnitAttributesRepository extends Repository<
 
     return columns.map(col => {
       if (col === 'fua.ownDisplay') {
-        return `${col} AS "ownerOperator"`;
+        return `REPLACE(${col}, ',', '|') AS "ownerOperator"`; 
       }
       if (col === 'fua.generatorId') {
         return `${col} AS "associatedGeneratorsAndNameplateCapacity"`;
