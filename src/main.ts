@@ -15,7 +15,9 @@ export async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const appPath = configService.get<string>('app.path');
+  
   const appPort = configService.get<number>('app.port');
+  
   const enableDebug = configService.get<boolean>('app.enableDebug');
 
   const server = await app.listen(appPort);
