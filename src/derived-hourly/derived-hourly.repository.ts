@@ -25,31 +25,39 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
 
   async buildQuery(params: HourlyParamsDto): Promise<[string, any[]]> {
     const dateCondition = `ho.beginDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
-
-    let query = this.createQueryBuilder('dh')
-      .select(this.getColumns())
-      .leftJoin('dh.hrlyOpData', 'ho')
-      .where(dateCondition);
-
     const plantConditions = `plant.orisCode IN (${params.orisCode.join(
       ', ',
     )}) AND plant.orisCode NOTNULL`;
-    query = query
+
+    const unitQuery = this.createQueryBuilder('dh')
+      .select(this.getColumns())
+      .leftJoin('dh.hrlyOpData', 'ho')
+      .where(dateCondition)
       .innerJoin('dh.monitorLocation', 'ml')
       .leftJoin('ml.unit', 'unit')
-      .leftJoin('ml.stackPipe', 'stackPipe')
       .innerJoin('unit.plant', 'plant', plantConditions);
+
+    const stackPipeQuery = this.createQueryBuilder('dh')
+      .select(this.getColumns())
+      .leftJoin('dh.hrlyOpData', 'ho')
+      .where(dateCondition)
+      .innerJoin('dh.monitorLocation', 'ml')
+      .leftJoin('ml.stackPipe', 'stackPipe')
+      .innerJoin('stackPipe.plant', 'plant', plantConditions);
 
     if (params.locationName) {
       const locationStrings = params.locationName
         ?.map(location => `'${location}'`)
         .join(', ');
 
-      const locationCondition = `(stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings}))`;
-
-      query = query.andWhere(locationCondition);
+      const stackPipeLocationCondition = `(stackPipe.stack_name IN (${locationStrings}))`;
+      const unitLocationCondition = `(unit.unitid IN (${locationStrings}))`;
+      stackPipeQuery.andWhere(stackPipeLocationCondition);
+      unitQuery.andWhere(unitLocationCondition);
     }
 
-    return query.getQueryAndParameters();
+    const finalQuery = `${unitQuery.getQuery()} UNION ALL ${stackPipeQuery.getQuery()}`;
+
+    return [finalQuery, []];
   }
 }
