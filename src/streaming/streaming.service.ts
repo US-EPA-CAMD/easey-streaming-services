@@ -57,7 +57,7 @@ export class StreamingService {
 
     req.on('close', () => {
       dbClient.release();
-      this.logger.log('Client Released');
+      this.logger.info('Client Released');
     });
 
     req.res.setHeader('X-Field-Mappings', JSON.stringify(fieldMappings));
