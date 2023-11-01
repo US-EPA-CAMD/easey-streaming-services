@@ -1,6 +1,6 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
+import { Request, query } from 'express';
 import { plainToClass } from 'class-transformer';
 import { v4 as uuid } from 'uuid';
 import { Transform } from 'stream';
