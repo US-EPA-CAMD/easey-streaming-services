@@ -26,11 +26,9 @@ export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
     ];
 
     return columns.map(col => {
-      if (col === 'odf.owner') {
-        return `${col} AS "ownerOperator"`;
-      } else {
-        return `${col} AS "${col.split('.')[1]}"`;
-      }
+      if (col === 'odf.operator') return `REPLACE(${col}, '),', ') | ') AS "operator"`;
+      if (col === 'odf.owner') return `REPLACE(${col}, '),', ') | ') AS "ownerOperator"`;
+      return `${col} AS "${col.split('.')[1]}"`;
     });
   }
 
