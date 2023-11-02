@@ -22,7 +22,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
 
     return columns.map(col => {
       if (col === 'atc.accountTypeDescription') return `${col} AS "accountType"`;
-      if (col === 'af.ownerOperator') return `REPLACE(${col}, ',', ' | ') AS "ownerOperator"`;
+      if (col === 'af.ownerOperator') return `REPLACE(${col}, '),', ') | ') AS "ownerOperator"`;
       return `${col} AS "${col.split('.')[1]}"`;
     });
   }
