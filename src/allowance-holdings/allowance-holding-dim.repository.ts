@@ -26,7 +26,6 @@ export class AllowanceHoldingDimRepository extends Repository<
     ];
 
     const newCol = columns.map(col => {
-      if (col === 'af.ownerOperator') return `REPLACE( ${col}, '),', ') | ') AS "ownerOperator"`
       if (col === 'atc.accountTypeDescription') {
         return `${col} AS "accountType"`;
       } else {
