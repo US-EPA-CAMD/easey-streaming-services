@@ -51,10 +51,6 @@ export class AccountComplianceDimRepository extends Repository<
     );
 
     return columns.map(col => {
-      if (col === 'af.ownerOperator') {
-        return `REPLACE(${col}, '),', ') | ') AS "ownerOperator"`;
-
-      }
       return `${col} AS "${col.split('.')[1]}"`;
     });
   }
