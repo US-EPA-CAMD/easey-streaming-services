@@ -15,7 +15,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     this.tlsOptions.ca = (host !== 'localhost')
       ? readFileSync("./us-gov-west-1-bundle.pem").toString()
       : null;
-    console.log('TLS/SSL Config:', {
+    console.log('TLS/SSL Config (TypeORM):', {
       ...this.tlsOptions,
       ca: (this.tlsOptions.ca !== null)
         ? `${this.tlsOptions.ca.slice(0, 30)}...(truncated for display only)`

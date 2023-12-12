@@ -1,11 +1,10 @@
+require('dotenv').config();
 import { registerAs } from '@nestjs/config';
 import {
   getConfigValue,
   getConfigValueNumber,
   getConfigValueBoolean,
 } from '@us-epa-camd/easey-common/utilities';
-
-require('dotenv').config();
 
 const host = getConfigValue('EASEY_STREAMING_SERVICES_HOST', 'localhost');
 const port = getConfigValueNumber('EASEY_STREAMING_SERVICES_PORT', 8080);
