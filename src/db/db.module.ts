@@ -1,14 +1,14 @@
 require("dotenv").config();
 const Pool = require("pg-pool");
 import { TlsOptions } from "tls";
-import { readFileSync } from "fs";
 import { Module } from '@nestjs/common';
+import { existsSync, readFileSync } from "fs";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
 const tlsOptions = (host: string) => {
   const options: TlsOptions = { requestCert: true };
   options.rejectUnauthorized = host !== "localhost";
-  options.ca = (host !== "localhost")
+  options.ca = (host !== "localhost" && existsSync('./us-gov-west-1-bundle.pem'))
     ? readFileSync('./us-gov-west-1-bundle.pem').toString()
     : null;
   console.log('TLS/SSL Config (DbModule):', {
