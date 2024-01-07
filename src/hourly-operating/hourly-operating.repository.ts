@@ -1,4 +1,4 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, Brackets } from 'typeorm';
 import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
 import { HrlyOpData } from '../entities/hrly-op-data.entity';
 
@@ -31,15 +31,20 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
       .select(this.getColumns())
       .where(dateCondition);
 
-    const plantConditions = `plant.orisCode IN (${params.orisCode.join(
-      ', ',
-    )}) AND plant.orisCode NOTNULL`;
+    const unitPlantConditions = `unitPlant.orisCode IN (${params.orisCode.join(', ', )}) AND unitPlant.orisCode NOTNULL`;
+    const stackPipePlantConditions = `stackPipePlant.orisCode IN (${params.orisCode.join(', ', )}) AND stackPipePlant.orisCode NOTNULL`;
 
     query = query
       .innerJoin('ho.monitorLocation', 'ml')
       .leftJoin('ml.unit', 'unit')
       .leftJoin('ml.stackPipe', 'stackPipe')
-      .innerJoin('unit.plant', 'plant', plantConditions);
+      .leftJoin('unit.plant', 'unitPlant')
+      .leftJoin('stackPipe.plant', 'stackPipePlant')
+      .andWhere(
+        new Brackets((qb) => {
+            qb.where(unitPlantConditions)
+              .orWhere(stackPipePlantConditions)
+        }));
 
     if (params.locationName) {
       const locationStrings = params.locationName
