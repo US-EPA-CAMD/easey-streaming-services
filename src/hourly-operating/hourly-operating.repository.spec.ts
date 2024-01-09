@@ -9,6 +9,7 @@ const mockedQueryBuilder = {
   leftJoin: jest.fn().mockReturnThis(),
   select: jest.fn().mockReturnThis(),
   where: jest.fn().mockReturnThis(),
+  andWhere: jest.fn().mockReturnThis(),
   getQueryAndParameters: jest.fn(),
 };
 
