@@ -45,7 +45,6 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
             qb.where(unitPlantConditions)
               .orWhere(stackPipePlantConditions)
         }));
-        
 
     if (params.locationName) {
       const locationStrings = params.locationName
