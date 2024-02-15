@@ -21,11 +21,8 @@ export class AccountFactRepository extends Repository<AccountFact> {
     ];
 
     return columns.map(col => {
-      if (col === 'atc.accountTypeDescription') {
-        return `${col} AS "accountType"`;
-      } else {
-        return `${col} AS "${col.split('.')[1]}"`;
-      }
+      if (col === 'atc.accountTypeDescription') return `${col} AS "accountType"`;
+      return `${col} AS "${col.split('.')[1]}"`;
     });
   }
 
@@ -52,7 +49,7 @@ export class AccountFactRepository extends Repository<AccountFact> {
       false,
       'atc',
     );
-
+    
     query.orderBy('af.accountNumber').addOrderBy('af.programCodeInfo');
 
     return query.getQueryAndParameters();

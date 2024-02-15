@@ -62,7 +62,7 @@ export class StreamQuarterlyApportionedEmissionsParamsDTO extends QuarterlyAppor
     each: true,
     message: ErrorMessages.RemovableParameter(),
   })
-  @IsInResponse(fieldMappings.emissions.quarterly, {
+  @IsInResponse(Object.values(fieldMappings.emissions.quarterly.data.aggregation).flat(), {
     each: true,
     message: ErrorMessages.ValidParameter(),
   })
