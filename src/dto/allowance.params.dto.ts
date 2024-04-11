@@ -1,16 +1,15 @@
 import { Transform } from 'class-transformer';
-import { IsArray, IsNumber, IsOptional } from 'class-validator';
+import { IsArray, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   propertyMetadata,
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
 import { State, AccountType } from '@us-epa-camd/easey-common/enums';
-import { IsOrisCode } from '@us-epa-camd/easey-common/pipes';
+import { IsAccountNumber, IsOrisCode } from '@us-epa-camd/easey-common/pipes';
 
 import { IsStateCode } from '../pipes/is-state-code.pipe';
 import { IsAccountType } from '../pipes/is-account-type.pipe';
-import { IsAccountNumber } from '../pipes/is-account-number.pipe';
 
 export class AllowanceParamsDTO {
   @ApiProperty({
