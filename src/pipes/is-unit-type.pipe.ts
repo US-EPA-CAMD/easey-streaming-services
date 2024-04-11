@@ -5,7 +5,7 @@ import { IsUnitTypeValidator } from '../validators/is-unit-type.validator';
 export function IsUnitType(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
-      name: 'IsUnitType',
+      name: 'isUnitType',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,

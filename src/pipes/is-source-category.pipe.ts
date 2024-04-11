@@ -5,7 +5,7 @@ import { IsSourceCategoryValidator } from '../validators/is-source-category.vali
 export function IsSourceCategory(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
-      name: 'IsSourceCategory',
+      name: 'isSourceCategory',
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
