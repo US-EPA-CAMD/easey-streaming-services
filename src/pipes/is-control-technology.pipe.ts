@@ -1,11 +1,6 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidationArguments,
-} from 'class-validator';
-import { getManager, ILike } from 'typeorm';
+import { registerDecorator, ValidationOptions } from 'class-validator';
 
-import { ControlCode } from '../entities/control-code.entity';
+import { IsControlTechnologyValidator } from '../validators/is-control-technology.validator';
 
 export function IsControlTechnology(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -14,16 +9,7 @@ export function IsControlTechnology(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: {
-        async validate(value: any, args: ValidationArguments) {
-          const manager = getManager();
-
-          const found = await manager.findOne(ControlCode, {
-            controlDescription: ILike(value),
-          });
-          return found != null;
-        },
-      },
+      validator: IsControlTechnologyValidator,
     });
   };
 }

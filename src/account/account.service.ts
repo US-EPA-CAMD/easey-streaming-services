@@ -1,25 +1,21 @@
-import { Request } from 'express';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-
 import { Injectable, StreamableFile } from '@nestjs/common';
-
+import { ExcludeAccountAttributes } from '@us-epa-camd/easey-common/enums';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
-import { StreamingService } from '../streaming/streaming.service';
-import { StreamAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { fieldMappings } from '../constants/account-field-mappings';
-import { AccountFactRepository } from './account-fact.repository';
-import { ExcludeAccountAttributes } from '@us-epa-camd/easey-common/enums';
 import { AccountAttributesDTO } from '../dto/account-attributes.dto';
+import { StreamAccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
+import { StreamingService } from '../streaming/streaming.service';
+import { AccountFactRepository } from './account-fact.repository';
 
 @Injectable()
 export class AccountService {
   constructor(
-    @InjectRepository(AccountFactRepository)
     private readonly repository: AccountFactRepository,
     private readonly logger: Logger,
     private readonly streamService: StreamingService,

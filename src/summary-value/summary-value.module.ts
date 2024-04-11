@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { StreamingModule } from '../streaming/streaming.module';
+import { SummaryValueController } from './summary-value.controller';
 import { SummaryValueRepository } from './summary-value.repository';
 import { SummaryValueService } from './summary-value.service';
-import { SummaryValueController } from './summary-value.controller';
-import { StreamingModule } from '../streaming/streaming.module';
 
 @Module({
   imports: [
@@ -12,6 +13,6 @@ import { StreamingModule } from '../streaming/streaming.module';
   ],
   controllers: [SummaryValueController],
   providers: [SummaryValueService],
-  exports: [TypeOrmModule, SummaryValueService],
+  exports: [TypeOrmModule, SummaryValueRepository, SummaryValueService],
 })
 export class SummaryValueModule {}

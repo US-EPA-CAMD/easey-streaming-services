@@ -1,10 +1,6 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidationArguments,
-} from 'class-validator';
-import { getManager, ILike } from 'typeorm';
-import { SourceCategoryCode } from '../entities/source-category-code.entity';
+import { registerDecorator, ValidationOptions } from 'class-validator';
+
+import { IsSourceCategoryValidator } from '../validators/is-source-category.validator';
 
 export function IsSourceCategory(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -13,16 +9,7 @@ export function IsSourceCategory(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: {
-        async validate(value: any, args: ValidationArguments) {
-          const manager = getManager();
-
-          const found = await manager.findOne(SourceCategoryCode, {
-            sourceCategoryDescription: ILike(value),
-          });
-          return found != null;
-        },
-      },
+      validator: IsSourceCategoryValidator,
     });
   };
 }

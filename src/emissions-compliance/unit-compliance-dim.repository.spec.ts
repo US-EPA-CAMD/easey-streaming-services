@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { StreamEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
 import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
@@ -36,6 +36,7 @@ describe('-- UnitComplianceDimRepository --', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        EntityManager,
         UnitComplianceDimRepository,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],

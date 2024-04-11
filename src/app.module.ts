@@ -11,6 +11,17 @@ import { AccountModule } from './account/account.module';
 import { FacilitiesModule } from './facilities/facilities.module';
 import { AllowanceComplianceModule } from './allowance-compliance/allowance-compliance.module';
 import { ApportionedEmissionsModule } from './apportioned-emissions/apportioned-emissions.module';
+import {
+  IsAccountTypeValidator,
+  IsAllowanceProgramValidator,
+  IsControlTechnologyValidator,
+  IsProgramValidator,
+  IsSourceCategoryValidator,
+  IsStateCodeValidator,
+  IsTransactionTypeValidator,
+  IsUnitFuelTypeValidator,
+  IsUnitTypeValidator,
+} from './validators';
 
 import routes from './routes';
 import appConfig from './config/app.config';
@@ -46,6 +57,17 @@ import { HourlyOperatingModule } from './hourly-operating/hourly-operating.modul
     SupplementalOperatingModule,
     DerivedHourlyModule,
     HourlyOperatingModule,
+  ],
+  providers: [
+    IsAccountTypeValidator,
+    IsAllowanceProgramValidator,
+    IsControlTechnologyValidator,
+    IsProgramValidator,
+    IsSourceCategoryValidator,
+    IsStateCodeValidator,
+    IsTransactionTypeValidator,
+    IsUnitFuelTypeValidator,
+    IsUnitTypeValidator,
   ],
 })
 export class AppModule {}

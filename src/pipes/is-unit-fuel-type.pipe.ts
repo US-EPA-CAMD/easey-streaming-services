@@ -1,11 +1,6 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidationArguments,
-} from 'class-validator';
-import { getManager, ILike } from 'typeorm';
+import { registerDecorator, ValidationOptions } from 'class-validator';
 
-import { FuelTypeCode } from '../entities/fuel-type-code.entity';
+import { IsUnitFuelTypeValidator } from '../validators/is-unit-fuel-type.validator';
 
 export function IsUnitFuelType(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -14,16 +9,7 @@ export function IsUnitFuelType(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: {
-        async validate(value: any, args: ValidationArguments) {
-          const manager = getManager();
-
-          const found = await manager.findOne(FuelTypeCode, {
-            fuelTypeDescription: ILike(value),
-          });
-          return found != null;
-        },
-      },
+      validator: IsUnitFuelTypeValidator,
     });
   };
 }

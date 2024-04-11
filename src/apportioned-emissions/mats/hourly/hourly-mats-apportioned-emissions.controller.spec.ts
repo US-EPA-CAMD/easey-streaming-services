@@ -1,12 +1,13 @@
+import { StreamableFile } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { StreamableFile } from '@nestjs/common';
+import { EntityManager } from 'typeorm';
 
-import { HourlyMatsApportionedEmissionsController } from './hourly-mats-apportioned-emissions.controller';
-import { HourlyMatsApportionedEmissionsService } from './hourly-mats-apportioned-emissions.service';
-import { HourUnitMatsDataRepository } from './hour-unit-mats-data.repository';
 import { HourlyMatsApportionedEmissionsParamsDTO } from '../../../dto/hourly-mats-apporitioned-emissions.params.dto';
 import { StreamingModule } from '../../../streaming/streaming.module';
+import { HourUnitMatsDataRepository } from './hour-unit-mats-data.repository';
+import { HourlyMatsApportionedEmissionsController } from './hourly-mats-apportioned-emissions.controller';
+import { HourlyMatsApportionedEmissionsService } from './hourly-mats-apportioned-emissions.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -27,6 +28,7 @@ describe('-- Hourly MATS Apportioned Emissions Controller --', () => {
       imports: [LoggerModule, StreamingModule],
       controllers: [HourlyMatsApportionedEmissionsController],
       providers: [
+        EntityManager,
         HourlyMatsApportionedEmissionsService,
         HourUnitMatsDataRepository,
       ],

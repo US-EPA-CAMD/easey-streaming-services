@@ -1,18 +1,17 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
-import { SummaryValueBaseDTO } from '../dto/summary-value.dto';
-import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
 import { plainToClass } from 'class-transformer';
 import { Request } from 'express';
-import { InjectRepository } from '@nestjs/typeorm';
-import { SummaryValueRepository } from './summary-value.repository';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
+
+import { SummaryValueBaseDTO } from '../dto/summary-value.dto';
+import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
 import { StreamingService } from '../streaming/streaming.service';
+import { SummaryValueRepository } from './summary-value.repository';
 
 @Injectable()
 export class SummaryValueService {
   constructor(
-    @InjectRepository(SummaryValueRepository)
     private readonly repository: SummaryValueRepository,
     private readonly streamingService: StreamingService,
   ) {}

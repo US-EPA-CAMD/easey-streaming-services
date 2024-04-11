@@ -1,13 +1,18 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
 
-import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import { StreamAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
+import { AllowanceHoldingDim } from '../entities/allowance-holding-dim.entity';
 import { AccountQueryBuilder } from '../utils/account-query-builder';
 
-@EntityRepository(AllowanceHoldingDim)
+@Injectable()
 export class AllowanceHoldingDimRepository extends Repository<
   AllowanceHoldingDim
 > {
+  constructor(entityManager: EntityManager) {
+    super(AllowanceHoldingDim, entityManager);
+  }
+
   private getColumns(): string[] {
     const columns = [
       'ahd.accountNumber',

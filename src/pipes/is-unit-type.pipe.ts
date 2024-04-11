@@ -1,11 +1,6 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidationArguments,
-} from 'class-validator';
-import { getManager, ILike } from 'typeorm';
+import { registerDecorator, ValidationOptions } from 'class-validator';
 
-import { UnitTypeCode } from '../entities/unit-type-code.entity';
+import { IsUnitTypeValidator } from '../validators/is-unit-type.validator';
 
 export function IsUnitType(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -14,16 +9,7 @@ export function IsUnitType(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: {
-        async validate(value: any, args: ValidationArguments) {
-          const manager = getManager();
-
-          const found = await manager.findOne(UnitTypeCode, {
-            unitTypeDescription: ILike(value),
-          });
-          return found != null;
-        },
-      },
+      validator: IsUnitTypeValidator,
     });
   };
 }

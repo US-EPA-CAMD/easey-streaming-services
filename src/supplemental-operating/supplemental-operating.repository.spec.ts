@@ -1,7 +1,8 @@
 import { Test } from '@nestjs/testing';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
+
 import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
 import { SupplementalOperatingRepository } from './supplemental-operating.repository';
-import { SelectQueryBuilder } from 'typeorm';
 import { SupplementalOperating } from '../entities/supplemental-operating.entity';
 
 const mockedQueryBuilder = {
@@ -17,7 +18,7 @@ describe('-- Supplemental Operating Repository --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [SupplementalOperatingRepository],
+      providers: [EntityManager, SupplementalOperatingRepository],
     }).compile();
 
     repo = module.get(SupplementalOperatingRepository);
