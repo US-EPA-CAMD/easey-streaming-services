@@ -1,6 +1,12 @@
-import { registerDecorator, ValidationOptions } from 'class-validator';
+import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
+import {
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
+} from 'class-validator';
+import { ILike } from 'typeorm';
 
-import { IsControlTechnologyValidator } from '../validators/is-control-technology.validator';
+import { ControlCode } from '../entities/control-code.entity';
 
 export function IsControlTechnology(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -9,7 +15,18 @@ export function IsControlTechnology(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: IsControlTechnologyValidator,
+      constraints: [
+        {
+          type: ControlCode,
+          ignoreEmpty: false,
+          findOption: (args: ValidationArguments) => ({
+            where: {
+              controlDescription: ILike(args.value),
+            },
+          }),
+        },
+      ],
+      validator: DbLookupValidator,
     });
   };
 }

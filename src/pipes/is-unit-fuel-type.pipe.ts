@@ -1,6 +1,12 @@
-import { registerDecorator, ValidationOptions } from 'class-validator';
+import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
+import {
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
+} from 'class-validator';
+import { ILike } from 'typeorm';
 
-import { IsUnitFuelTypeValidator } from '../validators/is-unit-fuel-type.validator';
+import { FuelTypeCode } from '../entities/fuel-type-code.entity';
 
 export function IsUnitFuelType(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -9,7 +15,18 @@ export function IsUnitFuelType(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: IsUnitFuelTypeValidator,
+      constraints: [
+        {
+          type: FuelTypeCode,
+          ignoreEmpty: false,
+          findOption: (args: ValidationArguments) => ({
+            where: {
+              fuelTypeDescription: ILike(args.value),
+            },
+          }),
+        },
+      ],
+      validator: DbLookupValidator,
     });
   };
 }

@@ -1,6 +1,12 @@
-import { registerDecorator, ValidationOptions } from 'class-validator';
+import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
+import {
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
+} from 'class-validator';
+import { ILike } from 'typeorm';
 
-import { IsUnitTypeValidator } from '../validators/is-unit-type.validator';
+import { UnitTypeCode } from '../entities/unit-type-code.entity';
 
 export function IsUnitType(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
@@ -9,7 +15,18 @@ export function IsUnitType(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: IsUnitTypeValidator,
+      constraints: [
+        {
+          type: UnitTypeCode,
+          ignoreEmpty: false,
+          findOption: (args: ValidationArguments) => ({
+            where: {
+              unitTypeDescription: ILike(args.value),
+            },
+          }),
+        },
+      ],
+      validator: DbLookupValidator,
     });
   };
 }
