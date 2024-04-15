@@ -2,8 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNotEmptyString } from '@us-epa-camd/easey-common/pipes';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
-import moment from 'moment/moment';
 import { IsNotEmpty } from 'class-validator';
+
+const moment = require('moment');
 
 export class HourlyParamsDto {
   @ApiProperty()
