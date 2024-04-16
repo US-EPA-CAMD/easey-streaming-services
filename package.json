@@ -42,7 +42,7 @@
     "@nestjs/platform-express": "^8.1.1",
     "@nestjs/swagger": "^5.1.2",
     "@nestjs/typeorm": "^8.0.3",
-    "@us-epa-camd/easey-common": "../easey-common/lib",
+    "@us-epa-camd/easey-common": "^17.3.0",
     "JSONStream": "^1.3.5",
     "class-transformer": "0.4.0",
     "class-validator": "0.14.0",
