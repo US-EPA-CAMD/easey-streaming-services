@@ -12,7 +12,7 @@ import { DerivedHourlyService } from './derived-hourly.service';
     TypeOrmModule.forFeature([DerivedHourlyRepository]),
   ],
   controllers: [DerivedHourlyController],
-  providers: [DerivedHourlyService],
-  exports: [TypeOrmModule, DerivedHourlyRepository, DerivedHourlyService],
+  providers: [DerivedHourlyRepository, DerivedHourlyService],
+  exports: [TypeOrmModule, DerivedHourlyService],
 })
 export class DerivedHourlyModule {}

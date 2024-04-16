@@ -12,7 +12,7 @@ import { SummaryValueService } from './summary-value.service';
     TypeOrmModule.forFeature([SummaryValueRepository]),
   ],
   controllers: [SummaryValueController],
-  providers: [SummaryValueService],
-  exports: [TypeOrmModule, SummaryValueRepository, SummaryValueService],
+  providers: [SummaryValueRepository, SummaryValueService],
+  exports: [TypeOrmModule, SummaryValueService],
 })
 export class SummaryValueModule {}
