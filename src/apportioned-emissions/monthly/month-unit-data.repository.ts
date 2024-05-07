@@ -1,11 +1,15 @@
-import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
+import { MonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
 import { MonthUnitDataView } from '../../entities/vw-month-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
-import { MonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
 
-@EntityRepository(MonthUnitDataView)
+@Injectable()
 export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
+  constructor(entityManager: EntityManager) {
+    super(MonthUnitDataView, entityManager);
+  }
 
   async buildQuery(
     columns: any[],
@@ -43,9 +47,14 @@ export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
   buildFacilityAggregationQuery(
     params: MonthlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
-    const selectColumns = ['mud.stateCode', 'mud.facilityName', 'mud.facilityId', 'mud.year', 'mud.month',];
-    const orderByColumns = ['mud.facilityId', 'mud.year', 'mud.month',];
+    const selectColumns = [
+      'mud.stateCode',
+      'mud.facilityName',
+      'mud.facilityId',
+      'mud.year',
+      'mud.month',
+    ];
+    const orderByColumns = ['mud.facilityId', 'mud.year', 'mud.month'];
 
     const query = this.buildAggregationQuery(
       params,
@@ -54,13 +63,11 @@ export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
     );
 
     return query.getQueryAndParameters();
-
   }
 
   buildStateAggregationQuery(
     params: MonthlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
     const selectColumns = ['mud.stateCode', 'mud.year', 'mud.month'];
     const orderByColumns = ['mud.stateCode', 'mud.year', 'mud.month'];
 
@@ -76,7 +83,6 @@ export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
   buildNationalAggregationQuery(
     params: MonthlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
     const selectColumns = ['mud.year', 'mud.month'];
     const orderByColumns = ['mud.year', 'mud.month'];
 
@@ -94,7 +100,6 @@ export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
     selectColumns: string[],
     orderByColumns: string[],
   ): SelectQueryBuilder<MonthUnitDataView> {
-
     let query = this.createQueryBuilder('mud').select(
       selectColumns.map(col => {
         return `${col} AS "${col.split('.')[1]}"`;
@@ -127,8 +132,7 @@ export class MonthUnitDataRepository extends Repository<MonthUnitDataView> {
 
     selectColumns.forEach(c => query.addGroupBy(c));
     orderByColumns.forEach(c => query.addOrderBy(c));
-    
+
     return query;
   }
-
 }

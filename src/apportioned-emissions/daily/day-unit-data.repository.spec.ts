@@ -1,19 +1,18 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
-
 import {
-  State,
-  UnitType,
-  UnitFuelType,
   ControlTechnology,
-  Program,
   ExcludeApportionedEmissions,
+  Program,
+  State,
+  UnitFuelType,
+  UnitType,
 } from '@us-epa-camd/easey-common/enums';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
-import { DayUnitDataRepository } from './day-unit-data.repository';
-import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { StreamDailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-emissions.params.dto';
+import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
+import { DayUnitDataRepository } from './day-unit-data.repository';
 
 jest.mock('../../utils/emissions-query-builder');
 
@@ -72,6 +71,7 @@ describe('DayUnitDataRepository', () => {
     const module = await Test.createTestingModule({
       providers: [
         DayUnitDataRepository,
+        EntityManager,
         {
           provide: SelectQueryBuilder,
           useFactory: mockQueryBuilder,

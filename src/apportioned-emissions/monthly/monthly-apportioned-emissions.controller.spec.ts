@@ -1,13 +1,13 @@
-import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
-
+import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
+import { MonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
 import { StreamingModule } from '../../streaming/streaming.module';
 import { MonthUnitDataRepository } from './month-unit-data.repository';
-import { MonthlyApportionedEmissionsService } from './monthly-apportioned-emissions.service';
 import { MonthlyApportionedEmissionsController } from './monthly-apportioned-emissions.controller';
-import { MonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
+import { MonthlyApportionedEmissionsService } from './monthly-apportioned-emissions.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -27,7 +27,11 @@ describe('-- Monthly Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [MonthlyApportionedEmissionsController],
-      providers: [MonthlyApportionedEmissionsService, MonthUnitDataRepository],
+      providers: [
+        EntityManager,
+        MonthlyApportionedEmissionsService,
+        MonthUnitDataRepository,
+      ],
     }).compile();
 
     controller = module.get(MonthlyApportionedEmissionsController);

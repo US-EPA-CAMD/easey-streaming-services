@@ -1,19 +1,18 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
-
 import {
-  State,
-  UnitType,
-  UnitFuelType,
   ControlTechnology,
-  Program,
   ExcludeApportionedEmissions,
+  Program,
+  State,
+  UnitFuelType,
+  UnitType,
 } from '@us-epa-camd/easey-common/enums';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
-import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
-import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
+import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
+import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 
 jest.mock('../../utils/emissions-query-builder');
 
@@ -70,6 +69,7 @@ describe('OzoneUnitDataRepository', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        EntityManager,
         OzoneUnitDataRepository,
         {
           provide: SelectQueryBuilder,
@@ -114,8 +114,10 @@ describe('OzoneUnitDataRepository', () => {
   });
 
   describe('buildEmissionsFacilityAggregation', () => {
-    it('builds ozone emissions aggregated by facility query', async() => {
-      const result = await repository.buildFacilityAggregationQuery(streamFilters);
+    it('builds ozone emissions aggregated by facility query', async () => {
+      const result = await repository.buildFacilityAggregationQuery(
+        streamFilters,
+      );
 
       expect(result).toEqual('mockEmissions');
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
@@ -123,7 +125,7 @@ describe('OzoneUnitDataRepository', () => {
   });
 
   describe('buildEmissionsStateAggregation', () => {
-    it('builds ozone emissions aggregated by state query', async() => {
+    it('builds ozone emissions aggregated by state query', async () => {
       const result = await repository.buildStateAggregationQuery(streamFilters);
 
       expect(result).toEqual('mockEmissions');
@@ -132,8 +134,10 @@ describe('OzoneUnitDataRepository', () => {
   });
 
   describe('buildEmissionsNationalAggregation', () => {
-    it('builds ozone emissions aggregated by National query', async() => {
-      const result = await repository.buildNationalAggregationQuery(streamFilters);
+    it('builds ozone emissions aggregated by National query', async () => {
+      const result = await repository.buildNationalAggregationQuery(
+        streamFilters,
+      );
 
       expect(result).toEqual('mockEmissions');
       expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();

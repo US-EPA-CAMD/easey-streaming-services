@@ -1,35 +1,27 @@
-import { Request } from 'express';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-
-import {
-  Injectable,
-  StreamableFile,
-} from '@nestjs/common';
-
+import { Injectable, StreamableFile } from '@nestjs/common';
+import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
-import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
-import { StreamingService } from '../../streaming/streaming.service';
-import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
 import { QuarterlyApportionedEmissionsDTO } from '../../dto/quarterly-apportioned-emissions.dto';
 import { StreamQuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
+import { StreamingService } from '../../streaming/streaming.service';
 import { QuarterlyApportionedEmissionsFacilityAggregationDTO } from './../../dto/quarterly-apportioned-emissions-facility-aggregation.dto';
-import { QuarterlyApportionedEmissionsParamsDTO } from './../../dto/quarterly-apportioned-emissions.params.dto';
-import { QuarterlyApportionedEmissionsStateAggregationDTO } from './../../dto/quarterly-apportioned-emissions-state-aggregation.dto';
 import { QuarterlyApportionedEmissionsNationalAggregationDTO } from './../../dto/quarterly-apportioned-emissions-national-aggregation.dto';
+import { QuarterlyApportionedEmissionsStateAggregationDTO } from './../../dto/quarterly-apportioned-emissions-state-aggregation.dto';
+import { QuarterlyApportionedEmissionsParamsDTO } from './../../dto/quarterly-apportioned-emissions.params.dto';
+import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
 
 @Injectable()
 export class QuarterlyApportionedEmissionsService {
-  
   constructor(
     private readonly logger: Logger,
     private readonly streamService: StreamingService,
-    @InjectRepository(QuarterUnitDataRepository)
     private readonly repository: QuarterUnitDataRepository,
   ) {}
 
@@ -56,7 +48,10 @@ export class QuarterlyApportionedEmissionsService {
       },
     });
 
-    const [sql, values] = await this.repository.buildQuery(fieldMappingsList, params);
+    const [sql, values] = await this.repository.buildQuery(
+      fieldMappingsList,
+      params,
+    );
 
     return this.streamService.getStream(
       req,

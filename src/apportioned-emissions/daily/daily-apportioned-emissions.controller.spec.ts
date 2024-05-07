@@ -1,13 +1,13 @@
-import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
-
+import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
-import { StreamingModule } from '../../streaming/streaming.module';
-import { DayUnitDataRepository } from './day-unit-data.repository';
-import { DailyApportionedEmissionsService } from './daily-apportioned-emissions.service';
-import { DailyApportionedEmissionsController } from './daily-apportioned-emissions.controller';
 import { DailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-emissions.params.dto';
+import { StreamingModule } from '../../streaming/streaming.module';
+import { DailyApportionedEmissionsController } from './daily-apportioned-emissions.controller';
+import { DailyApportionedEmissionsService } from './daily-apportioned-emissions.service';
+import { DayUnitDataRepository } from './day-unit-data.repository';
 
 const mockRequest = (url: string) => {
   return {
@@ -27,7 +27,11 @@ describe('-- Daily Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [DailyApportionedEmissionsController],
-      providers: [DayUnitDataRepository, DailyApportionedEmissionsService],
+      providers: [
+        DayUnitDataRepository,
+        DailyApportionedEmissionsService,
+        EntityManager,
+      ],
     }).compile();
 
     controller = module.get(DailyApportionedEmissionsController);

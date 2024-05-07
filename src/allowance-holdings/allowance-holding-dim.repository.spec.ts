@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { StreamAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
@@ -23,6 +23,7 @@ describe('-- AllowanceHoldingDimRepository --', () => {
     const module = await Test.createTestingModule({
       providers: [
         AllowanceHoldingDimRepository,
+        EntityManager,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],
     }).compile();

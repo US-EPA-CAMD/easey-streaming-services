@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { StreamableFile } from '@nestjs/common';
+import { EntityManager } from 'typeorm';
 
 import { AllowanceHoldingsController } from './allowance-holdings.controller';
 import { AllowanceHoldingsService } from './allowance-holdings.service';
@@ -34,6 +35,7 @@ describe('-- Allowance Holdings Controller --', () => {
         AllowanceHoldingDimRepository,
         AccountService,
         AccountFactRepository,
+        EntityManager,
       ],
     }).compile();
 

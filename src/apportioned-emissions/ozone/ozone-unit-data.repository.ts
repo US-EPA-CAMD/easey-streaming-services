@@ -1,11 +1,15 @@
-import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
+import { OzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 import { OzoneUnitDataView } from '../../entities/vw-ozone-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
-import { OzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
 
-@EntityRepository(OzoneUnitDataView)
+@Injectable()
 export class OzoneUnitDataRepository extends Repository<OzoneUnitDataView> {
+  constructor(entityManager: EntityManager) {
+    super(OzoneUnitDataView, entityManager);
+  }
 
   async buildQuery(
     columns: any[],
@@ -100,12 +104,12 @@ export class OzoneUnitDataRepository extends Repository<OzoneUnitDataView> {
     );
 
     query
-    .addSelect('SUM(oud.grossLoad)', 'grossLoad')
-    .addSelect('SUM(oud.steamLoad)', 'steamLoad')
-    .addSelect('SUM(oud.so2Mass)', 'so2Mass')
-    .addSelect('SUM(oud.co2Mass)', 'co2Mass')
-    .addSelect('SUM(oud.noxMass)', 'noxMass')
-    .addSelect('SUM(oud.heatInput)', 'heatInput');
+      .addSelect('SUM(oud.grossLoad)', 'grossLoad')
+      .addSelect('SUM(oud.steamLoad)', 'steamLoad')
+      .addSelect('SUM(oud.so2Mass)', 'so2Mass')
+      .addSelect('SUM(oud.co2Mass)', 'co2Mass')
+      .addSelect('SUM(oud.noxMass)', 'noxMass')
+      .addSelect('SUM(oud.heatInput)', 'heatInput');
 
     query = EmissionsQueryBuilder.createEmissionsQuery(
       query,

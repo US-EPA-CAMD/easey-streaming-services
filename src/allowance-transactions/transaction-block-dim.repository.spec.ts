@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { StreamAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
@@ -22,6 +22,7 @@ describe('-- TransactionBlockDimRepository --', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        EntityManager,
         TransactionBlockDimRepository,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],

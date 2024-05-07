@@ -1,16 +1,18 @@
-import { EntityRepository, Repository, SelectQueryBuilder } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
 
-import { AccountQueryBuilder } from '../utils/account-query-builder';
+import { StreamAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { TransactionBlockDim } from '../entities/transaction-block-dim.entity';
-import {
-  AllowanceTransactionsParamsDTO,
-  StreamAllowanceTransactionsParamsDTO,
-} from '../dto/allowance-transactions.params.dto';
+import { AccountQueryBuilder } from '../utils/account-query-builder';
 
-@EntityRepository(TransactionBlockDim)
+@Injectable()
 export class TransactionBlockDimRepository extends Repository<
   TransactionBlockDim
 > {
+  constructor(entityManager: EntityManager) {
+    super(TransactionBlockDim, entityManager);
+  }
+
   private getColumns(): string[] {
     const columns = [
       'tbd.programCodeInfo',

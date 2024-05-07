@@ -17,7 +17,8 @@ import { AnnualApportionedEmissionsController } from './annual-apportioned-emiss
   providers: [
     ConfigService,
     StreamingService,
-    AnnualApportionedEmissionsService
+    AnnualUnitDataRepository,
+    AnnualApportionedEmissionsService,
   ],
   exports: [TypeOrmModule],
 })

@@ -1,34 +1,29 @@
-import { Request } from 'express';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-
-import {
-  Injectable,
-  StreamableFile,
-} from '@nestjs/common';
-
+import { Injectable, StreamableFile } from '@nestjs/common';
+import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
-import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
-import { StreamingService } from '../../streaming/streaming.service';
-import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 import { OzoneApportionedEmissionsDTO } from '../../dto/ozone-apportioned-emissions.dto';
-import { OzoneApportionedEmissionsParamsDTO, StreamOzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
+import {
+  OzoneApportionedEmissionsParamsDTO,
+  StreamOzoneApportionedEmissionsParamsDTO,
+} from '../../dto/ozone-apportioned-emissions.params.dto';
+import { StreamingService } from '../../streaming/streaming.service';
 import { OzoneApportionedEmissionsFacilityAggregationDTO } from './../../dto/ozone-apportioned-emissions-facility-aggregation.dto';
-import { OzoneApportionedEmissionsStateAggregationDTO } from './../../dto/ozone-apportioned-emissions-state-aggregation.dto';
 import { OzoneApportionedEmissionsNationalAggregationDTO } from './../../dto/ozone-apportioned-emissions-national-aggregation.dto';
+import { OzoneApportionedEmissionsStateAggregationDTO } from './../../dto/ozone-apportioned-emissions-state-aggregation.dto';
+import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 
 @Injectable()
 export class OzoneApportionedEmissionsService {
-  
   constructor(
     private readonly logger: Logger,
     private readonly streamService: StreamingService,
-    @InjectRepository(OzoneUnitDataRepository)
     private readonly repository: OzoneUnitDataRepository,
   ) {}
 
@@ -55,7 +50,10 @@ export class OzoneApportionedEmissionsService {
       },
     });
 
-    const [sql, values] = await this.repository.buildQuery(fieldMappingsList, params);
+    const [sql, values] = await this.repository.buildQuery(
+      fieldMappingsList,
+      params,
+    );
 
     return this.streamService.getStream(
       req,
@@ -75,7 +73,7 @@ export class OzoneApportionedEmissionsService {
     const [sql, values] = this.repository.buildFacilityAggregationQuery(params);
 
     const fieldMappingsList =
-    fieldMappings.emissions.ozone.data.aggregation.facility;
+      fieldMappings.emissions.ozone.data.aggregation.facility;
 
     const toDto = new Transform({
       objectMode: true,
@@ -109,7 +107,7 @@ export class OzoneApportionedEmissionsService {
     const [sql, values] = this.repository.buildStateAggregationQuery(params);
 
     const fieldMappingsList =
-    fieldMappings.emissions.ozone.data.aggregation.state;
+      fieldMappings.emissions.ozone.data.aggregation.state;
 
     const toDto = new Transform({
       objectMode: true,
@@ -143,7 +141,7 @@ export class OzoneApportionedEmissionsService {
     const [sql, values] = this.repository.buildNationalAggregationQuery(params);
 
     const fieldMappingsList =
-    fieldMappings.emissions.ozone.data.aggregation.national;
+      fieldMappings.emissions.ozone.data.aggregation.national;
 
     const toDto = new Transform({
       objectMode: true,

@@ -1,14 +1,14 @@
-import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
-
+import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
+import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
+import { StreamingModule } from '../streaming/streaming.module';
 import { FacilitiesController } from './facilities.controller';
 import { FacilitiesService } from './facilities.service';
-import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
 import { FacilityUnitAttributesRepository } from './facility-unit-attributes.repository';
 
-import { StreamingModule } from '../streaming/streaming.module';
 const mockRequest = (url: string) => {
   return {
     url,
@@ -27,7 +27,11 @@ describe('-- Facilities Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [FacilitiesController],
-      providers: [FacilitiesService, FacilityUnitAttributesRepository],
+      providers: [
+        EntityManager,
+        FacilitiesService,
+        FacilityUnitAttributesRepository,
+      ],
     }).compile();
 
     facilitiesController = module.get(FacilitiesController);

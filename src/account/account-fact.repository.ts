@@ -1,11 +1,16 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
 
 import { AccountFact } from '../entities/account-fact.entity';
 import { AccountAttributesParamsDTO } from '../dto/account-attributes.params.dto';
 import { AccountQueryBuilder } from '../utils/account-query-builder';
 
-@EntityRepository(AccountFact)
+@Injectable()
 export class AccountFactRepository extends Repository<AccountFact> {
+  constructor(entityManager: EntityManager) {
+    super(AccountFact, entityManager);
+  }
+
   private getColumns(): string[] {
     const columns = [
       'af.accountNumber',
