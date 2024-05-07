@@ -1,6 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
-import moment from 'moment';
+
+const moment = require('moment');
 
 export class HourlyOperatingDTO {
   @IsString()
@@ -14,7 +15,6 @@ export class HourlyOperatingDTO {
 
   @IsString()
   @Transform(date => moment(new Date(date.value)).format('YYYY-MM-DD'))
-
   beginDate: Date;
 
   @IsNumber()

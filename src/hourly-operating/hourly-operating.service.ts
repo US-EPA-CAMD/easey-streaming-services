@@ -1,18 +1,17 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
 import { plainToClass } from 'class-transformer';
 import { Request } from 'express';
-import { InjectRepository } from '@nestjs/typeorm';
-import { StreamingService } from '../streaming/streaming.service';
-import { HourlyOperatingRepository } from './hourly-operating.repository';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
+
 import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
 import { HourlyOperatingDTO } from '../dto/hourly-op.dto';
+import { StreamingService } from '../streaming/streaming.service';
+import { HourlyOperatingRepository } from './hourly-operating.repository';
 
 @Injectable()
 export class HourlyOperatingService {
   constructor(
-    @InjectRepository(HourlyOperatingRepository)
     private readonly repository: HourlyOperatingRepository,
     private readonly streamingService: StreamingService,
   ) {}

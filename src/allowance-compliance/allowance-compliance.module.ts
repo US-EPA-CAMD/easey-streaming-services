@@ -17,6 +17,10 @@ import { AllowanceComplianceService } from './allowance-compliance.service';
     StreamingModule,
   ],
   controllers: [AllowanceComplianceController],
-  providers: [StreamingService, AllowanceComplianceService],
+  providers: [
+    StreamingService,
+    AccountComplianceDimRepository,
+    AllowanceComplianceService,
+  ],
 })
 export class AllowanceComplianceModule {}

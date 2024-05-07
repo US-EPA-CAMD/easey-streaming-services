@@ -1,8 +1,9 @@
 import { Test } from '@nestjs/testing';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
+
 import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
-import { SummaryValueRepository } from './summary-value.repository';
-import { SelectQueryBuilder } from 'typeorm';
 import { SummaryValue } from '../entities/summary-value.entity';
+import { SummaryValueRepository } from './summary-value.repository';
 
 const mockedQueryBuilder = {
   innerJoin: jest.fn().mockReturnThis(),
@@ -17,7 +18,7 @@ describe('-- Summary Value Repository --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [SummaryValueRepository],
+      providers: [EntityManager, SummaryValueRepository],
     }).compile();
 
     repo = module.get(SummaryValueRepository);

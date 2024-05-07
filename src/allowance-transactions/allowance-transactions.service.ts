@@ -1,23 +1,21 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
+import { ExcludeAllowanceTransactions } from '@us-epa-camd/easey-common/enums';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
-import { ExcludeAllowanceTransactions } from '@us-epa-camd/easey-common/enums';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
-import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
+import { fieldMappings } from '../constants/account-field-mappings';
+import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
 import { StreamAllowanceTransactionsParamsDTO } from '../dto/allowance-transactions.params.dto';
 import { StreamingService } from '../streaming/streaming.service';
-import { AllowanceTransactionsDTO } from '../dto/allowance-transactions.dto';
-import { fieldMappings } from '../constants/account-field-mappings';
+import { TransactionBlockDimRepository } from './transaction-block-dim.repository';
 
 @Injectable()
 export class AllowanceTransactionsService {
   constructor(
-    @InjectRepository(TransactionBlockDimRepository)
     private readonly repository: TransactionBlockDimRepository,
     private readonly logger: Logger,
     private readonly streamingService: StreamingService,

@@ -1,9 +1,15 @@
-import { Repository, EntityRepository, Brackets } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { Brackets, EntityManager, Repository } from 'typeorm';
+
 import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
 import { DerivedHrlyValue } from '../entities/derived-hrly-value.entity';
 
-@EntityRepository(DerivedHrlyValue)
+@Injectable()
 export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
+  constructor(entityManager: EntityManager) {
+    super(DerivedHrlyValue, entityManager);
+  }
+
   private getColumns(): string[] {
     const columns = [];
     columns.push(
@@ -31,8 +37,12 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
       .innerJoin('dh.hrlyOpData', 'ho')
       .where(dateCondition);
 
-    const unitPlantConditions = `unitPlant.orisCode IN (${params.orisCode.join(', ', )}) AND unitPlant.orisCode NOTNULL`;
-    const stackPipePlantConditions = `stackPipePlant.orisCode IN (${params.orisCode.join(', ', )}) AND stackPipePlant.orisCode NOTNULL`;
+    const unitPlantConditions = `unitPlant.orisCode IN (${params.orisCode.join(
+      ', ',
+    )}) AND unitPlant.orisCode NOTNULL`;
+    const stackPipePlantConditions = `stackPipePlant.orisCode IN (${params.orisCode.join(
+      ', ',
+    )}) AND stackPipePlant.orisCode NOTNULL`;
 
     query = query
       .innerJoin('dh.monitorLocation', 'ml')
@@ -41,10 +51,10 @@ export class DerivedHourlyRepository extends Repository<DerivedHrlyValue> {
       .leftJoin('unit.plant', 'unitPlant')
       .leftJoin('stackPipe.plant', 'stackPipePlant')
       .andWhere(
-        new Brackets((qb) => {
-            qb.where(unitPlantConditions)
-              .orWhere(stackPipePlantConditions)
-        }));
+        new Brackets(qb => {
+          qb.where(unitPlantConditions).orWhere(stackPipePlantConditions);
+        }),
+      );
 
     if (params.locationName) {
       const locationStrings = params.locationName

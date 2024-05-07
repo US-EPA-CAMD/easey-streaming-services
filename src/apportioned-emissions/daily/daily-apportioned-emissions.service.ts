@@ -1,33 +1,29 @@
-import { Request } from 'express';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-
 import { Injectable, StreamableFile } from '@nestjs/common';
-
+import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
-import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
-import { StreamingService } from '../../streaming/streaming.service';
-import { DayUnitDataRepository } from './day-unit-data.repository';
+import { DailyApportionedEmissionsFacilityAggregationDTO } from '../../dto/daily-apportioned-emissions-facility-aggregation.dto';
+import { DailyApportionedEmissionsNationalAggregationDTO } from '../../dto/daily-apportioned-emissions-national-aggregation.dto';
+import { DailyApportionedEmissionsStateAggregationDTO } from '../../dto/daily-apportioned-emissions-state-aggregation.dto';
 import { DailyApportionedEmissionsDTO } from '../../dto/daily-apportioned-emissions.dto';
 import {
   DailyApportionedEmissionsParamsDTO,
   StreamDailyApportionedEmissionsParamsDTO,
 } from '../../dto/daily-apportioned-emissions.params.dto';
-import { DailyApportionedEmissionsFacilityAggregationDTO } from '../../dto/daily-apportioned-emissions-facility-aggregation.dto';
-import { DailyApportionedEmissionsStateAggregationDTO } from '../../dto/daily-apportioned-emissions-state-aggregation.dto';
-import { DailyApportionedEmissionsNationalAggregationDTO } from '../../dto/daily-apportioned-emissions-national-aggregation.dto';
+import { StreamingService } from '../../streaming/streaming.service';
+import { DayUnitDataRepository } from './day-unit-data.repository';
 
 @Injectable()
 export class DailyApportionedEmissionsService {
   constructor(
     private readonly logger: Logger,
     private readonly streamService: StreamingService,
-    @InjectRepository(DayUnitDataRepository)
     private readonly repository: DayUnitDataRepository,
   ) {}
 

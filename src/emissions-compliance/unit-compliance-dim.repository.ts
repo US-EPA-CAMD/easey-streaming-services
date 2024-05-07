@@ -1,11 +1,16 @@
-import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
-import { EntityRepository, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
 
 import { StreamEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
+import { UnitComplianceDim } from '../entities/unit-compliance-dim.entity';
 import { AccountQueryBuilder } from '../utils/account-query-builder';
 
-@EntityRepository(UnitComplianceDim)
+@Injectable()
 export class UnitComplianceDimRepository extends Repository<UnitComplianceDim> {
+  constructor(entityManager: EntityManager) {
+    super(UnitComplianceDim, entityManager);
+  }
+
   private getColumns(): string[] {
     const columns = [
       'ucd.id',

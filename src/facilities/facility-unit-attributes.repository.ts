@@ -1,14 +1,18 @@
-import { EntityRepository, Repository } from 'typeorm';
-
+import { Injectable } from '@nestjs/common';
 import { Regex } from '@us-epa-camd/easey-common/utilities';
+import { EntityManager, Repository } from 'typeorm';
 
-import { FacilityUnitAttributes } from '../entities/vw-facility-unit-attributes.entity';
 import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
+import { FacilityUnitAttributes } from '../entities/vw-facility-unit-attributes.entity';
 
-@EntityRepository(FacilityUnitAttributes)
+@Injectable()
 export class FacilityUnitAttributesRepository extends Repository<
   FacilityUnitAttributes
 > {
+  constructor(entityManager: EntityManager) {
+    super(FacilityUnitAttributes, entityManager);
+  }
+
   private getColumns(): string[] {
     const columns = [
       'fua.id',

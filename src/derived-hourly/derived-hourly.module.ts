@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { StreamingModule } from '../streaming/streaming.module';
+import { DerivedHourlyController } from './derived-hourly.controller';
 import { DerivedHourlyRepository } from './derived-hourly.repository';
 import { DerivedHourlyService } from './derived-hourly.service';
-import { DerivedHourlyController } from './derived-hourly.controller';
-import { StreamingModule } from '../streaming/streaming.module';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { StreamingModule } from '../streaming/streaming.module';
     TypeOrmModule.forFeature([DerivedHourlyRepository]),
   ],
   controllers: [DerivedHourlyController],
-  providers: [DerivedHourlyService],
+  providers: [DerivedHourlyRepository, DerivedHourlyService],
   exports: [TypeOrmModule, DerivedHourlyService],
 })
 export class DerivedHourlyModule {}

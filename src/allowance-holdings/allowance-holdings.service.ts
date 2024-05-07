@@ -1,24 +1,22 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
-import { plainToClass } from 'class-transformer';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { exclude } from '@us-epa-camd/easey-common/utilities';
 import { ExcludeAllowanceHoldings } from '@us-epa-camd/easey-common/enums';
+import { exclude } from '@us-epa-camd/easey-common/utilities';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
 import { AllowanceHoldingsDTO } from '../dto/allowance-holdings.dto';
 import { StreamAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.params.dto';
 import { AllowanceHoldingDimRepository } from './allowance-holding-dim.repository';
 
 import { Logger } from '@us-epa-camd/easey-common/logger';
-import { StreamingService } from '../streaming/streaming.service';
 import { fieldMappings } from '../constants/account-field-mappings';
+import { StreamingService } from '../streaming/streaming.service';
 
 @Injectable()
 export class AllowanceHoldingsService {
   constructor(
-    @InjectRepository(AllowanceHoldingDimRepository)
     private readonly allowanceHoldingsRepository: AllowanceHoldingDimRepository,
     private readonly logger: Logger,
     private readonly streamService: StreamingService,

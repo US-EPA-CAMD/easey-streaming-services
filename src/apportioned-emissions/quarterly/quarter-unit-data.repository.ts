@@ -1,11 +1,15 @@
-import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
+import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { QuarterUnitDataView } from '../../entities/vw-quarter-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
-import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 
-@EntityRepository(QuarterUnitDataView)
+@Injectable()
 export class QuarterUnitDataRepository extends Repository<QuarterUnitDataView> {
+  constructor(entityManager: EntityManager) {
+    super(QuarterUnitDataView, entityManager);
+  }
 
   async buildQuery(
     columns: any[],

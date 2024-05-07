@@ -1,9 +1,15 @@
-import { Repository, EntityRepository } from 'typeorm';
-import { SummaryValue } from '../entities/summary-value.entity';
-import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
 
-@EntityRepository(SummaryValue)
+import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
+import { SummaryValue } from '../entities/summary-value.entity';
+
+@Injectable()
 export class SummaryValueRepository extends Repository<SummaryValue> {
+  constructor(entityManager: EntityManager) {
+    super(SummaryValue, entityManager);
+  }
+
   private getColumns(): string[] {
     const columns = [];
     columns.push(

@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
+
 import { DerivedHourlyRepository } from './derived-hourly.repository';
-import { SelectQueryBuilder } from 'typeorm';
 import { DerivedHrlyValue } from '../entities/derived-hrly-value.entity';
 import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
 
@@ -18,7 +19,7 @@ describe('-- Derived Hourly Value Repository --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [DerivedHourlyRepository],
+      providers: [DerivedHourlyRepository, EntityManager],
     }).compile();
 
     repo = module.get(DerivedHourlyRepository);

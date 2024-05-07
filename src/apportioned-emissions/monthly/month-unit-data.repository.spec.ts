@@ -1,19 +1,18 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
-
 import {
-  State,
-  UnitType,
-  UnitFuelType,
   ControlTechnology,
-  Program,
   ExcludeApportionedEmissions,
+  Program,
+  State,
+  UnitFuelType,
+  UnitType,
 } from '@us-epa-camd/easey-common/enums';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
+import { StreamMonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { MonthUnitDataRepository } from './month-unit-data.repository';
-import { StreamMonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
 
 jest.mock('../../utils/emissions-query-builder');
 
@@ -71,6 +70,7 @@ describe('MonthUnitDataRepository', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        EntityManager,
         MonthUnitDataRepository,
         {
           provide: SelectQueryBuilder,

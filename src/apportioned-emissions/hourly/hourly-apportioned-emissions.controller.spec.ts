@@ -1,13 +1,13 @@
-import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
-
+import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
+import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 import { StreamingModule } from '../../streaming/streaming.module';
 import { HourUnitDataRepository } from './hour-unit-data.repository';
-import { HourlyApportionedEmissionsService } from './hourly-apportioned-emissions.service';
 import { HourlyApportionedEmissionsController } from './hourly-apportioned-emissions.controller';
-import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
+import { HourlyApportionedEmissionsService } from './hourly-apportioned-emissions.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -27,7 +27,11 @@ describe('-- Hourly Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [HourlyApportionedEmissionsController],
-      providers: [HourlyApportionedEmissionsService, HourUnitDataRepository],
+      providers: [
+        EntityManager,
+        HourlyApportionedEmissionsService,
+        HourUnitDataRepository,
+      ],
     }).compile();
 
     controller = module.get(HourlyApportionedEmissionsController);
