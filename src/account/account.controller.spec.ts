@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
+import { EntityManager } from 'typeorm';
 
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountController } from './account.controller';
@@ -26,7 +27,7 @@ describe('-- Account Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [AccountController],
-      providers: [AccountService, AccountFactRepository],
+      providers: [AccountService, AccountFactRepository, EntityManager],
     }).compile();
 
     accountController = module.get(AccountController);

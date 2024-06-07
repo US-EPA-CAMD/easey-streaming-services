@@ -1,12 +1,13 @@
+import { StreamableFile } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { StreamableFile } from '@nestjs/common';
+import { EntityManager } from 'typeorm';
 
+import { StreamAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
+import { StreamingModule } from '../streaming/streaming.module';
 import { AccountComplianceDimRepository } from './account-compliance-dim.repository';
 import { AllowanceComplianceController } from './allowance-compliance.controller';
 import { AllowanceComplianceService } from './allowance-compliance.service';
-import { StreamAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
-import { StreamingModule } from '../streaming/streaming.module';
 
 const mockRequest = (url: string) => {
   return {
@@ -26,7 +27,11 @@ describe('-- Allowance Compliance Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [AllowanceComplianceController],
-      providers: [AllowanceComplianceService, AccountComplianceDimRepository],
+      providers: [
+        AllowanceComplianceService,
+        AccountComplianceDimRepository,
+        EntityManager,
+      ],
     }).compile();
 
     allowanceComplianceController = module.get(AllowanceComplianceController);

@@ -1,8 +1,9 @@
 import { Test } from '@nestjs/testing';
-import { HourlyOperatingRepository } from './hourly-operating.repository';
-import { SelectQueryBuilder } from 'typeorm';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
+
 import { HourlyParamsDto } from '../dto/derived-hourly-value.params.dto';
 import { HrlyOpData } from '../entities/hrly-op-data.entity';
+import { HourlyOperatingRepository } from './hourly-operating.repository';
 
 const mockedQueryBuilder = {
   innerJoin: jest.fn().mockReturnThis(),
@@ -18,7 +19,7 @@ describe('-- Hourly Operating Repository --', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [HourlyOperatingRepository],
+      providers: [EntityManager, HourlyOperatingRepository],
     }).compile();
 
     repo = module.get(HourlyOperatingRepository);

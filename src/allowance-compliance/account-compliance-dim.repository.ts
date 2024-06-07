@@ -1,14 +1,19 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
 
-import { AccountQueryBuilder } from '../utils/account-query-builder';
-import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
 import { StreamAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.params.dto';
+import { AccountComplianceDim } from '../entities/account-compliance-dim.entity';
+import { AccountQueryBuilder } from '../utils/account-query-builder';
 import { includesOtcNbp } from '../utils/includes-otc-nbp.const';
 
-@EntityRepository(AccountComplianceDim)
+@Injectable()
 export class AccountComplianceDimRepository extends Repository<
   AccountComplianceDim
 > {
+  constructor(entityManager: EntityManager) {
+    super(AccountComplianceDim, entityManager);
+  }
+
   private getColumns(isOTCNBP: boolean): string[] {
     let columns = [];
 

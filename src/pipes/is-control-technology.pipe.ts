@@ -1,9 +1,10 @@
+import { DbLookupValidator } from '@us-epa-camd/easey-common/validators';
 import {
   registerDecorator,
-  ValidationOptions,
   ValidationArguments,
+  ValidationOptions,
 } from 'class-validator';
-import { getManager, ILike } from 'typeorm';
+import { ILike } from 'typeorm';
 
 import { ControlCode } from '../entities/control-code.entity';
 
@@ -14,16 +15,18 @@ export function IsControlTechnology(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: {
-        async validate(value: any, args: ValidationArguments) {
-          const manager = getManager();
-
-          const found = await manager.findOne(ControlCode, {
-            controlDescription: ILike(value),
-          });
-          return found != null;
+      constraints: [
+        {
+          type: ControlCode,
+          ignoreEmpty: false,
+          findOption: (args: ValidationArguments) => ({
+            where: {
+              controlDescription: ILike(args.value),
+            },
+          }),
         },
-      },
+      ],
+      validator: DbLookupValidator,
     });
   };
 }

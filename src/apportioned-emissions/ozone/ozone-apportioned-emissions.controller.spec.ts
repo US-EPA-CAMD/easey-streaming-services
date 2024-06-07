@@ -1,13 +1,13 @@
-import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
-
+import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
-import { StreamingModule } from '../../streaming/streaming.module';
-import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
-import { OzoneApportionedEmissionsService } from './ozone-apportioned-emissions.service';
-import { OzoneApportionedEmissionsController } from './ozone-apportioned-emissions.controller';
 import { OzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
+import { StreamingModule } from '../../streaming/streaming.module';
+import { OzoneApportionedEmissionsController } from './ozone-apportioned-emissions.controller';
+import { OzoneApportionedEmissionsService } from './ozone-apportioned-emissions.service';
+import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 
 const mockRequest = (url: string) => {
   return {
@@ -27,7 +27,11 @@ describe('-- Ozone Apportioned Emissions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [OzoneApportionedEmissionsController],
-      providers: [OzoneApportionedEmissionsService, OzoneUnitDataRepository],
+      providers: [
+        EntityManager,
+        OzoneApportionedEmissionsService,
+        OzoneUnitDataRepository,
+      ],
     }).compile();
 
     controller = module.get(OzoneApportionedEmissionsController);

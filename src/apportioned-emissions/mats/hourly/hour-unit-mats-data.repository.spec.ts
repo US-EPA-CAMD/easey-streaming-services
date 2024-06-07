@@ -1,17 +1,17 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
 import {
-  State,
-  UnitType,
-  UnitFuelType,
   ControlTechnology,
   ExcludeHourlyMatsApportionedEmissions,
+  State,
+  UnitFuelType,
+  UnitType,
 } from '@us-epa-camd/easey-common/enums';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
-import { StreamHourlyMatsApportionedEmissionsParamsDTO } from '../../../dto/hourly-mats-apporitioned-emissions.params.dto';
-import { HourUnitMatsDataRepository } from './hour-unit-mats-data.repository';
-import { EmissionsQueryBuilder } from '../../../utils/emissions-query-builder';
 import { fieldMappings } from '../../../constants/emissions-field-mappings';
+import { StreamHourlyMatsApportionedEmissionsParamsDTO } from '../../../dto/hourly-mats-apporitioned-emissions.params.dto';
+import { EmissionsQueryBuilder } from '../../../utils/emissions-query-builder';
+import { HourUnitMatsDataRepository } from './hour-unit-mats-data.repository';
 
 jest.mock('../../../utils/emissions-query-builder');
 
@@ -67,6 +67,7 @@ describe('HourUnitMatsDataRepository', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        EntityManager,
         HourUnitMatsDataRepository,
         {
           provide: SelectQueryBuilder,

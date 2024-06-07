@@ -1,11 +1,16 @@
-import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
+import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 import { HourUnitDataView } from '../../entities/vw-hour-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
-import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 
-@EntityRepository(HourUnitDataView)
+@Injectable()
 export class HourUnitDataRepository extends Repository<HourUnitDataView> {
+  constructor(entityManager: EntityManager) {
+    super(HourUnitDataView, entityManager);
+  }
+
   buildQuery(
     columns: any[],
     params: HourlyApportionedEmissionsParamsDTO,

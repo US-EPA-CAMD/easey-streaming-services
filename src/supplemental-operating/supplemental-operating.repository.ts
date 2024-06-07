@@ -1,11 +1,17 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
+
 import { OrisQuarterParamsDto } from '../dto/summary-value.params.dto';
 import { SupplementalOperating } from '../entities/supplemental-operating.entity';
 
-@EntityRepository(SupplementalOperating)
+@Injectable()
 export class SupplementalOperatingRepository extends Repository<
   SupplementalOperating
 > {
+  constructor(entityManager: EntityManager) {
+    super(SupplementalOperating, entityManager);
+  }
+
   private getColumns(): string[] {
     const columns = [];
     columns.push(

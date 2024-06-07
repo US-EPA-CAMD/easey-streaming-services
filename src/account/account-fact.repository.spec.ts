@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { AccountFactRepository } from './account-fact.repository';
 import { AccountFact } from '../entities/account-fact.entity';
@@ -24,6 +24,7 @@ describe('AccountFactRepository', () => {
     const module = await Test.createTestingModule({
       providers: [
         AccountFactRepository,
+        EntityManager,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],
     }).compile();
