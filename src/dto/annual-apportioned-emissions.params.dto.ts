@@ -1,4 +1,4 @@
-import { IsArray, IsDefined, IsOptional } from 'class-validator';
+import { IsArray, IsDateString, IsDefined, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -57,4 +57,14 @@ export class StreamAnnualApportionedEmissionsParamsDTO extends AnnualApportioned
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
   exclude?: ExcludeApportionedEmissions[];
+
+  @ApiProperty()
+  @IsOptional()
+  @IsDateString()
+  addDate?: Date;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  userid?: string;
 }
