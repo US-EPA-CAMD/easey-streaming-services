@@ -39,7 +39,7 @@ export class AnnualUnitDataRepository extends Repository<AnnualUnitDataView> {
     }
 
     if(params.addDate) {
-      query.andWhere('aud.addDate = :addDate', { addDate: params.addDate });
+      query.andWhere('DATE(aud.addDate) = DATE(:addDate)', { addDate: params.addDate });
     }
 
     query
