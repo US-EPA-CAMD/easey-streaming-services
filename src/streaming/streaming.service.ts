@@ -1,4 +1,6 @@
-import Pool from "pg-pool";
+/// <reference types="node" />
+
+import { Pool as PgPool } from "pg";
 import { Request } from 'express';
 import JSONStream from 'JSONStream';
 import QueryStream from 'pg-query-stream';
@@ -7,7 +9,7 @@ import { Inject, Injectable, StreamableFile } from '@nestjs/common';
 
 import { Logger } from '@us-epa-camd/easey-common/logger';
 
-import { Json2CSV } from './../transforms/json2csv.transform';
+import { Json2CSV } from '../transforms/json2csv.transform';
 
 @Injectable()
 export class StreamingService {
@@ -16,8 +18,10 @@ export class StreamingService {
   constructor(
     private readonly logger: Logger,
     private readonly configService: ConfigService,
-    @Inject('PG_POOL') private readonly dbPool: Pool,    
-  ) { }
+    @Inject('PG_POOL') private readonly dbPool: PgPool,
+  ) {
+    this.batchSize = this.configService.get<number>('app.streamBatchSize') || 1000;
+  }
 
   async getStream(
     req: Request,
@@ -50,7 +54,7 @@ export class StreamingService {
     }
 
     return new StreamableFile(dbStream.pipe(JSONStream.stringify()), {
-      type: req.headers.accept,
+      type: req.headers.accept || 'application/json',
       disposition: `${disposition}.json`,
     });
   }
