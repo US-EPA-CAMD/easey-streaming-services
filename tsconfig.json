@@ -12,5 +12,12 @@
     "baseUrl": "./",
     "incremental": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["jest","node"],
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+    },
+    "exclude": ["node_modules"]
   }
-}
+

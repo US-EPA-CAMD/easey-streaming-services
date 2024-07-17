@@ -24,6 +24,8 @@ import { SummaryValueModule } from './summary-value/summary-value.module';
 import { SupplementalOperatingModule } from './supplemental-operating/supplemental-operating.module';
 import { DerivedHourlyModule } from './derived-hourly/derived-hourly.module';
 import { HourlyOperatingModule } from './hourly-operating/hourly-operating.module';
+//import { cacheConfig } from './config/cache.config';
+
 
 @Module({
   imports: [

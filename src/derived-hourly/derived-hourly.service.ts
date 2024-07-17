@@ -34,6 +34,8 @@ export class DerivedHourlyService {
 
     const [sql, values] = await this.repository.buildQuery(params);
 
+    console.log('Service received query:', sql.substring(0, 100) + '...');
+
     return this.streamingService.getStream(
       req,
       sql,
@@ -42,5 +44,9 @@ export class DerivedHourlyService {
       disposition,
       [],
     );
+  } catch (error) {
+    // Add this error log
+    console.error('Error in streamValues:', error);
+    throw error; // Re-throw the error to be handled by the global exception filter
   }
 }

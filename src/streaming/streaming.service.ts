@@ -13,7 +13,7 @@ import { Json2CSV } from '../transforms/json2csv.transform';
 
 @Injectable()
 export class StreamingService {
-  private batchSize = this.configService.get<number>('app.streamBatchSize');
+  private readonly batchSize = this.configService.get<number>('app.streamBatchSize');
 
   constructor(
     private readonly logger: Logger,
