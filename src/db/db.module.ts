@@ -1,13 +1,15 @@
 require("dotenv").config();
-const Pool = require("pg-pool");
+
+import { Pool } from 'pg';
 import { TlsOptions } from "tls";
 import { Module } from '@nestjs/common';
 import { existsSync, readFileSync } from "fs";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
-const tlsOptions = (host: string) => {
+const tlsOptions = (host:string) => {
+  //if (host === "localhost") return false;
   const options: TlsOptions = { requestCert: true };
-  options.rejectUnauthorized = host !== "localhost";
+  options.rejectUnauthorized = host!== "localhost";
   options.ca = (host !== "localhost" && existsSync('./us-gov-west-1-bundle.pem'))
     ? readFileSync('./us-gov-west-1-bundle.pem').toString()
     : null;
@@ -22,6 +24,7 @@ const tlsOptions = (host: string) => {
 }
 
 const pgOptions = (configService: ConfigService) => {
+  //const host = configService.get<string>('database.host');
   return {
     application_name: configService.get('app.name'),
     user: configService.get('database.user'),
@@ -29,15 +32,9 @@ const pgOptions = (configService: ConfigService) => {
     database: configService.get('database.name'),
     password: configService.get('database.pwd'),
     port: configService.get('database.port'),
-    // set pool max size to 20
     max: configService.get('app.maxPoolSize'),
-    // close idle clients after 1 second
     idleTimeoutMillis: configService.get('app.idleTimeout'),
-    // return an error after 1 second if connection could not be established
-    connectionTimeoutMillis: configService.get(
-      'app.connectionTimeout',
-    ),
-    // close (and replace) a connection after it has been used 500 times
+    connectionTimeoutMillis: configService.get('app.connectionTimeout'),
     maxUses: 500,
     ssl: tlsOptions(configService.get('database.host')),
   };
@@ -47,16 +44,18 @@ const pgOptions = (configService: ConfigService) => {
   imports: [ConfigModule],
   providers: [
     {
-      provide: 'PG_OPTIONS',
+      provide: 'PG-OPTIONS',
       inject: [ConfigService],
-      useFactory: (configService) => pgOptions(configService),
+      useFactory: (configService: ConfigService) => pgOptions(configService),
     },
     {
-      provide: 'PG_POOL',
-      inject: ['PG_OPTIONS'],
+      provide: 'PG-POOL',
+      inject: ['PG-OPTIONS'],
       useFactory: (options) => new Pool(options),
     }
   ],
-  exports: ['PG_POOL'],
+  exports: ['PG-POOL'],
 })
 export class DbModule {}
+
+

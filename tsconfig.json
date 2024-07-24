@@ -12,5 +12,6 @@
     "baseUrl": "./",
     "incremental": true,
     "esModuleInterop": true,
+    "types": ["node", "jest", "pg", "pg-pool", "validator"]
   }
 }
