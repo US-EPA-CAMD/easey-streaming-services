@@ -227,6 +227,8 @@ annual.push(
   {...propertyMetadata.unit_id.fieldLabels},
   { ...propertyMetadata.associatedStacks.fieldLabels },
   { ...propertyMetadata.year.fieldLabels },
+  { ...propertyMetadata.emissions.addDate.fieldLabels},
+  { ...propertyMetadata.emissions.userId.fieldLabels},
   ...commonEmissions,
   ...unitCharacteristics,
   ...controlInfoCharacteristics,
