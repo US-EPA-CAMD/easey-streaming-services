@@ -1,11 +1,15 @@
-import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
+import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 import { HourUnitDataView } from '../../entities/vw-hour-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
-import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 
-@EntityRepository(HourUnitDataView)
+@Injectable()
 export class HourUnitDataRepository extends Repository<HourUnitDataView> {
+  constructor(entityManager: EntityManager) {
+    super(HourUnitDataView, entityManager);
+  }
 
   buildQuery(
     columns: any[],
@@ -44,9 +48,14 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
   buildFacilityAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
-    const selectColumns = ['hud.stateCode', 'hud.facilityName', 'hud.facilityId', 'hud.date', 'hud.hour',];
-    const orderByColumns = ['hud.facilityId', 'hud.date', 'hud.hour',];
+    const selectColumns = [
+      'hud.stateCode',
+      'hud.facilityName',
+      'hud.facilityId',
+      'hud.date',
+      'hud.hour',
+    ];
+    const orderByColumns = ['hud.facilityId', 'hud.date', 'hud.hour'];
 
     const query = this.buildAggregationQuery(
       params,
@@ -60,7 +69,6 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
   buildStateAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
     const selectColumns = ['hud.stateCode', 'hud.date', 'hud.hour'];
     const orderByColumns = ['hud.stateCode', 'hud.date', 'hud.hour'];
 
@@ -76,7 +84,6 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
   buildNationalAggregationQuery(
     params: HourlyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
-
     const selectColumns = ['hud.date', 'hud.hour'];
     const orderByColumns = ['hud.date', 'hud.hour'];
 
@@ -94,7 +101,6 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
     selectColumns: string[],
     orderByColumns: string[],
   ): SelectQueryBuilder<HourUnitDataView> {
-
     let query = this.createQueryBuilder('hud').select(
       selectColumns.map(col => {
         return `${col} AS "${col.split('.')[1]}"`;
@@ -131,6 +137,4 @@ export class HourUnitDataRepository extends Repository<HourUnitDataView> {
 
     return query;
   }
-
-
 }

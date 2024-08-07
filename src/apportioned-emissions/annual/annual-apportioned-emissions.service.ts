@@ -1,33 +1,29 @@
-import { Request } from 'express';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-
 import { Injectable, StreamableFile } from '@nestjs/common';
-
+import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
-import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
-import { StreamingService } from '../../streaming/streaming.service';
-import { AnnualUnitDataRepository } from './annual-unit-data.repository';
+import { AnnualApportionedEmissionsAggregationDTO } from '../../dto/annual-apportioned-emissions-aggregation.dto';
+import { AnnualApportionedEmissionsFacilityAggregationDTO } from '../../dto/annual-apportioned-emissions-facility-aggregation.dto';
 import { AnnualApportionedEmissionsDTO } from '../../dto/annual-apportioned-emissions.dto';
 import {
   AnnualApportionedEmissionsParamsDTO,
   StreamAnnualApportionedEmissionsParamsDTO,
 } from '../../dto/annual-apportioned-emissions.params.dto';
-import { AnnualApportionedEmissionsAggregationDTO } from '../../dto/annual-apportioned-emissions-aggregation.dto';
+import { StreamingService } from '../../streaming/streaming.service';
 import { AnnualApportionedEmissionsStateAggregationDTO } from './../../dto/annual-apportioned-emissions-state-aggregation.dto';
-import { AnnualApportionedEmissionsFacilityAggregationDTO } from '../../dto/annual-apportioned-emissions-facility-aggregation.dto';
+import { AnnualUnitDataRepository } from './annual-unit-data.repository';
 
 @Injectable()
 export class AnnualApportionedEmissionsService {
   constructor(
     private readonly logger: Logger,
     private readonly streamService: StreamingService,
-    @InjectRepository(AnnualUnitDataRepository)
     private readonly repository: AnnualUnitDataRepository,
   ) {}
 

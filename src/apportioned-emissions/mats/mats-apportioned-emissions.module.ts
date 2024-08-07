@@ -13,7 +13,7 @@ import { HourUnitMatsDataRepository } from './hourly/hour-unit-mats-data.reposit
     HttpModule,
   ],
   controllers: [],
-  providers: [ConfigService],
+  providers: [ConfigService, HourUnitMatsDataRepository],
   exports: [TypeOrmModule],
 })
 export class MatsApportionedEmissionsModule {}

@@ -1,13 +1,18 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
 
-import { HourUnitMatsDataView } from '../../../entities/vw-hour-unit-mats-data.entity';
 import { HourlyMatsApportionedEmissionsParamsDTO } from '../../../dto/hourly-mats-apporitioned-emissions.params.dto';
+import { HourUnitMatsDataView } from '../../../entities/vw-hour-unit-mats-data.entity';
 import { EmissionsQueryBuilder } from '../../../utils/emissions-query-builder';
 
-@EntityRepository(HourUnitMatsDataView)
+@Injectable()
 export class HourUnitMatsDataRepository extends Repository<
   HourUnitMatsDataView
 > {
+  constructor(entityManager: EntityManager) {
+    super(HourUnitMatsDataView, entityManager);
+  }
+
   buildQuery(
     columns: any[],
     params: HourlyMatsApportionedEmissionsParamsDTO,

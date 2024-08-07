@@ -1,8 +1,7 @@
 import { validate } from 'class-validator';
 
-import { IsYearFormat } from '@us-epa-camd/easey-common/pipes';
+import { IsYearGreater, IsYearFormat } from '@us-epa-camd/easey-common/pipes';
 
-import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import {
   TransactionBeginDate,
   TransactionEndDate,

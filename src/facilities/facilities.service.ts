@@ -1,29 +1,25 @@
-import { Request } from 'express';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-
 import { Injectable, StreamableFile } from '@nestjs/common';
-
+import { ExcludeFacilityAttributes } from '@us-epa-camd/easey-common/enums';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
-import { ExcludeFacilityAttributes } from '@us-epa-camd/easey-common/enums';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
 import { fieldMappings } from '../constants/facility-attributes-field-mappings';
+import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
+import { FacilityAttributesDTO } from '../dto/facility-attributes.dto';
 import { StreamingService } from '../streaming/streaming.service';
 import { FacilityUnitAttributesRepository } from './facility-unit-attributes.repository';
-import { FacilityAttributesDTO } from '../dto/facility-attributes.dto';
-import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
 
 @Injectable()
 export class FacilitiesService {
   constructor(
     private readonly logger: Logger,
     private readonly streamingService: StreamingService,
-    @InjectRepository(FacilityUnitAttributesRepository)
     private readonly repository: FacilityUnitAttributesRepository,
-  ) { }
+  ) {}
 
   async streamAttributes(
     req: Request,
@@ -33,8 +29,8 @@ export class FacilitiesService {
 
     const fieldMappingsList = params.exclude
       ? fieldMappings.facilities.attributes.filter(
-        item => !params.exclude.includes(item.value),
-      )
+          item => !params.exclude.includes(item.value),
+        )
       : fieldMappings.facilities.attributes;
 
     const json2Dto = new Transform({

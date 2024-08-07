@@ -1,9 +1,8 @@
 import { Test } from '@nestjs/testing';
-import { SelectQueryBuilder } from 'typeorm';
+import { EntityManager, SelectQueryBuilder } from 'typeorm';
 
 import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
 import { FacilityUnitAttributesRepository } from './facility-unit-attributes.repository';
-import { FacilityUnitAttributes } from '../entities/vw-facility-unit-attributes.entity';
 
 const mockQueryBuilder = () => ({
   andWhere: jest.fn(),
@@ -36,6 +35,7 @@ describe('FacilityUnitAttributesRepository', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        EntityManager,
         FacilityUnitAttributesRepository,
         { provide: SelectQueryBuilder, useFactory: mockQueryBuilder },
       ],

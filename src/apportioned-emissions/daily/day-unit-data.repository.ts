@@ -1,11 +1,16 @@
-import { Repository, EntityRepository, SelectQueryBuilder } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
 import { DayUnitDataView } from '../../entities/vw-day-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { DailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-emissions.params.dto';
 
-@EntityRepository(DayUnitDataView)
+@Injectable()
 export class DayUnitDataRepository extends Repository<DayUnitDataView> {
+  constructor(entityManager: EntityManager) {
+    super(DayUnitDataView, entityManager);
+  }
+
   buildQuery(
     columns: any[],
     params: DailyApportionedEmissionsParamsDTO,

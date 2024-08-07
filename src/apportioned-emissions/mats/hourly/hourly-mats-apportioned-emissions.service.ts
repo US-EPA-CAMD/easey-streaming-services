@@ -1,23 +1,21 @@
-import { Request } from 'express';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, StreamableFile } from '@nestjs/common';
-import { Logger } from '@us-epa-camd/easey-common/logger';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { plainToClass } from 'class-transformer';
-import { exclude } from '@us-epa-camd/easey-common/utilities';
 import { ExcludeHourlyMatsApportionedEmissions } from '@us-epa-camd/easey-common/enums';
+import { Logger } from '@us-epa-camd/easey-common/logger';
+import { exclude } from '@us-epa-camd/easey-common/utilities';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
-import { HourUnitMatsDataRepository } from './hour-unit-mats-data.repository';
+import { fieldMappings } from '../../../constants/emissions-field-mappings';
 import { StreamHourlyMatsApportionedEmissionsParamsDTO } from '../../../dto/hourly-mats-apporitioned-emissions.params.dto';
 import { HourlyMatsApportionedEmissionsDTO } from '../../../dto/hourly-mats-apportioned-emissions.dto';
 import { StreamingService } from '../../../streaming/streaming.service';
-import { fieldMappings } from '../../../constants/emissions-field-mappings';
+import { HourUnitMatsDataRepository } from './hour-unit-mats-data.repository';
 
 @Injectable()
 export class HourlyMatsApportionedEmissionsService {
   constructor(
-    @InjectRepository(HourUnitMatsDataRepository)
     private readonly repository: HourUnitMatsDataRepository,
     private readonly logger: Logger,
     private readonly streamService: StreamingService,

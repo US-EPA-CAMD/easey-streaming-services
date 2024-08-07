@@ -9,13 +9,13 @@ import {
   IsInEnum,
   IsInResponse,
   IsYearFormat,
+  IsYearGreater,
 } from '@us-epa-camd/easey-common/pipes';
 import {
   ActiveAllowanceProgram,
   ExcludeAllowanceHoldings,
 } from '@us-epa-camd/easey-common/enums';
 
-import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { AllowanceParamsDTO } from './allowance.params.dto';
 import { fieldMappings } from '../constants/account-field-mappings';

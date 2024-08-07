@@ -1,14 +1,15 @@
+import { StreamableFile } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
-import { StreamableFile } from '@nestjs/common';
+import { EntityManager } from 'typeorm';
 
-import { EmissionsComplianceController } from './emissions-compliance.controller';
-import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
 import { AccountComplianceDimRepository } from '../allowance-compliance/account-compliance-dim.repository';
-import { EmissionsComplianceService } from './emissions-compliance.service';
+import { AllowanceComplianceService } from '../allowance-compliance/allowance-compliance.service';
 import { StreamEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.params.dto';
-import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 import { StreamingModule } from '../streaming/streaming.module';
+import { EmissionsComplianceController } from './emissions-compliance.controller';
+import { EmissionsComplianceService } from './emissions-compliance.service';
+import { UnitComplianceDimRepository } from './unit-compliance-dim.repository';
 
 const mockRequest = (url: string) => {
   return {
@@ -32,6 +33,7 @@ describe('-- Emissions Compliance Controller --', () => {
       providers: [
         AllowanceComplianceService,
         EmissionsComplianceService,
+        EntityManager,
         AccountComplianceDimRepository,
         UnitComplianceDimRepository,
       ],

@@ -6,6 +6,7 @@ import {
   ErrorMessages,
 } from '@us-epa-camd/easey-common/constants';
 import {
+  IsYearGreater,
   IsYearFormat,
   IsInEnum,
   IsInResponse,
@@ -23,7 +24,6 @@ import {
 } from '../utils/validator.const';
 import { IsAllowanceProgram } from '../pipes/is-allowance-program.pipe';
 import { IsTransactionType } from '../pipes/is-transaction-type.pipe';
-import { IsYearGreater } from '../pipes/is-year-greater.pipe';
 import { fieldMappings } from '../constants/account-field-mappings';
 
 export class AllowanceTransactionsParamsDTO extends AllowanceParamsDTO {

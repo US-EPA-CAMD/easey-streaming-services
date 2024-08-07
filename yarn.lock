@@ -759,10 +759,10 @@
   dependencies:
     tslib "2.4.0"
 
-"@nestjs/typeorm@8.0.3":
-  version "8.0.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/typeorm/-/typeorm-8.0.3.tgz#e62feb1f3ec7fa0d1353f774f3f6915594c34a4e"
-  integrity sha512-tf9rTXP6LeFInkwd+tktQhtLRsKp4RRYImprqT8gcHcJDx+xMP1IygnXELOKwF5vo2/mnhrGtBlRQ/iiS6170g==
+"@nestjs/typeorm@^8.0.3":
+  version "8.1.4"
+  resolved "https://registry.yarnpkg.com/@nestjs/typeorm/-/typeorm-8.1.4.tgz#ab2286b39b69d1ce74e039d1847708d56c2c3e60"
+  integrity sha512-hKv0Y9PG7YkHQfjsrNqM1s/VajlT7Mla8gaoblmuLzgMKsOQFsZXSHlXNxXZ8CA4aCPeDUiXtvqc4zocadGiIQ==
   dependencies:
     uuid "8.3.2"
 
@@ -1119,11 +1119,6 @@
   integrity sha512-lQcYmxWuOfJq4IncK88/nwud9rwr1F04CFc5xzk0k4oKVyz/AI35TfsXmhjf6t8zp8mpCOi17BfvuNWx+zrYkg==
   dependencies:
     "@types/yargs-parser" "*"
-
-"@types/zen-observable@0.8.3":
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.3.tgz#781d360c282436494b32fe7d9f7f8e64b3118aa3"
-  integrity sha512-fbF6oTd4sGGy0xjHPKAt+eS2CrxJ3+6gQ3FGcBoIJR2TLAyCkCyI8JqZNy+FeON0AhVgNJoUumVoZQjBFUqHkw==
 
 "@typescript-eslint/eslint-plugin@5.1.0":
   version "5.1.0"
@@ -4094,7 +4089,7 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-js-yaml@^4.0.0, js-yaml@^4.1.0:
+js-yaml@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
   integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
@@ -4840,6 +4835,11 @@ pg-cursor@^2.10.3:
   resolved "https://registry.yarnpkg.com/pg-cursor/-/pg-cursor-2.10.3.tgz#4b44fbaede168a4785def56b8ac195e7df354472"
   integrity sha512-rDyBVoqPVnx/PTmnwQAYgusSeAKlTL++gmpf5klVK+mYMFEqsOc6VHHZnPKc/4lOvr4r6fiMuoxSFuBF1dx4FQ==
 
+pg-cursor@^2.10.5:
+  version "2.10.5"
+  resolved "https://registry.yarnpkg.com/pg-cursor/-/pg-cursor-2.10.5.tgz#7b2d1524f4dfc3c72741c017f188f34aa59dcd04"
+  integrity sha512-wzgmyk+k9mwuYe30ylLA6qRWw2TBFSee4Bw23oTz66YL9RdRJjDi2TaROMMF+V3QB6QWB3FFCju22loDftjKkw==
+
 pg-int8@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/pg-int8/-/pg-int8-1.0.1.tgz#943bd463bf5b71b4170115f80f8efc9a0c0eb78c"
@@ -4855,10 +4855,20 @@ pg-pool@^3.5.1, pg-pool@^3.6.1:
   resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-3.6.1.tgz#5a902eda79a8d7e3c928b77abf776b3cb7d351f7"
   integrity sha512-jizsIzhkIitxCGfPRzJn1ZdcosIt3pz9Sh3V01fm1vZnbnCMgmGl5wvGGdNN2EL9Rmb0EcFoCkixH4Pu+sP9Og==
 
+pg-pool@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-3.6.2.tgz#3a592370b8ae3f02a7c8130d245bc02fa2c5f3f2"
+  integrity sha512-Htjbg8BlwXqSBQ9V8Vjtc+vzf/6fVUuak/3/XXKA9oxZprwW3IMDQTGHP+KDmVL7rtd+R1QjbnCFPuTHm3G4hg==
+
 pg-protocol@*, pg-protocol@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/pg-protocol/-/pg-protocol-1.6.0.tgz#4c91613c0315349363af2084608db843502f8833"
   integrity sha512-M+PDm637OY5WM307051+bsDia5Xej6d9IR4GwJse1qA1DIhiKlksvrneZOYQq42OM+spubpcNYEo2FcKQrDk+Q==
+
+pg-protocol@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/pg-protocol/-/pg-protocol-1.6.1.tgz#21333e6d83b01faaebfe7a33a7ad6bfd9ed38cb3"
+  integrity sha512-jPIlvgoD63hrEuihvIg+tJhoGjUsLPn6poJY9N5CnlPd91c2T18T/9zBtLxZSb1EhYxBRoZJtzScCaWlYLtktg==
 
 pg-query-stream@^4.2.3:
   version "4.5.3"
@@ -4866,6 +4876,13 @@ pg-query-stream@^4.2.3:
   integrity sha512-ufa94r/lHJdjAm3+zPZEO0gXAmCb4tZPaOt7O76mjcxdL/HxwTuryy76km+u0odBBgtfdKFYq/9XGfiYeQF0yA==
   dependencies:
     pg-cursor "^2.10.3"
+
+pg-query-stream@^4.5.5:
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/pg-query-stream/-/pg-query-stream-4.5.5.tgz#ffbd849e02ebfcd041498d8df53c38914072aee8"
+  integrity sha512-mBGxVdiR9O6SdkOcXBoZuxtHUQ0nSFIWcFauGMUteko+9rZcu97vE15JX/w8pdijQ+diLbiw8ijpV/V+VCUUtA==
+  dependencies:
+    pg-cursor "^2.10.5"
 
 pg-types@^2.1.0:
   version "2.2.0"
@@ -4890,6 +4907,19 @@ pg-types@^4.0.1:
     postgres-date "~2.0.1"
     postgres-interval "^3.0.0"
     postgres-range "^1.1.1"
+
+pg@^8.11.5:
+  version "8.11.5"
+  resolved "https://registry.yarnpkg.com/pg/-/pg-8.11.5.tgz#e722b0a5f1ed92931c31758ebec3ddf878dd4128"
+  integrity sha512-jqgNHSKL5cbDjFlHyYsCXmQDrfIX/3RsNwYqpd4N0Kt8niLuNoRNH+aazv6cOd43gPh9Y4DjQCtb+X0MH0Hvnw==
+  dependencies:
+    pg-connection-string "^2.6.4"
+    pg-pool "^3.6.2"
+    pg-protocol "^1.6.1"
+    pg-types "^2.1.0"
+    pgpass "1.x"
+  optionalDependencies:
+    pg-cloudflare "^1.1.1"
 
 pg@^8.7.3:
   version "8.11.3"
@@ -6431,16 +6461,3 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
-
-zen-observable-ts@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-1.1.0.tgz#2d1aa9d79b87058e9b75698b92791c1838551f83"
-  integrity sha512-1h4zlLSqI2cRLPJUHJFL8bCWHhkpuXkF+dbGkRaWjgDIG26DmzyshUMrdV/rL3UnR+mhaX4fRq8LPouq0MYYIA==
-  dependencies:
-    "@types/zen-observable" "0.8.3"
-    zen-observable "0.8.15"
-
-zen-observable@0.8.15:
-  version "0.8.15"
-  resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
-  integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
