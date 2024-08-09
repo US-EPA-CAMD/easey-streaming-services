@@ -10,3 +10,4 @@ title: Streaming Services
 description: Streaming services API contains endpoints to stream account, allowance, facilities, and emissions data
 environment: development
 apiHost: api.epa.gov/easey/dev
+statementTimeout: 300000

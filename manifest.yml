@@ -22,6 +22,7 @@ applications:
       EASEY_STREAMING_SERVICES_IDLE_TIMEOUT: 10000
       EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT: 10000
       EASEY_API_GATEWAY_HOST: ((apiHost))
+      EASEY_DB_STATEMENT_TIMEOUT: ((statementTimeout))
     routes:
       - route: ((host))/((path))
     services:
