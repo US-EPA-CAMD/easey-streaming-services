@@ -11,3 +11,4 @@ description: Streaming services API contains endpoints to stream account, allowa
 environment: development
 apiHost: api.epa.gov/easey/dev
 dbSvc: camd-pg-db
+statementTimeout: 300000
