@@ -4,8 +4,6 @@ import {
   getConfigValueNumber,
   getConfigValueBoolean,
 } from '@us-epa-camd/easey-common/utilities';
-import { log } from 'console';
-
 
 require('dotenv').config();
 
@@ -73,6 +71,7 @@ export default registerAs('app', () => ({
     'EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT',
     10000,
   ),
+  statementTimeout: getConfigValueNumber('EASEY_DB_STATEMENT_TIMEOUT',300000),
   // ENABLES DEBUG CONSOLE LOGS
   enableDebug: getConfigValueBoolean('EASEY_STREAMING_SERVICES_ENABLE_DEBUG'),
   apiHost: apiHost,
