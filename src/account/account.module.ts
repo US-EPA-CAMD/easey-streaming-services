@@ -17,6 +17,6 @@ import { AccountFactRepository } from './account-fact.repository';
     StreamingModule,
   ],
   controllers: [AccountController],
-  providers: [StreamingService, AccountService],
+  providers: [StreamingService, AccountFactRepository, AccountService],
 })
 export class AccountModule {}

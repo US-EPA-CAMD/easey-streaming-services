@@ -1,34 +1,29 @@
-import { Request } from 'express';
-import { v4 as uuid } from 'uuid';
-import { Transform } from 'stream';
-import { plainToClass } from 'class-transformer';
-import { InjectRepository } from '@nestjs/typeorm';
-
-import {
-  Injectable,
-  StreamableFile,
-} from '@nestjs/common';
-
+import { Injectable, StreamableFile } from '@nestjs/common';
+import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
 import { Logger } from '@us-epa-camd/easey-common/logger';
 import { exclude } from '@us-epa-camd/easey-common/utilities';
-import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import { Transform } from 'stream';
+import { v4 as uuid } from 'uuid';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
+import { MonthlyApportionedEmissionsFacilityAggregationDTO } from '../../dto/monthly-apportioned-emissions-facility-aggregation.dto';
+import { MonthlyApportionedEmissionsNationalAggregationDTO } from '../../dto/monthly-apportioned-emissions-national-aggregation.dto';
+import { MonthlyApportionedEmissionsStateAggregationDTO } from '../../dto/monthly-apportioned-emissions-state-aggregation.dto';
+import { MonthlyApportionedEmissionsDTO } from '../../dto/monthly-apportioned-emissions.dto';
+import {
+  MonthlyApportionedEmissionsParamsDTO,
+  StreamMonthlyApportionedEmissionsParamsDTO,
+} from '../../dto/monthly-apportioned-emissions.params.dto';
 import { StreamingService } from '../../streaming/streaming.service';
 import { MonthUnitDataRepository } from './month-unit-data.repository';
-import { MonthlyApportionedEmissionsDTO } from '../../dto/monthly-apportioned-emissions.dto';
-import { MonthlyApportionedEmissionsParamsDTO, StreamMonthlyApportionedEmissionsParamsDTO } from '../../dto/monthly-apportioned-emissions.params.dto';
-import { MonthlyApportionedEmissionsFacilityAggregationDTO } from '../../dto/monthly-apportioned-emissions-facility-aggregation.dto';
-import { MonthlyApportionedEmissionsStateAggregationDTO } from '../../dto/monthly-apportioned-emissions-state-aggregation.dto';
-import { MonthlyApportionedEmissionsNationalAggregationDTO } from '../../dto/monthly-apportioned-emissions-national-aggregation.dto';
 
 @Injectable()
 export class MonthlyApportionedEmissionsService {
-  
   constructor(
     private readonly logger: Logger,
     private readonly streamService: StreamingService,
-    @InjectRepository(MonthUnitDataRepository)
     private readonly repository: MonthUnitDataRepository,
   ) {}
 
@@ -55,7 +50,10 @@ export class MonthlyApportionedEmissionsService {
       },
     });
 
-    const [sql, values] = await this.repository.buildQuery(fieldMappingsList, params);
+    const [sql, values] = await this.repository.buildQuery(
+      fieldMappingsList,
+      params,
+    );
 
     return this.streamService.getStream(
       req,
@@ -71,8 +69,7 @@ export class MonthlyApportionedEmissionsService {
     req: Request,
     params: MonthlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
-
-    const disposition = `attachment; filename="monthly-emissions-facility-aggregation-${uuid()}"`
+    const disposition = `attachment; filename="monthly-emissions-facility-aggregation-${uuid()}"`;
     const [sql, values] = this.repository.buildFacilityAggregationQuery(params);
 
     const toDto = new Transform({
@@ -89,22 +86,29 @@ export class MonthlyApportionedEmissionsService {
       },
     });
 
-    const fieldMappingsList = fieldMappings.emissions.monthly.data.aggregation.facility;
+    const fieldMappingsList =
+      fieldMappings.emissions.monthly.data.aggregation.facility;
 
-    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList)
-
+    return this.streamService.getStream(
+      req,
+      sql,
+      values,
+      toDto,
+      disposition,
+      fieldMappingsList,
+    );
   }
 
   async streamEmissionsStateAggregation(
     req: Request,
     params: MonthlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
-
     const disposition = `attachment; filename="monthly-emissions-state-aggregation-${uuid()}"`;
 
     const [sql, values] = this.repository.buildStateAggregationQuery(params);
 
-    const fieldMappingsList = fieldMappings.emissions.hourly.data.aggregation.state;
+    const fieldMappingsList =
+      fieldMappings.emissions.hourly.data.aggregation.state;
 
     const toDto = new Transform({
       objectMode: true,
@@ -120,19 +124,25 @@ export class MonthlyApportionedEmissionsService {
       },
     });
 
-    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList);
-
+    return this.streamService.getStream(
+      req,
+      sql,
+      values,
+      toDto,
+      disposition,
+      fieldMappingsList,
+    );
   }
 
   async streamEmissionsNationalAggregation(
     req: Request,
     params: MonthlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
-
-    const disposition = `attachment; filename="monthly-emissions-national-aggregation-${uuid()}"`
+    const disposition = `attachment; filename="monthly-emissions-national-aggregation-${uuid()}"`;
     const [sql, values] = this.repository.buildNationalAggregationQuery(params);
 
-    const fieldMappingsList = fieldMappings.emissions.hourly.data.aggregation.national;
+    const fieldMappingsList =
+      fieldMappings.emissions.hourly.data.aggregation.national;
 
     const toDto = new Transform({
       objectMode: true,
@@ -148,6 +158,13 @@ export class MonthlyApportionedEmissionsService {
       },
     });
 
-    return this.streamService.getStream(req, sql, values, toDto, disposition, fieldMappingsList);
+    return this.streamService.getStream(
+      req,
+      sql,
+      values,
+      toDto,
+      disposition,
+      fieldMappingsList,
+    );
   }
 }

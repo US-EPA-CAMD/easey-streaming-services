@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { EntityManager } from 'typeorm';
 
 import { AllowanceTransactionsController } from './allowance-transactions.controller';
 import { AllowanceTransactionsService } from './allowance-transactions.service';
@@ -26,7 +27,11 @@ describe('-- Allowance Transactions Controller --', () => {
     const module = await Test.createTestingModule({
       imports: [LoggerModule, StreamingModule],
       controllers: [AllowanceTransactionsController],
-      providers: [AllowanceTransactionsService, TransactionBlockDimRepository],
+      providers: [
+        AllowanceTransactionsService,
+        EntityManager,
+        TransactionBlockDimRepository,
+      ],
     }).compile();
 
     allowanceTransactionsController = module.get(

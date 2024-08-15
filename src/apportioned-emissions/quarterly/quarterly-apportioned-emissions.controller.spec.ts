@@ -1,13 +1,13 @@
-import { Test } from '@nestjs/testing';
 import { StreamableFile } from '@nestjs/common';
-
+import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
+import { EntityManager } from 'typeorm';
 
+import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { StreamingModule } from '../../streaming/streaming.module';
 import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
-import { QuarterlyApportionedEmissionsService } from './quarterly-apportioned-emissions.service';
 import { QuarterlyApportionedEmissionsController } from './quarterly-apportioned-emissions.controller';
-import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
+import { QuarterlyApportionedEmissionsService } from './quarterly-apportioned-emissions.service';
 
 const mockRequest = (url: string) => {
   return {
@@ -28,6 +28,7 @@ describe('-- Quarterly Apportioned Emissions Controller --', () => {
       imports: [LoggerModule, StreamingModule],
       controllers: [QuarterlyApportionedEmissionsController],
       providers: [
+        EntityManager,
         QuarterlyApportionedEmissionsService,
         QuarterUnitDataRepository,
       ],
