@@ -42,12 +42,10 @@ export class AccountQueryBuilder {
       let string = '(';
 
       for (let i = 0; i < dto.ownerOperator.length; i++) {
-        const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
-
         if (i === 0) {
-          string += `(UPPER(${characteristicAlias}.ownerOperator) ~* ${regex}) `;
+          string += `(UPPER(${characteristicAlias}.ownerOperator) LIKE '%${dto.ownerOperator[i].toUpperCase()}%') `;
         } else {
-          string += `OR (UPPER(${characteristicAlias}.ownerOperator) ~* ${regex}) `;
+          string += `OR (UPPER(${characteristicAlias}.ownerOperator) LIKE '%${dto.ownerOperator[i].toUpperCase()}%') `;
         }
       }
 
