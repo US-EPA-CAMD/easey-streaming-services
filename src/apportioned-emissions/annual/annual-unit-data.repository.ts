@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
-import { AnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
+import { AnnualApportionedEmissionsParamsDTO, StreamAnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
 import { AnnualUnitDataView } from '../../entities/vw-annual-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 
@@ -13,7 +13,7 @@ export class AnnualUnitDataRepository extends Repository<AnnualUnitDataView> {
 
   async buildQuery(
     columns: any[],
-    params: AnnualApportionedEmissionsParamsDTO,
+    params: StreamAnnualApportionedEmissionsParamsDTO,
   ): Promise<[string, any[]]> {
     let query = this.createQueryBuilder('aud').select(
       columns.map(col => `aud.${col.value} AS "${col.value}"`),
@@ -33,6 +33,14 @@ export class AnnualUnitDataRepository extends Repository<AnnualUnitDataView> {
       ],
       'aud',
     );
+
+    if(params.userid) {
+      query.andWhere('aud.userid = :userid', { userid: params.userid });
+    }
+
+    if(params.addDate) {
+      query.andWhere('DATE(aud.addDate) = DATE(:addDate)', { addDate: params.addDate });
+    }
 
     query
       .orderBy('aud.facilityId')

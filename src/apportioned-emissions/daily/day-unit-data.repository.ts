@@ -3,7 +3,7 @@ import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
 import { DayUnitDataView } from '../../entities/vw-day-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
-import { DailyApportionedEmissionsParamsDTO } from '../../dto/daily-apportioned-emissions.params.dto';
+import { DailyApportionedEmissionsParamsDTO, StreamDailyApportionedEmissionsParamsDTO } from 'src/dto/daily-apportioned-emissions.params.dto';
 
 @Injectable()
 export class DayUnitDataRepository extends Repository<DayUnitDataView> {
@@ -13,7 +13,7 @@ export class DayUnitDataRepository extends Repository<DayUnitDataView> {
 
   buildQuery(
     columns: any[],
-    params: DailyApportionedEmissionsParamsDTO,
+    params: StreamDailyApportionedEmissionsParamsDTO,
   ): [string, any[]] {
     let query = this.createQueryBuilder('dud').select(
       columns.map(col => `dud.${col.value} AS "${col.value}"`),
@@ -34,6 +34,10 @@ export class DayUnitDataRepository extends Repository<DayUnitDataView> {
       ],
       'dud',
     );
+
+    if(params.unitId) {
+      query.andWhere('dud.unitId = :unitId', { unitId: params.unitId });
+    }
 
     query
       .orderBy('dud.facilityId')

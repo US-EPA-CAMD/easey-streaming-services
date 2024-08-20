@@ -1,4 +1,4 @@
-import { IsDateString, IsOptional } from 'class-validator';
+import { IsDateString, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 import {
@@ -7,7 +7,7 @@ import {
 } from '@us-epa-camd/easey-common/constants';
 
 import { IsInEnum, IsInResponse } from '@us-epa-camd/easey-common/pipes';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { ExcludeApportionedEmissions } from '@us-epa-camd/easey-common/enums';
 
 import { BeginDate, EndDate } from '../utils/validator.const';
@@ -46,4 +46,9 @@ export class StreamDailyApportionedEmissionsParamsDTO extends DailyApportionedEm
   })
   @Transform(({ value }) => value.split('|').map((item: string) => item.trim()))
   exclude?: ExcludeApportionedEmissions[];
+  
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  unitId?: string;
 }
