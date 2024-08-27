@@ -20,6 +20,9 @@ export class DayUnitDataView {
   @Column({ name: 'unitid' })
   unitId: string;
 
+  @Column({ name: 'unit_id' })
+  unit_id: number;
+
   @Column({ name: 'assoc_stacks' })
   associatedStacks: string;
 

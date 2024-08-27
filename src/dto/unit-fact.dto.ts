@@ -31,6 +31,13 @@ export class UnitFactDTO {
   unitId: string;
 
   @ApiProperty({
+    description: propertyMetadata.unit_id.description,
+    example: propertyMetadata.unit_id.example,
+    name: propertyMetadata.unit_id.fieldLabels.value,
+  })
+  unit_id: number;
+
+  @ApiProperty({
     description: propertyMetadata.unitType.description,
     example: propertyMetadata.unitType.example,
     name: propertyMetadata.unitType.fieldLabels.value,
