@@ -36,4 +36,18 @@ export class AnnualApportionedEmissionsDTO extends ApportionedEmissionsDTO {
   })
   @IsNumber()
   unit_id: number;
+
+  @ApiProperty({
+    description: propertyMetadata.emissions.addDate.description,
+    example: propertyMetadata.emissions.addDate.example,
+    name: propertyMetadata.emissions.addDate.fieldLabels.value,
+  })
+  addDate?: Date;
+
+  @ApiProperty({
+    description: propertyMetadata.emissions.userId.description,
+    example: propertyMetadata.emissions.userId.example,
+    name: propertyMetadata.emissions.userId.fieldLabels.value,
+  })
+  userId?: string;
 }

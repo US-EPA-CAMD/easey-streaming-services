@@ -39,6 +39,10 @@ export class DayUnitDataRepository extends Repository<DayUnitDataView> {
       query.andWhere('dud.unitId = :unitId', { unitId: params.unitId });
     }
 
+    if(params.unit_id) {
+      query.andWhere('dud.unit_id = :unit_id', { unit_id: params.unit_id });
+    }
+
     query
       .orderBy('dud.facilityId')
       .addOrderBy('dud.unitId')

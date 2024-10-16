@@ -1,4 +1,4 @@
-import { IsDateString, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 import {
@@ -51,4 +51,10 @@ export class StreamDailyApportionedEmissionsParamsDTO extends DailyApportionedEm
   @IsOptional()
   @IsString()
   unitId?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  unit_id?: number;
 }
