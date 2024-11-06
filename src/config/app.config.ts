@@ -72,4 +72,7 @@ export default registerAs('app', () => ({
   // ENABLES DEBUG CONSOLE LOGS
   enableDebug: getConfigValueBoolean('EASEY_STREAMING_SERVICES_ENABLE_DEBUG'),
   apiHost: apiHost,
+  authApi: {
+    uri: getConfigValue('EASEY_AUTH_API', `https://${apiHost}/auth-mgmt`),
+  },
 }));
