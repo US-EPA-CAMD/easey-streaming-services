@@ -5,7 +5,6 @@ import { existsSync, readFileSync } from 'fs';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const tlsOptions = (host: string) => {
-  //if (host === "localhost") return false;
   const options: TlsOptions = { requestCert: true };
   options.rejectUnauthorized = host !== 'localhost';
   options.ca =
@@ -24,7 +23,6 @@ const tlsOptions = (host: string) => {
 };
 
 const pgOptions = (configService: ConfigService) => {
-  //const host = configService.get<string>('database.host');
   return {
     application_name: configService.get('app.name'),
     user: configService.get('database.user'),
