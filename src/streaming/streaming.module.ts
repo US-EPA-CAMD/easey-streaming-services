@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-
-import { StreamingService } from './streaming.service';
 import { ConfigService } from '@nestjs/config';
 
+import { DbModule } from '../db/db.module';
+import { StreamingService } from './streaming.service';
+
 @Module({
-  imports: [],
+  imports: [DbModule],
   controllers: [],
   providers: [ConfigService, StreamingService],
-  exports: [StreamingService],
+  exports: [DbModule, StreamingService],
 })
 export class StreamingModule {}
