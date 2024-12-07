@@ -7,9 +7,10 @@ import { OzoneUnitDataRepository } from './ozone-unit-data.repository';
 import { OzoneApportionedEmissionsService } from './ozone-apportioned-emissions.service';
 
 import { OzoneApportionedEmissionsParamsDTO } from '../../dto/ozone-apportioned-emissions.params.dto';
-import { StreamService } from '@us-epa-camd/easey-common/stream';
 import { ConfigService } from '@nestjs/config';
 import { StreamingService } from '../../streaming/streaming.service';
+
+const streamableFile = new StreamableFile(Buffer.from('stream'));
 
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
@@ -35,9 +36,7 @@ const mockRequest = () => {
 };
 
 const mockStreamingService = () => ({
-  getStream: jest
-    .fn()
-    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+  getStream: jest.fn().mockResolvedValue(streamableFile),
 });
 
 describe('-- Ozone Apportioned Emissions Service --', () => {
@@ -80,7 +79,7 @@ describe('-- Ozone Apportioned Emissions Service --', () => {
 
       let result = await service.streamEmissions(req, filters);
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -97,7 +96,7 @@ describe('-- Ozone Apportioned Emissions Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -109,12 +108,9 @@ describe('-- Ozone Apportioned Emissions Service --', () => {
 
       req.headers.accept = '';
 
-      let result = await service.streamEmissionsStateAggregation(
-        req,
-        filters,
-      );
+      let result = await service.streamEmissionsStateAggregation(req, filters);
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -131,7 +127,7 @@ describe('-- Ozone Apportioned Emissions Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 });

@@ -8,6 +8,8 @@ import { AnnualUnitDataRepository } from './annual-unit-data.repository';
 import { AnnualApportionedEmissionsService } from './annual-apportioned-emissions.service';
 import { AnnualApportionedEmissionsParamsDTO } from '../../dto/annual-apportioned-emissions.params.dto';
 
+const streamableFile = new StreamableFile(Buffer.from('stream'));
+
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
 });
@@ -32,9 +34,7 @@ const mockRequest = () => {
 };
 
 const mockStreamingService = () => ({
-  getStream: jest
-    .fn()
-    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+  getStream: jest.fn().mockResolvedValue(streamableFile),
 });
 
 describe('-- Annual Apportioned Emissions Service --', () => {
@@ -76,7 +76,7 @@ describe('-- Annual Apportioned Emissions Service --', () => {
 
       let result = await service.streamEmissions(req, filters);
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -93,7 +93,7 @@ describe('-- Annual Apportioned Emissions Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -107,7 +107,7 @@ describe('-- Annual Apportioned Emissions Service --', () => {
 
       let result = await service.streamEmissionsStateAggregation(req, filters);
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -124,7 +124,7 @@ describe('-- Annual Apportioned Emissions Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 });
