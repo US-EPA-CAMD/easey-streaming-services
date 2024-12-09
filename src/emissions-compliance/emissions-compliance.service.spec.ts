@@ -7,14 +7,14 @@ import { StreamEmissionsComplianceParamsDTO } from '../dto/emissions-compliance.
 import { StreamableFile } from '@nestjs/common';
 import { StreamingService } from '../streaming/streaming.service';
 
+const streamableFile = new StreamableFile(Buffer.from('stream'));
+
 const mockUnitComplianceDimRepository = () => ({
   buildQuery: jest.fn(),
 });
 
 const mockStreamingService = () => ({
-  getStream: jest
-    .fn()
-    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+  getStream: jest.fn().mockResolvedValue(streamableFile),
 });
 
 jest.mock('uuid', () => {
@@ -79,7 +79,7 @@ describe('-- Emissions Compliance Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 });

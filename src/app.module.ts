@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { RouterModule } from 'nest-router';
 import { ConfigModule } from '@nestjs/config';
+import { RouterModule } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { dbConfig } from '@us-epa-camd/easey-common/config';
@@ -27,7 +27,7 @@ import { HourlyOperatingModule } from './hourly-operating/hourly-operating.modul
 
 @Module({
   imports: [
-    RouterModule.forRoutes(routes),
+    RouterModule.register(routes),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [dbConfig, appConfig],

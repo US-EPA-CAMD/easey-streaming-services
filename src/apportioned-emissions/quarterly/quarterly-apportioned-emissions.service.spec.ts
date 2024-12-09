@@ -9,6 +9,8 @@ import { QuarterlyApportionedEmissionsService } from './quarterly-apportioned-em
 import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { StreamingService } from '../../streaming/streaming.service';
 
+const streamableFile = new StreamableFile(Buffer.from('stream'));
+
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
 });
@@ -33,9 +35,7 @@ const mockRequest = () => {
 };
 
 const mockStreamingService = () => ({
-  getStream: jest
-    .fn()
-    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+  getStream: jest.fn().mockResolvedValue(streamableFile),
 });
 
 describe('-- Quarterly Apportioned Emissions Service --', () => {
@@ -76,7 +76,7 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
 
       let result = await service.streamEmissions(req, filters);
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -93,7 +93,7 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -107,7 +107,7 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
 
       let result = await service.streamEmissionsStateAggregation(req, filters);
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -119,9 +119,12 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
 
       req.headers.accept = '';
 
-      let result = await service.streamEmissionsNationalAggregation(req, filters);
+      let result = await service.streamEmissionsNationalAggregation(
+        req,
+        filters,
+      );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 });

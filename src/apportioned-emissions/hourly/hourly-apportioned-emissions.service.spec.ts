@@ -9,6 +9,8 @@ import { HourlyApportionedEmissionsService } from './hourly-apportioned-emission
 import { HourlyApportionedEmissionsParamsDTO } from '../../dto/hourly-apportioned-emissions.params.dto';
 import { StreamingService } from './../../streaming/streaming.service';
 
+const streamableFile = new StreamableFile(Buffer.from('stream'));
+
 jest.mock('uuid', () => {
   return { v4: jest.fn().mockReturnValue(0) };
 });
@@ -21,9 +23,7 @@ const mockRepository = () => ({
 });
 
 const mockStreamingService = () => ({
-  getStream: jest
-    .fn()
-    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+  getStream: jest.fn().mockResolvedValue(streamableFile),
 });
 
 const mockRequest = () => {
@@ -76,7 +76,7 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
 
       let result = await service.streamEmissions(req, filters);
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -92,7 +92,7 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -106,7 +106,7 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
 
       let result = await service.streamEmissionsStateAggregation(req, filters);
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 
@@ -123,7 +123,7 @@ describe('-- Hourly Apportioned Emissions Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 });
