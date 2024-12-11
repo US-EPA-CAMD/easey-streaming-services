@@ -1,5 +1,3 @@
-import { Routes } from 'nest-router';
-
 import { AccountModule } from './account/account.module';
 import { FacilitiesModule } from './facilities/facilities.module';
 import { AllowanceTransactionsModule } from './allowance-transactions/allowance-transactions.module';
@@ -16,7 +14,7 @@ import { OzoneApportionedEmissionsModule } from './apportioned-emissions/ozone/o
 import { MatsApportionedEmissionsModule } from './apportioned-emissions/mats/mats-apportioned-emissions.module';
 import { HourlyMatsApportionedEmissionsModule } from './apportioned-emissions/mats/hourly/hourly-mats-apportioned-emissions.module';
 
-const routes: Routes = [
+const routes = [
   {
     path: '/facilities',
     module: FacilitiesModule,

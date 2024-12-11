@@ -8,6 +8,8 @@ import { StreamAllowanceHoldingsParamsDTO } from '../dto/allowance-holdings.para
 import { StreamableFile } from '@nestjs/common';
 import { StreamingService } from '../streaming/streaming.service';
 
+const streamableFile = new StreamableFile(Buffer.from('stream'));
+
 const mockAllowanceHoldingDimRepository = () => ({
   buildQuery: jest.fn(),
 });
@@ -17,9 +19,7 @@ jest.mock('uuid', () => {
 });
 
 const mockStreamingService = () => ({
-  getStream: jest
-    .fn()
-    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+  getStream: jest.fn().mockResolvedValue(streamableFile),
 });
 
 const mockRequest = () => {
@@ -76,7 +76,7 @@ describe('-- Allowance Holdings Service --', () => {
         filters,
       );
 
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 });
