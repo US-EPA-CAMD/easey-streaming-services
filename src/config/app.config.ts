@@ -75,4 +75,5 @@ export default registerAs('app', () => ({
   authApi: {
     uri: getConfigValue('EASEY_AUTH_API', `https://${apiHost}/auth-mgmt`),
   },
+  apiKey: getConfigValue('EASEY_STREAMING_SERVICES_API_KEY'),
 }));
