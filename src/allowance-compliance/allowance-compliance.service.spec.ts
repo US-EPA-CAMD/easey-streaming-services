@@ -7,14 +7,14 @@ import { StreamAllowanceComplianceParamsDTO } from '../dto/allowance-compliance.
 import { StreamableFile } from '@nestjs/common';
 import { StreamingService } from '../streaming/streaming.service';
 
+const streamableFile = new StreamableFile(Buffer.from('stream'));
+
 const mockAccountComplianceDimRepository = () => ({
   buildQuery: jest.fn(),
 });
 
 const mockStreamingService = () => ({
-  getStream: jest
-    .fn()
-    .mockResolvedValue(new StreamableFile(Buffer.from('stream'))),
+  getStream: jest.fn().mockResolvedValue(streamableFile),
 });
 
 jest.mock('uuid', () => {
@@ -80,7 +80,7 @@ describe('-- Allowance Compliance Service --', () => {
         req,
         filters,
       );
-      expect(result).toEqual(new StreamableFile(Buffer.from('stream')));
+      expect(result).toEqual(streamableFile);
     });
   });
 });
