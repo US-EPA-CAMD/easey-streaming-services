@@ -1201,10 +1201,10 @@
     "@typescript-eslint/types" "5.1.0"
     eslint-visitor-keys "^3.0.0"
 
-"@us-epa-camd/easey-common@18.1.2":
-  version "18.1.2"
-  resolved "https://npm.pkg.github.com/download/@US-EPA-CAMD/easey-common/18.1.2/f05b2bf028b7e1dc58aea036bd738a67e7411a6d#f05b2bf028b7e1dc58aea036bd738a67e7411a6d"
-  integrity sha512-o0Yuaf/Kaa8pHqfdHJOOX4kYZFN7YGPLKx78YF5bzQvv4ImWrt87n/4CyycMhE48WkETsJYgpP9v4whJXZfugA==
+"@us-epa-camd/easey-common@19.0.9":
+  version "19.0.9"
+  resolved "https://npm.pkg.github.com/download/@US-EPA-CAMD/easey-common/19.0.9/154e6a659739589fbf22e55dc145a51e2d54cfaf#154e6a659739589fbf22e55dc145a51e2d54cfaf"
+  integrity sha512-ztn2nzcfWK3MBHjia0qeTyvusbMfXYUaJufIesUCo9Css8zxAhf9iKIy+7PJe947xhVKtk6ZphCiwKU+RoBY0A==
   dependencies:
     "@golevelup/ts-jest" "^0.3.4"
     "@nestjs/axios" "3.1.1"
@@ -1216,10 +1216,10 @@
     class-validator "^0.14.0"
     dotenv "^10.0.0"
     express "^4.20.0"
-    helmet "^4.6.0"
+    helmet "^8.0.0"
     json2csv "^5.0.6"
     pg "^8.11.5"
-    pg-copy-streams "^6.0.5"
+    pg-copy-streams "^6.0.6"
     pg-pool "^3.6.2"
     pg-query-stream "^4.5.5"
     reflect-metadata "^0.1.13"
@@ -3413,10 +3413,10 @@ hasown@^2.0.0:
   dependencies:
     function-bind "^1.1.2"
 
-helmet@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/helmet/-/helmet-4.6.0.tgz#579971196ba93c5978eb019e4e8ec0e50076b4df"
-  integrity sha512-HVqALKZlR95ROkrnesdhbbZJFi/rIVSoNq6f3jA/9u6MIbTsPh3xZwihjeI5+DO/2sOV6HMHooXcEOuwskHpTg==
+helmet@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-8.0.0.tgz#05370fb1953aa7b81bd0ddfa459221247be6ea5c"
+  integrity sha512-VyusHLEIIO5mjQPUI1wpOAEu+wl6Q0998jzTxqUYGE45xCIcAxy3MsbEK/yyJUJ3ADeMoB6MornPH6GMWAf+Pw==
 
 highlight.js@^10.7.1:
   version "10.7.3"
@@ -4993,7 +4993,7 @@ pg-connection-string@^2.7.0:
   resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-2.7.0.tgz#f1d3489e427c62ece022dba98d5262efcb168b37"
   integrity sha512-PI2W9mv53rXJQEOb8xNR8lH7Hr+EKa6oJa38zsK0S/ky2er16ios1wLKhZyxzD7jUReiWokc9WK5nxSnC7W1TA==
 
-pg-copy-streams@^6.0.5:
+pg-copy-streams@^6.0.6:
   version "6.0.6"
   resolved "https://registry.yarnpkg.com/pg-copy-streams/-/pg-copy-streams-6.0.6.tgz#a24dbcbd2999f4ecd4ab919f92a1b256656e4f3c"
   integrity sha512-Z+Dd2C2NIDTsjyFKmc6a9QLlpM8tjpERx+43RSx0WmL7j3uNChERi3xSvZUL0hWJ1oRUn4S3fhyt3apdSrTyKQ==
