@@ -43,7 +43,7 @@ Follow these [instructions](https://github.com/US-EPA-CAMD/devops/blob/master/GE
 The Streaming Services uses a number of environment variables to properly configure the api. The following is the list of configureble values and their default setting.
 
 | Typescript Var Name         | Environment Var Name                                   | Default Value                                                                                          | Comment                           |
-| :-------------------------- | :----------------------------------------------------- | :----------------------------------------------------------------------------------------------------- | :-------------------------------- |
+|:----------------------------|:-------------------------------------------------------| :----------------------------------------------------------------------------------------------------- | :-------------------------------- |
 | name                        | N/A                                                    | streaming-services                                                                                     | Fixed value                       |
 | host                        | EASEY_STREAMING_SERVICES_HOST                          | localhost                                                                                              | Configurable                      |
 | port                        | EASEY_STREAMING_SERVICES_PORT                          | 8080                                                                                                   | Configurable                      |
@@ -53,7 +53,7 @@ The Streaming Services uses a number of environment variables to properly config
 | env                         | EASEY_STREAMING_SERVICES_ENV                           | local-dev                                                                                              | Configurable                      |
 | enableApiKey                | EASEY_STREAMING_SERVICES_ENABLE_API_KEY                | false                                                                                                  | Configurable                      |
 | secretToken                 | EASEY_STREAMING_SERVICES_SECRET_TOKEN                  | \*\*\*                                                                                                 | Dynamically set by CI/CD workflow |
-| apiKey                 | EASEY_STREAMING_SERVICES_API_KEY                  | \*\*\*                                                                                                 | Dynamically set by CI/CD workflow |
+| apiKey                      | EASEY_STREAMING_SERVICES_API_KEY                       | \*\*\*                                                                                                 | Dynamically set by CI/CD workflow |
 | enableSecretToken           | EASEY_STREAMING_SERVICES_ENABLE_SECRET_TOKEN           | false                                                                                                  | Configurable                      |
 | enableCors                  | EASEY_STREAMING_SERVICES_ENABLE_CORS                   | true                                                                                                   | Configurable                      |
 | enableGlobalValidationPipes | EASEY_STREAMING_SERVICES_ENABLE_GLOBAL_VALIDATION_PIPE | true                                                                                                   | Configurable                      |
@@ -63,6 +63,10 @@ The Streaming Services uses a number of environment variables to properly config
 | maxPoolSize                 | EASEY_STREAMING_SERVICES_MAX_POOL_SIZE                 | 200                                                                                                    | Configurable                      |
 | idleTimeout                 | EASEY_STREAMING_SERVICES_IDLE_TIMEOUT                  | 10000                                                                                                  | Configurable                      |
 | connectionTimeout           | EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT            | 10000                                                                                                  | Configurable                      |
+| statementTimeout            | EASEY_DB_STATEMENT_TIMEOUT                             | 300000                                                                                                  | Configurable                      |
+| acquireConnectionFromPoolTimeout           | EASEY_DB_IDLE_CONNECTION_TIMEOUT        | 15000                                                                                                  | Configurable                      |
+| idleInTransactionSessionTimeout           | EASEY_DB_IDLE_TRANS_SESSION_TIMEOUT      | 300000                                                                                                  | Configurable                      |
+| maxUsesBeforeRecreatingConnection           | EASEY_DB_MAX_USES_BEFORE_CONN_RECREATE  | 500                                                                                                  | Configurable                      |
 | enableDebug                 | EASEY_STREAMING_SERVICES_ENABLE_DEBUG                  | false                                                                                                  | Configurable                      |
 | apiHost                     | EASEY_API_GATEWAY_HOST                                 | api.epa.gov/easey/dev                                                                                  | Configurable                      |
 

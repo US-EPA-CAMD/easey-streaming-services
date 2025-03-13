@@ -19,11 +19,18 @@ applications:
       EASEY_STREAMING_SERVICES_ENABLE_CORS: true
       EASEY_STREAMING_SERVICES_ENABLE_GLOBAL_VALIDATION_PIPE: true
       EASEY_STREAMING_SERVICES_BATCH_SIZE: 50000
-      EASEY_STREAMING_SERVICES_MAX_POOL_SIZE: 200
-      EASEY_STREAMING_SERVICES_IDLE_TIMEOUT: 10000
-      EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT: 10000
       EASEY_API_GATEWAY_HOST: ((apiHost))
       TZ: America/New_York
+      EASEY_STREAMING_SERVICES_MAX_POOL_SIZE: ((maxPoolSize))
+      EASEY_STREAMING_SERVICES_IDLE_TIMEOUT: ((idleTimeout))
+      EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT: ((connectionTimeout))
+      EASEY_DB_STATEMENT_TIMEOUT: ((statementTimeout))
+      EASEY_DB_IDLE_CONNECTION_TIMEOUT: ((acquireConnectionFromPoolTimeout))
+      EASEY_DB_IDLE_TRANS_SESSION_TIMEOUT: ((idleInTransactionSessionTimeout))
+      EASEY_DB_MAX_USES_BEFORE_CONN_RECREATE: ((maxUsesBeforeRecreatingConnection))
+      EASEY_DB_SQL_LOGGING: ((sqlLogging))
+      EASEY_DB_MAX_QUERY_EXECUTION_TIMEOUT: ((maxQueryExecutionTime))
+
     routes:
       - route: ((host))/((path))
     services:
