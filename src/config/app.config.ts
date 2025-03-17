@@ -75,7 +75,7 @@ export default registerAs('app', () => ({
   maxUsesBeforeRecreatingConnection: getConfigValueNumber('EASEY_DB_MAX_USES_BEFORE_CONN_RECREATE',500),
 
   //TypeORM only, not supported by pg options
-  sqlLogging: getConfigValue('EASEY_DB_SQL_LOGGING', ['error']),
+  sqlLogging: getConfigValue('EASEY_DB_SQL_LOGGING', "error"),
   maxQueryExecutionTime: getConfigValueNumber('EASEY_DB_MAX_QUERY_EXECUTION_TIMEOUT',30000),
 
 }));
