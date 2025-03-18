@@ -57,18 +57,6 @@ export default registerAs('app', () => ({
     'EASEY_STREAMING_SERVICES_STREAM_BATCH_SIZE',
     20000,
   ),
-  maxPoolSize: getConfigValueNumber(
-    'EASEY_STREAMING_SERVICES_MAX_POOL_SIZE',
-    200,
-  ),
-  idleTimeout: getConfigValueNumber(
-    'EASEY_STREAMING_SERVICES_IDLE_TIMEOUT',
-    10000,
-  ),
-  connectionTimeout: getConfigValueNumber(
-    'EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT',
-    10000,
-  ),
   // ENABLES DEBUG CONSOLE LOGS
   enableDebug: getConfigValueBoolean('EASEY_STREAMING_SERVICES_ENABLE_DEBUG'),
   apiHost: apiHost,
@@ -76,4 +64,18 @@ export default registerAs('app', () => ({
     uri: getConfigValue('EASEY_AUTH_API', `https://${apiHost}/auth-mgmt`),
   },
   apiKey: getConfigValue('EASEY_STREAMING_SERVICES_API_KEY'),
+
+  //DB Settings
+  maxPoolSize: getConfigValueNumber( 'EASEY_STREAMING_SERVICES_MAX_POOL_SIZE', 200, ),
+  idleTimeout: getConfigValueNumber( 'EASEY_STREAMING_SERVICES_IDLE_TIMEOUT', 30000, ),
+  connectionTimeout: getConfigValueNumber( 'EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT', 10000, ),
+  statementTimeout: getConfigValueNumber('EASEY_DB_STATEMENT_TIMEOUT',300000),
+  acquireConnectionFromPoolTimeout: getConfigValueNumber('EASEY_DB_IDLE_CONNECTION_TIMEOUT',15000),
+  idleInTransactionSessionTimeout: getConfigValueNumber('EASEY_DB_IDLE_TRANS_SESSION_TIMEOUT',300000),
+  maxUsesBeforeRecreatingConnection: getConfigValueNumber('EASEY_DB_MAX_USES_BEFORE_CONN_RECREATE',500),
+
+  //TypeORM only, not supported by pg options
+  sqlLogging: getConfigValue('EASEY_DB_SQL_LOGGING', "error"),
+  maxQueryExecutionTime: getConfigValueNumber('EASEY_DB_MAX_QUERY_EXECUTION_TIMEOUT',30000),
+
 }));
