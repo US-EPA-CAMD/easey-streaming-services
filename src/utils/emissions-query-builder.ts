@@ -248,6 +248,18 @@ export class EmissionsQueryBuilder {
     return query;
   }
 
+  public static whereTimestamp(
+    query: any,
+    timestamp: string,
+    params: string[],
+    alias: string,
+  ) {
+    if (params.includes('timestamp') && timestamp) {
+      query.andWhere(`${alias}.addDate >= :addDate`, { addDate: timestamp });
+    }
+    return query;
+  }
+
   public static createEmissionsQuery(
     query: any,
     dto: any,
@@ -278,6 +290,7 @@ export class EmissionsQueryBuilder {
     );
 
     query = this.whereLocationName(query, dto.locationName, alias);
+    query = this.whereTimestamp(query, dto.timestamp, params, alias);
 
     if (dto.page && dto.perPage) {
       query = query.skip((dto.page - 1) * dto.perPage).take(dto.perPage);

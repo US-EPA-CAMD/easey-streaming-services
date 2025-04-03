@@ -147,4 +147,7 @@ export class QuarterUnitDataView {
 
   @Column({ name: 'prg_code_info' })
   programCodeInfo: string;
+
+  @Column({ name: 'add_date' })
+  addDate: Date;
 }

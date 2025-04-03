@@ -3,6 +3,7 @@ import { QuarterlyApportionedEmissionsParamsDTO } from './../../dto/quarterly-ap
 import { QuarterlyApportionedEmissionsFacilityAggregationDTO } from './../../dto/quarterly-apportioned-emissions-facility-aggregation.dto';
 import { QuarterlyApportionedEmissionsStateAggregationDTO } from './../../dto/quarterly-apportioned-emissions-state-aggregation.dto';
 import { QuarterlyApportionedEmissionsNationalAggregationDTO } from './../../dto/quarterly-apportioned-emissions-national-aggregation.dto';
+import { QuarterlyApportionedEmissionsLastUpdatedParamsDTO } from '../../dto/quarterly-apportioned-emissions-last-updated.params.dto';
 
 import {
   Get,
@@ -27,6 +28,7 @@ import {
   ApiProgramQuery,
   ExcludeQuery,
   ApiQueryQuarterly,
+  ApiQueryQuarterlyOptional,
 } from '../../utils/swagger-decorator.const';
 
 import { fieldMappings } from '../../constants/emissions-field-mappings';
@@ -77,6 +79,49 @@ export class QuarterlyApportionedEmissionsController {
     @Query() params: StreamQuarterlyApportionedEmissionsParamsDTO,
   ): Promise<StreamableFile> {
     return this.service.streamEmissions(req, params);
+  }
+
+  @Get('last-updated')
+  @ApiOkResponse({
+    description:
+      'Streams Last Updated Quarterly Apportioned Emissions data filtered by timestamp with a next timestamp returned',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'object',
+          properties: {
+            nextTimestamp: {
+              type: 'string',
+              example: '2025-04-01T12:00:00Z',
+            },
+            data: {
+              type: 'array',
+              items: { $ref: getSchemaPath(QuarterlyApportionedEmissionsDTO) },
+            },
+          },
+        },
+      },
+      'text/csv': {
+        schema: {
+          type: 'string',
+          example: fieldMappings.emissions.quarterly.data.aggregation.unit
+            .map(i => i.label)
+            .join(','),
+        },
+      },
+    },
+  })
+  @BadRequestResponse()
+  @NotFoundResponse()
+  @ApiQueryEmissionsMultiSelect()
+  @ApiQueryQuarterlyOptional()
+  @ApiProgramQuery()
+  @ExcludeQuery()
+  async streamLastUpdatedEmissions(
+    @Req() req: Request,
+    @Query() params: QuarterlyApportionedEmissionsLastUpdatedParamsDTO,
+  ): Promise<StreamableFile> {
+    return this.service.streamLastUpdatedEmissions(req, params);
   }
 
   @Get('by-facility')

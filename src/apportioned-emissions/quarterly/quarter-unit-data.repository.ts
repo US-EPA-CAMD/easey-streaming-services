@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
 import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
+import { QuarterlyApportionedEmissionsLastUpdatedParamsDTO } from '../../dto/quarterly-apportioned-emissions-last-updated.params.dto';
 import { QuarterUnitDataView } from '../../entities/vw-quarter-unit-data.entity';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 
@@ -40,6 +41,40 @@ export class QuarterUnitDataRepository extends Repository<QuarterUnitDataView> {
       .addOrderBy('qud.unitId')
       .addOrderBy('qud.year')
       .addOrderBy('qud.quarter');
+
+    return query.getQueryAndParameters();
+  }
+
+  async buildLastUpdatedQuery(
+    columns: any[],
+    params: QuarterlyApportionedEmissionsLastUpdatedParamsDTO,
+  ): Promise<[string, any[]]> {
+
+    let query = this.createQueryBuilder('qud').select(
+      columns.map(col => `qud.${col.value} AS "${col.value}"`),
+    );
+
+    query = EmissionsQueryBuilder.createEmissionsQuery(
+      query,
+      params,
+      [
+        'year',
+        'quarter',
+        'stateCode',
+        'facilityId',
+        'unitType',
+        'controlTechnologies',
+        'unitFuelType',
+        'programCodeInfo',
+        'timestamp',
+      ],
+      'qud',
+    );
+
+    query
+      .orderBy('qud.facilityId')
+      .addOrderBy('qud.unitId')
+      .addOrderBy('qud.addDate');
 
     return query.getQueryAndParameters();
   }
