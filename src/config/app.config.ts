@@ -70,7 +70,6 @@ export default registerAs('app', () => ({
   idleTimeout: getConfigValueNumber( 'EASEY_STREAMING_SERVICES_IDLE_TIMEOUT', 30000, ),
   connectionTimeout: getConfigValueNumber( 'EASEY_STREAMING_SERVICES_CONNECTION_TIMEOUT', 10000, ),
   statementTimeout: getConfigValueNumber('EASEY_DB_STATEMENT_TIMEOUT',300000),
-  acquireConnectionFromPoolTimeout: getConfigValueNumber('EASEY_DB_IDLE_CONNECTION_TIMEOUT',15000),
   idleInTransactionSessionTimeout: getConfigValueNumber('EASEY_DB_IDLE_TRANS_SESSION_TIMEOUT',300000),
   maxUsesBeforeRecreatingConnection: getConfigValueNumber('EASEY_DB_MAX_USES_BEFORE_CONN_RECREATE',500),
 
