@@ -1,4 +1,4 @@
-import { IsISO8601, IsOptional, IsString, IsArray, IsDefined } from 'class-validator';
+import { IsISO8601, IsOptional, IsArray, } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import {
@@ -7,11 +7,10 @@ import {
 } from '@us-epa-camd/easey-common/constants';
 import { StreamQuarterlyApportionedEmissionsParamsDTO } from './quarterly-apportioned-emissions.params.dto';
 import {
-  IsInDateRange,
-  IsYearFormat,
   IsValidNumber,
 } from '@us-epa-camd/easey-common/pipes';
 import { IsInValidReportingQuarter } from '../pipes/is-in-valid-reporting-quarter.pipe';
+import { OpYearOptional } from '../utils/validator.const';
 
 export class QuarterlyApportionedEmissionsLastUpdatedParamsDTO  extends StreamQuarterlyApportionedEmissionsParamsDTO {
   @ApiProperty({
@@ -25,18 +24,7 @@ export class QuarterlyApportionedEmissionsLastUpdatedParamsDTO  extends StreamQu
     isArray: true,
     description: propertyMetadata.year.description,
   })
-  @IsInDateRange(new Date(1995, 0), true, true, false, {
-        each: true,
-        message: ErrorMessages.DateRange(
-          'year',
-          true,
-          `a year between 1995 and the quarter ending on ${ErrorMessages.ReportingQuarter()}`,
-        ),
-  })
-  @IsYearFormat({
-    each: true,
-    message: ErrorMessages.MultipleFormat('year', 'YYYY format'),
-  })
+  @OpYearOptional()
   @Transform(({ value }) => {
     if (typeof value === 'string') {
       return value.split('|').map((item: string) => item.trim());
@@ -46,7 +34,6 @@ export class QuarterlyApportionedEmissionsLastUpdatedParamsDTO  extends StreamQu
     return value;
   })  
   @IsArray()
-  @IsOptional()
   year: number[];
   
   @ApiProperty({
