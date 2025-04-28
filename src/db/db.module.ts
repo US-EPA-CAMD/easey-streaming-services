@@ -35,7 +35,6 @@ const pgOptions = (configService: ConfigService) => {
     max: configService.get('app.maxPoolSize'),
     idleTimeoutMillis: configService.get('app.idleTimeout'),
     connectionTimeoutMillis: configService.get('app.connectionTimeout'),
-    acquireTimeoutMillis: configService.get<number>('app.acquireConnectionFromPoolTimeout'), // Fail if a connection is not acquired from the pool within timeframe
     statement_timeout: configService.get<number>('app.statementTimeout'),  // Terminates queries that exceed the timeout (in ms).
     idle_in_transaction_session_timeout: configService.get<number>('app.idleInTransactionSessionTimeout'), // Terminates idle transactions after the specified time (in ms).
     maxUses: configService.get<number>('app.maxUsesBeforeRecreatingConnection'), //Recreate connections after n uses
