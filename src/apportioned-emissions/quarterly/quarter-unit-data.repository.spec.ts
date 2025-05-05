@@ -13,6 +13,7 @@ import { fieldMappings } from '../../constants/emissions-field-mappings';
 import { StreamQuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { EmissionsQueryBuilder } from '../../utils/emissions-query-builder';
 import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
+import { QuarterlyApportionedEmissionsLastUpdatedParamsDTO } from '../../dto/quarterly-apportioned-emissions-last-updated.params.dto';
 
 jest.mock('../../utils/emissions-query-builder');
 
@@ -114,6 +115,24 @@ describe('QuarterUnitDataRepository', () => {
       expect(result).toEqual('mockEmissions');
     });
   });
+
+  describe('buildLastUpdatedQuery', () => {
+    it('builds quarterly emissions last updated query', async () => {
+      const lastUpdatedFilters = {
+        ...streamFilters,
+        timestamp: '2025-04-01T12:00:00Z',
+      };
+  
+      const result = await repository.buildLastUpdatedQuery(
+        fieldMappings.emissions.quarterly.data.aggregation.unit,
+        lastUpdatedFilters,
+      );
+      
+      expect(queryBuilder.getQueryAndParameters).toHaveBeenCalled();
+      expect(result).toEqual('mockEmissions');
+    });
+  });
+  
 
   describe('buildEmissionsFacilityAggregation', () => {
     it('builds quarterly emissions aggregated by facility query', () => {
