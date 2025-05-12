@@ -3,6 +3,7 @@ import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 import { EntityManager } from 'typeorm';
 
+import { QuarterlyApportionedEmissionsLastUpdatedParamsDTO } from '../../dto/quarterly-apportioned-emissions-last-updated.params.dto';
 import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { StreamingModule } from '../../streaming/streaming.module';
 import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
@@ -91,6 +92,16 @@ describe('-- Quarterly Apportioned Emissions Controller --', () => {
       expect(
         await controller.streamEmissionsNationalAggregation(req, paramsDto),
       ).toBe(expectedResult);
+    });
+  });
+
+  describe('* streamLastUpdatedEmissions', () => {
+    it('should call the service and return last updated quarterly emissions', async () => {
+      const expectedResult = new StreamableFile(Buffer.from('stream'));
+      const paramsDto = new QuarterlyApportionedEmissionsLastUpdatedParamsDTO();
+      paramsDto.timestamp = '2025-04-01T12:00:00Z';
+      jest.spyOn(service, 'streamLastUpdatedEmissions').mockResolvedValue(expectedResult);
+      expect(await controller.streamLastUpdatedEmissions(req, paramsDto)).toBe(expectedResult);
     });
   });
 });

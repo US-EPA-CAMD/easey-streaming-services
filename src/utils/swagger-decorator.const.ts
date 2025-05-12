@@ -191,6 +191,23 @@ export function ApiQueryQuarterly() {
   );
 }
 
+export function ApiQueryQuarterlyOptional() {
+  return applyDecorators(
+    ApiQuery({
+      style: 'pipeDelimited',
+      name: 'year',
+      required: false,
+      explode: false,
+    }),
+    ApiQuery({
+      style: 'pipeDelimited',
+      name: 'quarter',
+      required: false,
+      explode: false,
+    }),
+  );
+}
+
 export function ApiQueryAnnually() {
   return applyDecorators(
     ApiQuery({

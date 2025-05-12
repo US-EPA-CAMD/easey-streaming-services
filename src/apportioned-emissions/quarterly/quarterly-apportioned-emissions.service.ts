@@ -15,6 +15,7 @@ import { QuarterlyApportionedEmissionsFacilityAggregationDTO } from './../../dto
 import { QuarterlyApportionedEmissionsNationalAggregationDTO } from './../../dto/quarterly-apportioned-emissions-national-aggregation.dto';
 import { QuarterlyApportionedEmissionsStateAggregationDTO } from './../../dto/quarterly-apportioned-emissions-state-aggregation.dto';
 import { QuarterlyApportionedEmissionsParamsDTO } from './../../dto/quarterly-apportioned-emissions.params.dto';
+import { QuarterlyApportionedEmissionsLastUpdatedParamsDTO } from '../../dto/quarterly-apportioned-emissions-last-updated.params.dto';
 import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
 
 @Injectable()
@@ -52,6 +53,55 @@ export class QuarterlyApportionedEmissionsService {
       fieldMappingsList,
       params,
     );
+
+    return this.streamService.getStream(
+      req,
+      sql,
+      values,
+      json2Dto,
+      disposition,
+      fieldMappingsList,
+    );
+  }
+
+  async streamLastUpdatedEmissions(
+    req: Request,
+    params: QuarterlyApportionedEmissionsLastUpdatedParamsDTO,
+  ): Promise<StreamableFile> {
+    // Capture the current timestamp as the "next timestamp"
+    const currentDbTimestamp = new Date().toISOString();
+
+    // Determine field mappings based on exclude parameter
+    const fieldMappingsList = params.exclude
+      ? fieldMappings.emissions.quarterly.data.aggregation.unit.filter(
+          item => !params.exclude.includes(item.value),
+        )
+      : fieldMappings.emissions.quarterly.data.aggregation.unit;
+
+    // Use a new repository method to build a query filtering by the provided timestamp
+    const [sql, values] = await this.repository.buildLastUpdatedQuery(
+      fieldMappingsList,
+      params,
+    );
+
+    // Define a transform stream that converts rows to DTO and appends the next timestamp in the flush phase
+    const json2Dto = new Transform({
+      objectMode: true,
+      transform(data, _enc, callback) {
+        data = exclude(data, params, ExcludeApportionedEmissions);
+        const dto = plainToClass(QuarterlyApportionedEmissionsDTO, data, {
+          enableImplicitConversion: true,
+        });
+        callback(null, dto);
+      },
+      flush(callback) {
+        // Append the next timestamp at the end of the stream
+        this.push({ nextTimestamp: currentDbTimestamp });
+        callback();
+      },
+    });
+
+    const disposition = `attachment; filename="quarterly-emissions-last-updated-${uuid()}"`;
 
     return this.streamService.getStream(
       req,
