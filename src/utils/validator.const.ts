@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { IsDefined, IsNotEmpty } from 'class-validator';
+import { IsDefined, IsNotEmpty, IsOptional } from 'class-validator';
 import { ErrorMessages } from '@us-epa-camd/easey-common/constants';
 import {
   IsInDateRange,
@@ -132,6 +132,24 @@ export function OpYear() {
       message: ErrorMessages.MultipleFormat('year', 'YYYY format'),
     }),
     IsDefined({ message: ErrorMessages.RequiredProperty() }),
+  );
+}
+
+export function OpYearOptional() {
+  return applyDecorators(
+    IsInDateRange(new Date(1995, 0), true, true, false, {
+      each: true,
+      message: ErrorMessages.DateRange(
+        'year',
+        true,
+        `a year between 1995 and the quarter ending on ${ErrorMessages.ReportingQuarter()}`,
+      ),
+    }),
+    IsYearFormat({
+      each: true,
+      message: ErrorMessages.MultipleFormat('year', 'YYYY format'),
+    }),
+    IsOptional(),
   );
 }
 

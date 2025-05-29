@@ -5,7 +5,7 @@ import { LoggerModule } from '@us-epa-camd/easey-common/logger';
 
 import { QuarterUnitDataRepository } from './quarter-unit-data.repository';
 import { QuarterlyApportionedEmissionsService } from './quarterly-apportioned-emissions.service';
-
+import { QuarterlyApportionedEmissionsLastUpdatedParamsDTO } from '../../dto/quarterly-apportioned-emissions-last-updated.params.dto';
 import { QuarterlyApportionedEmissionsParamsDTO } from '../../dto/quarterly-apportioned-emissions.params.dto';
 import { StreamingService } from '../../streaming/streaming.service';
 
@@ -17,6 +17,7 @@ jest.mock('uuid', () => {
 
 const mockRepository = () => ({
   buildQuery: jest.fn(),
+  buildLastUpdatedQuery: jest.fn(),
   buildFacilityAggregationQuery: jest.fn(),
   buildStateAggregationQuery: jest.fn(),
   buildNationalAggregationQuery: jest.fn(),
@@ -124,6 +125,22 @@ describe('-- Quarterly Apportioned Emissions Service --', () => {
         filters,
       );
 
+      expect(result).toEqual(streamableFile);
+    });
+  });
+
+  describe('streamLastUpdatedEmissions', () => {
+    it('calls buildLastUpdatedQuery() and streams last updated emissions', async () => {
+      repository.buildLastUpdatedQuery.mockReturnValue(['', []]);
+
+      let filters = new QuarterlyApportionedEmissionsLastUpdatedParamsDTO();
+      filters.timestamp = '2025-04-01T12:00:00Z';
+
+      req.headers.accept = '';
+
+      let result = await service.streamLastUpdatedEmissions(req, filters);
+
+      expect(repository.buildLastUpdatedQuery).toHaveBeenCalled();
       expect(result).toEqual(streamableFile);
     });
   });
