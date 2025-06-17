@@ -84,19 +84,28 @@ export class QuarterlyApportionedEmissionsService {
       params,
     );
 
-    // Define a transform stream that converts rows to DTO and appends the next timestamp in the flush phase
+    const collectedData = [];
+
     const json2Dto = new Transform({
       objectMode: true,
+      writableObjectMode: true,
+      readableObjectMode: true,
+    
       transform(data, _enc, callback) {
-        data = exclude(data, params, ExcludeApportionedEmissions);
-        const dto = plainToClass(QuarterlyApportionedEmissionsDTO, data, {
+        const excludedData = exclude(data, params, ExcludeApportionedEmissions);
+        const dto = plainToClass(QuarterlyApportionedEmissionsDTO, excludedData, {
           enableImplicitConversion: true,
         });
-        callback(null, dto);
+        collectedData.push(dto);
+        callback();
       },
+    
       flush(callback) {
-        // Append the next timestamp at the end of the stream
-        this.push({ nextTimestamp: currentDbTimestamp });
+        const finalResponseObject = {
+          nextTimestamp: currentDbTimestamp,
+          data: collectedData,
+        };
+        this.push(finalResponseObject);
         callback();
       },
     });
