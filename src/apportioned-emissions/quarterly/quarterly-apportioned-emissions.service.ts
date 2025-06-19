@@ -85,7 +85,7 @@ export class QuarterlyApportionedEmissionsService {
     );
 
     // Set next-time-stamp in response header
-    req.res.setHeader('next-time-stamp', currentDbTimestamp);
+    req.res.setHeader('next-timestamp', currentDbTimestamp);
 
     const json2Dto = new Transform({
       objectMode: true,
