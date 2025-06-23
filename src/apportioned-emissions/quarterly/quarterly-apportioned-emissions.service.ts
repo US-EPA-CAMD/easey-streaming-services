@@ -84,29 +84,17 @@ export class QuarterlyApportionedEmissionsService {
       params,
     );
 
-    const collectedData = [];
+    // Set next-time-stamp in response header
+    req.res.setHeader('next-timestamp', currentDbTimestamp);
 
     const json2Dto = new Transform({
       objectMode: true,
-      writableObjectMode: true,
-      readableObjectMode: true,
-
       transform(data, _enc, callback) {
-        const excludedData = exclude(data, params, ExcludeApportionedEmissions);
-        const dto = plainToClass(QuarterlyApportionedEmissionsDTO, excludedData, {
+        data = exclude(data, params, ExcludeApportionedEmissions);
+        const dto = plainToClass(QuarterlyApportionedEmissionsDTO, data, {
           enableImplicitConversion: true,
         });
-        collectedData.push(dto);
-        callback();
-      },
-
-      flush(callback) {
-        const finalResponseObject = {
-          nextTimestamp: currentDbTimestamp,
-          data: collectedData,
-        };
-        this.push(finalResponseObject);
-        callback();
+        callback(null, dto);
       },
     });
 

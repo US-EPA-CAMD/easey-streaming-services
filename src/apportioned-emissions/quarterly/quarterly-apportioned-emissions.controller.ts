@@ -88,17 +88,7 @@ export class QuarterlyApportionedEmissionsController {
     content: {
       'application/json': {
         schema: {
-          type: 'object',
-          properties: {
-            nextTimestamp: {
-              type: 'string',
-              example: '2025-04-01T12:00:00Z',
-            },
-            data: {
-              type: 'array',
-              items: { $ref: getSchemaPath(QuarterlyApportionedEmissionsDTO) },
-            },
-          },
+          $ref: getSchemaPath(QuarterlyApportionedEmissionsDTO),
         },
       },
       'text/csv': {
