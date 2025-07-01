@@ -26,6 +26,7 @@ import { SummaryValueModule } from './summary-value/summary-value.module';
 import { SupplementalOperatingModule } from './supplemental-operating/supplemental-operating.module';
 import { DerivedHourlyModule } from './derived-hourly/derived-hourly.module';
 import { HourlyOperatingModule } from './hourly-operating/hourly-operating.module';
+import { HealthModule } from '@us-epa-camd/easey-common/health/health.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { HourlyOperatingModule } from './hourly-operating/hourly-operating.modul
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
+    HealthModule,
     LoggerModule,
     CorsOptionsModule,
     FacilitiesModule,
@@ -60,6 +62,14 @@ import { HourlyOperatingModule } from './hourly-operating/hourly-operating.modul
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(MaintenanceMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL })
+    consumer
+      .apply(MaintenanceMiddleware)
+      .exclude(
+        {
+          path: '/health',
+          method: RequestMethod.GET,
+        },
+      )
+      .forRoutes({ path: '*', method: RequestMethod.ALL })
   }
 }
