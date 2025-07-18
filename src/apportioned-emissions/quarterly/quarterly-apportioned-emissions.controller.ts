@@ -85,31 +85,21 @@ export class QuarterlyApportionedEmissionsController {
   @ApiOkResponse({
     description:
       'Streams Last Updated Quarterly Apportioned Emissions data filtered by timestamp with a next timestamp returned',
-    content: {
-      'application/json': {
-        schema: {
-          type: 'object',
-          properties: {
-            nextTimestamp: {
-              type: 'string',
-              example: '2025-04-01T12:00:00Z',
-            },
-            data: {
-              type: 'array',
-              items: { $ref: getSchemaPath(QuarterlyApportionedEmissionsDTO) },
-            },
+      content: {
+        'application/json': {
+          schema: {
+            $ref: getSchemaPath(QuarterlyApportionedEmissionsDTO),
+          },
+        },
+        'text/csv': {
+          schema: {
+            type: 'string',
+            example: fieldMappings.emissions.quarterly.data.aggregation.unit
+              .map(i => i.label)
+              .join(','),
           },
         },
       },
-      'text/csv': {
-        schema: {
-          type: 'string',
-          example: fieldMappings.emissions.quarterly.data.aggregation.unit
-            .map(i => i.label)
-            .join(','),
-        },
-      },
-    },
   })
   @BadRequestResponse()
   @NotFoundResponse()

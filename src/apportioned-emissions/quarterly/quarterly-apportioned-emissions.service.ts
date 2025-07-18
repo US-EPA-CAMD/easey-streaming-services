@@ -84,7 +84,9 @@ export class QuarterlyApportionedEmissionsService {
       params,
     );
 
-    // Define a transform stream that converts rows to DTO and appends the next timestamp in the flush phase
+    // Set next-time-stamp in response header
+    req.res.setHeader('next-timestamp', currentDbTimestamp);
+
     const json2Dto = new Transform({
       objectMode: true,
       transform(data, _enc, callback) {
@@ -93,11 +95,6 @@ export class QuarterlyApportionedEmissionsService {
           enableImplicitConversion: true,
         });
         callback(null, dto);
-      },
-      flush(callback) {
-        // Append the next timestamp at the end of the stream
-        this.push({ nextTimestamp: currentDbTimestamp });
-        callback();
       },
     });
 
