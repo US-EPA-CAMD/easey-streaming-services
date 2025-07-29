@@ -4,7 +4,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
-import { EntityManager } from 'typeorm';
+import { EntityManager, IsNull } from 'typeorm';
 
 import { ProgramCode } from '../entities/program-code.entity';
 
@@ -21,7 +21,7 @@ export class IsAllowanceProgramValidator
       found = await this.entityManager.findOneBy(ProgramCode, {
         programCode: value.toUpperCase(),
         allowanceUIFilter: 1,
-        tradingEndDate: null,
+        tradingEndDate: IsNull(),
       });
     } else {
       found = await this.entityManager.findOneBy(ProgramCode, {
