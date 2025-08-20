@@ -12,10 +12,10 @@ import { ProgramCode } from '../entities/program-code.entity';
 @ValidatorConstraint({ name: 'isAllowanceProgram', async: true })
 export class IsAllowanceProgramValidator
   implements ValidatorConstraintInterface {
-  constructor(private readonly entityManager: EntityManager) {}
+  constructor(private readonly entityManager: EntityManager) { }
 
   async validate(value: any, args: ValidationArguments) {
-    const isActiveOnly = args.constraints[0];
+    const { isActiveOnly } = args.constraints[0];
     let found: ProgramCode | null;
     if (isActiveOnly) {
       found = await this.entityManager.findOneBy(ProgramCode, {
