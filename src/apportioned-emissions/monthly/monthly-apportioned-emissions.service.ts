@@ -108,7 +108,7 @@ export class MonthlyApportionedEmissionsService {
     const [sql, values] = this.repository.buildStateAggregationQuery(params);
 
     const fieldMappingsList =
-      fieldMappings.emissions.hourly.data.aggregation.state;
+      fieldMappings.emissions.monthly.data.aggregation.state;
 
     const toDto = new Transform({
       objectMode: true,
@@ -142,7 +142,7 @@ export class MonthlyApportionedEmissionsService {
     const [sql, values] = this.repository.buildNationalAggregationQuery(params);
 
     const fieldMappingsList =
-      fieldMappings.emissions.hourly.data.aggregation.national;
+      fieldMappings.emissions.monthly.data.aggregation.national;
 
     const toDto = new Transform({
       objectMode: true,
