@@ -34,7 +34,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
-    "@nestjs/swagger": "^11.2.0",
+    "@nestjs/swagger": "^11.2.1",
     "@nestjs/typeorm": "^11.0.0",
     "@us-epa-camd/easey-common": "21.3.2",
     "JSONStream": "^1.3.5",
@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.10",
-    "@nestjs/schematics": "^11.0.7",
+    "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.6",
     "@types/express": "^5.0.3",
     "@types/jest": "29.5.14",
@@ -68,9 +68,9 @@
     "@types/supertest": "^6.0.3",
     "@types/uuid": "^8.3.1",
     "@types/validator": "^13.15.3",
-    "@typescript-eslint/eslint-plugin": "8.42.0",
-    "@typescript-eslint/parser": "8.42.0",
-    "eslint": "9.35.0",
+    "@typescript-eslint/eslint-plugin": "8.46.1",
+    "@typescript-eslint/parser": "8.46.2",
+    "eslint": "9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "jest": "^30.0.5",
@@ -82,7 +82,7 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "jest": {
     "moduleFileExtensions": [
