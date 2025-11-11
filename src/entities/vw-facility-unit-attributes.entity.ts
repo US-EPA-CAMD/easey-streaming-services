@@ -9,7 +9,11 @@ export class FacilityUnitAttributes {
   @Column({ name: 'unit_id' })
   id: string;
 
-  @Column({ name: 'op_year', transformer: new NumericColumnTransformer() })
+  @Column({
+    name: 'op_year',
+    transformer: new NumericColumnTransformer(),
+    type: 'numeric',
+  })
   year: number;
 
   @Column({ name: 'prg_code_info' })
@@ -21,7 +25,11 @@ export class FacilityUnitAttributes {
   @Column({ name: 'state' })
   stateCode: string;
 
-  @Column({ name: 'orispl_code', transformer: new NumericColumnTransformer() })
+  @Column({
+    name: 'orispl_code',
+    transformer: new NumericColumnTransformer(),
+    type: 'numeric',
+  })
   facilityId: number;
 
   @Column({ name: 'facility_name' })
@@ -33,7 +41,11 @@ export class FacilityUnitAttributes {
   @Column({ name: 'assoc_stacks' })
   associatedStacks: string;
 
-  @Column({ name: 'epa_region', transformer: new NumericColumnTransformer() })
+  @Column({
+    name: 'epa_region',
+    transformer: new NumericColumnTransformer(),
+    type: 'numeric',
+  })
   epaRegion: number;
 
   @Column({ name: 'nerc_region' })
@@ -56,6 +68,7 @@ export class FacilityUnitAttributes {
     scale: 2,
     precision: 4,
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   latitude: number;
 
@@ -64,6 +77,7 @@ export class FacilityUnitAttributes {
     scale: 2,
     precision: 4,
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   longitude: number;
 
@@ -105,6 +119,7 @@ export class FacilityUnitAttributes {
     scale: 4,
     precision: 1,
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   maxHourlyHIRate: number;
 

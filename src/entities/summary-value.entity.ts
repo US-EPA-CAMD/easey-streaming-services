@@ -21,6 +21,7 @@ export class SummaryValue extends BaseEntity {
   @Column({
     name: 'rpt_period_id',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: false,
   })
   reportPeriodId: number;
@@ -34,6 +35,7 @@ export class SummaryValue extends BaseEntity {
   @Column({
     name: 'current_rpt_period_total',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: true,
   })
   quarterlyValue: number;
@@ -41,6 +43,7 @@ export class SummaryValue extends BaseEntity {
   @Column({
     name: 'os_total',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: true,
   })
   ozoneSeasonTotal: number;
@@ -48,6 +51,7 @@ export class SummaryValue extends BaseEntity {
   @Column({
     name: 'calc_os_total',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: true,
   })
   calcOsTotal: number;
@@ -55,6 +59,7 @@ export class SummaryValue extends BaseEntity {
   @Column({
     name: 'year_total',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: true,
   })
   yearTotal: number;
@@ -62,6 +67,7 @@ export class SummaryValue extends BaseEntity {
   @Column({
     name: 'calc_year_total',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: true,
   })
   calcYearTotal: number;
