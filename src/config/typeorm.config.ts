@@ -34,15 +34,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
 
     return {
       type: 'postgres',
-      applicationName: this.configService.get<string>('app.name'),
-      host: this.configService.get<string>('database.host'),
-      port: this.configService.get<number>('database.port'),
-      username: this.configService.get<string>('database.user'),
-      password: this.configService.get<string>('database.pwd'),
-      database: this.configService.get<string>('database.name'),
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
       synchronize: false,
-      ssl: this.tlsOptions,
 
       // Database specific (Postgres) settings.
       extra: {
@@ -56,6 +49,31 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       logging: sqlLogging,
       // Logs queries exceeding this limit (does not terminate, 'statement_timeout' terminates them).
       maxQueryExecutionTime: this.configService.get<number>('app.maxQueryExecutionTime'),
+
+      // Replication configuration for read replica support
+      replication: {
+        defaultMode: 'slave',
+        master: {
+          applicationName: this.configService.get<string>('app.name'),
+          host: this.configService.get<string>('database.host'),
+          port: this.configService.get<number>('database.port'),
+          username: this.configService.get<string>('database.user'),
+          password: this.configService.get<string>('database.pwd'),
+          database: this.configService.get<string>('database.name'),
+          ssl: this.tlsOptions,
+        },
+        slaves: [
+          {
+            applicationName: this.configService.get<string>('app.name'),
+            host: this.configService.get<string>('database.replicaHost'),
+            port: this.configService.get<number>('database.port'),
+            username: this.configService.get<string>('database.user'),
+            password: this.configService.get<string>('database.pwd'),
+            database: this.configService.get<string>('database.name'),
+            ssl: this.tlsOptions,
+          },
+        ],
+      },
 
     };
   }

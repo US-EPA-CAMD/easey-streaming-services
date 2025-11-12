@@ -13,6 +13,12 @@
 
 Streaming services for large datasets of Facility, Account, Compliance, & Emissions data.
 
+## Important Notice
+
+**This service is configured to use a read replica database connection by default.** All database traffic is routed to the read replica whenever possible to optimize performance for data streaming operations.
+
+If database-modifying endpoints are added to this service in the future, developers must ensure that those operations explicitly use the primary database connection instead of the replica. The current configuration automatically routes all queries to the read replica unless specifically overridden.
+
 ## Getting Started
 
 Follow these [instructions](https://github.com/US-EPA-CAMD/devops/blob/master/GETTING-STARTED.md) to get the project up and running correctly.
