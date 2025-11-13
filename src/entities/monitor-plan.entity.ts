@@ -31,30 +31,18 @@ export class MonitorPlan extends BaseEntity {
   facilityId: number;
 
   @JoinColumn({ name: 'begin_rpt_period_id' })
-  @ManyToOne(
-    () => ReportingPeriod,
-    rp => rp.id,
-  )
+  @ManyToOne(() => ReportingPeriod, (rp) => rp.id)
   beginRptPeriod: ReportingPeriod;
 
   @JoinColumn({ name: 'end_rpt_period_id' })
-  @ManyToOne(
-    () => ReportingPeriod,
-    rp => rp.id,
-  )
+  @ManyToOne(() => ReportingPeriod, (rp) => rp.id)
   endRptPeriod: ReportingPeriod;
 
-  @ManyToOne(
-    () => Plant,
-    o => o.monitorPlans,
-  )
+  @ManyToOne(() => Plant, (o) => o.monitorPlans)
   @JoinColumn({ name: 'fac_id' })
   plant: Plant;
 
-  @ManyToMany(
-    () => MonitorLocation,
-    location => location.monitorPlans,
-  )
+  @ManyToMany(() => MonitorLocation, (location) => location.monitorPlans)
   @JoinTable({
     name: 'camdecmps.monitor_plan_location',
     joinColumn: {

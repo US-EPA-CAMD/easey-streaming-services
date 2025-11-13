@@ -45,13 +45,18 @@ export class MonitorSystem extends BaseEntity {
   @Column({ type: 'date', nullable: true, name: 'end_date' })
   endDate: Date;
 
-  @Column({ name: 'begin_hour', transformer: new NumericColumnTransformer() })
+  @Column({
+    name: 'begin_hour',
+    transformer: new NumericColumnTransformer(),
+    type: 'numeric',
+  })
   beginHour: number;
 
   @Column({
     name: 'end_hour',
     nullable: true,
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   endHour: number;
 
@@ -64,10 +69,7 @@ export class MonitorSystem extends BaseEntity {
   @Column({ nullable: true, name: 'update_date' })
   updateDate: Date;
 
-  @OneToMany(
-    () => DerivedHrlyValue,
-    c => c.monitorSystem,
-  )
+  @OneToMany(() => DerivedHrlyValue, (c) => c.monitorSystem)
   @JoinColumn({ name: 'mon_sys_id' })
   derivedHrlyValues: DerivedHrlyValue[];
 }
