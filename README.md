@@ -13,11 +13,11 @@
 
 Streaming services for large datasets of Facility, Account, Compliance, & Emissions data.
 
-## Important Notice
+## Important: Read-Only Repository
 
-**This service is configured to use a read replica database connection by default.** All database traffic is routed to the read replica whenever possible to optimize performance for data streaming operations.
+This API uses database read replicas and is configured as a **read-only repository**. The read replica is used whenever possible for SELECT operations to optimize performance and reduce load on the primary database server.
 
-If database-modifying endpoints are added to this service in the future, developers must ensure that those operations explicitly use the primary database connection instead of the replica. The current configuration automatically routes all queries to the read replica unless specifically overridden.
+**Note for Future Development:** When database-modifying endpoints (CREATE, UPDATE, DELETE operations) are added to this API, TypeORM automatically routes these operations to the primary database server. However, if a SELECT operation needs to retrieve data that was just modified, that SELECT operation should be manually pointed to the primary server to avoid retrieving stale data due to replication lag.
 
 ## Getting Started
 
