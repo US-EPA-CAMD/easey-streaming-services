@@ -16,12 +16,14 @@ export class UnitComplianceDim extends BaseEntity {
   @PrimaryColumn({
     name: 'unit_id',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   id: number;
 
   @PrimaryColumn({
     name: 'op_year',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   year: number;
 
@@ -33,6 +35,7 @@ export class UnitComplianceDim extends BaseEntity {
   @Column({
     name: 'avg_plan_id',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   avgPlanId: number;
 
@@ -44,18 +47,21 @@ export class UnitComplianceDim extends BaseEntity {
   @Column({
     name: 'act_emiss_rate',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   actualEmissionsRate: number;
 
   @Column({
     name: 'avg_plan_act_emiss_rate',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   avgPlanActual: number;
 
   @Column({
     name: 'emiss_limit_display',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   emissionsLimitDisplay: number;
 

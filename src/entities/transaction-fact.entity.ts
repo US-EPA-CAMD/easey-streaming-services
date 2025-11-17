@@ -19,6 +19,7 @@ export class TransactionFact extends BaseEntity {
   @PrimaryColumn({
     name: 'transaction_id',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   transactionId: number;
 
@@ -30,6 +31,7 @@ export class TransactionFact extends BaseEntity {
   @Column({
     name: 'transaction_total',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   transactionTotal: number;
 
@@ -71,6 +73,7 @@ export class TransactionFact extends BaseEntity {
   @Column({
     name: 'sell_orispl_code',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   sellFacilityId: number;
 
@@ -82,6 +85,7 @@ export class TransactionFact extends BaseEntity {
   @Column({
     name: 'sell_epa_region',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   sellEpaRegion: number;
 
@@ -123,6 +127,7 @@ export class TransactionFact extends BaseEntity {
   @Column({
     name: 'buy_orispl_code',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   buyFacilityId: number;
 
@@ -134,6 +139,7 @@ export class TransactionFact extends BaseEntity {
   @Column({
     name: 'buy_epa_region',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   buyEpaRegion: number;
 

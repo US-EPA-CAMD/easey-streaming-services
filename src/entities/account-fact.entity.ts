@@ -39,6 +39,7 @@ export class AccountFact extends BaseEntity {
   @Column({
     name: 'orispl_code',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   facilityId: number;
 
@@ -60,6 +61,7 @@ export class AccountFact extends BaseEntity {
   @Column({
     name: 'epa_region',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   epaRegion: number;
 
