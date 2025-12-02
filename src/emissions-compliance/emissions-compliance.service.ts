@@ -42,18 +42,18 @@ export class EmissionsComplianceService {
         delete data.id;
         delete data.programCodeInfo;
 
-        const splitOwnWithPipe = data.ownerOperator?.split('|');
-        const splitOprWithPipe = data.operator?.split('|');
+        const splitOwnWithPipe = data.ownerOperator?.split('|') ?? [];
+        const splitOprWithPipe = data.operator?.split('|') ?? [];
         
         delete data.operator;
         if (
           !params.exclude?.includes(ExcludeEmissionsCompliance.OWNER_OPERATOR)
         ) {
-          const uniqueOwn = [...new Set(splitOwnWithPipe)].join('|');
-          const uniqueOpr = [...new Set(splitOprWithPipe)].join('|');
+          const uniqueOwn = [...new Set(splitOwnWithPipe.map(String))].join('|');
+          const uniqueOpr = [...new Set(splitOprWithPipe.map(String))].join('|');
 
           const uniqueOwnOprList = [uniqueOwn, uniqueOpr];
-          const ownerOperator = uniqueOwnOprList.filter(e => e).join('|');
+          const ownerOperator = uniqueOwnOprList.filter(Boolean).join('|');
 
           data.ownerOperator =
             ownerOperator.length > 0 ? `${ownerOperator}` : null;

@@ -50,14 +50,14 @@ export class FacilitiesService {
 
         if (data.associatedGeneratorsAndNameplateCapacity) {
           let associatedGeneratorsAndNameplateCapacityStr = '';
-          const splitOwnWithPipe = data.ownerOperator?.split('|');
-          const splitOprWithPipe = data.oprDisplay?.split('|');
+          const splitOwnWithPipe = data.ownerOperator?.split('|') ?? [];
+          const splitOprWithPipe = data.oprDisplay?.split('|') ?? [];
 
-          const uniqueOwn = [...new Set(splitOwnWithPipe)].join('|');
-          const uniqueOpr = [...new Set(splitOprWithPipe)].join('|');
+          const uniqueOwn = [...new Set(splitOwnWithPipe.map(String))].join('|');
+          const uniqueOpr = [...new Set(splitOprWithPipe.map(String))].join('|');
 
           const uniqueOwnOprList = [uniqueOwn, uniqueOpr];
-          const ownerOperator = uniqueOwnOprList.filter(e => e).join('|');
+          const ownerOperator = uniqueOwnOprList.filter(Boolean).join('|');
 
           const generatorIdArr = data.associatedGeneratorsAndNameplateCapacity?.split(
             ', ',
