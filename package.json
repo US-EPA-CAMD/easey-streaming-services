@@ -42,7 +42,7 @@
     "class-validator": "^0.14.3",
     "dotenv": "^16.5.0",
     "esquery": "1.6.0",
-    "express": "^5.1.0",
+    "express": "^5.2.0",
     "json2csv": "^5.0.7",
     "moment": "^2.30.1",
     "pg": "^8.16.3",
