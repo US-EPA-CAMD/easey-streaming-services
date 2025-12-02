@@ -50,8 +50,8 @@ export class FacilitiesService {
 
         if (data.associatedGeneratorsAndNameplateCapacity) {
           let associatedGeneratorsAndNameplateCapacityStr = '';
-          const splitOwnWithPipe = data.ownerOperator?.split('|') ?? [];
-          const splitOprWithPipe = data.oprDisplay?.split('|') ?? [];
+          const splitOwnWithPipe:string[] = data.ownerOperator?.split('|') ?? [];
+          const splitOprWithPipe:string[] = data.oprDisplay?.split('|') ?? [];
 
           const uniqueOwn = [...new Set(splitOwnWithPipe.map(String))].join('|');
           const uniqueOpr = [...new Set(splitOprWithPipe.map(String))].join('|');

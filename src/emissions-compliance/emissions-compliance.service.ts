@@ -42,8 +42,8 @@ export class EmissionsComplianceService {
         delete data.id;
         delete data.programCodeInfo;
 
-        const splitOwnWithPipe = data.ownerOperator?.split('|') ?? [];
-        const splitOprWithPipe = data.operator?.split('|') ?? [];
+        const splitOwnWithPipe:string[] = data.ownerOperator?.split('|') ?? [];
+        const splitOprWithPipe:string[] = data.operator?.split('|') ?? [];
         
         delete data.operator;
         if (
