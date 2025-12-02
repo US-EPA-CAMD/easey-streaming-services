@@ -50,14 +50,14 @@ export class FacilitiesService {
 
         if (data.associatedGeneratorsAndNameplateCapacity) {
           let associatedGeneratorsAndNameplateCapacityStr = '';
-          const array = [data.ownerOperator, data.oprDisplay];
-          const ownOprList = array
-            .filter(e => e)
-            .join(',')
-            .slice(0, -1)
-            .split('),');
-          const ownOprUniqueList = [...new Set(ownOprList)];
-          const ownerOperator = ownOprUniqueList.join('),');
+          const splitOwnWithPipe = data.ownerOperator?.split('|');
+          const splitOprWithPipe = data.oprDisplay?.split('|');
+
+          const uniqueOwn = [...new Set(splitOwnWithPipe)].join('|');
+          const uniqueOpr = [...new Set(splitOprWithPipe)].join('|');
+
+          const uniqueOwnOprList = [uniqueOwn, uniqueOpr];
+          const ownerOperator = uniqueOwnOprList.filter(e => e).join('|');
 
           const generatorIdArr = data.associatedGeneratorsAndNameplateCapacity?.split(
             ', ',
@@ -96,7 +96,7 @@ export class FacilitiesService {
           }
 
           data.ownerOperator =
-            ownerOperator.length > 0 ? `${ownerOperator})` : null;
+            ownerOperator.length > 0 ? `${ownerOperator}` : null;
           data.associatedGeneratorsAndNameplateCapacity = associatedGeneratorsAndNameplateCapacityStr;
         }
 
