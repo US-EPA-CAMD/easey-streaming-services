@@ -42,7 +42,7 @@ export class AccountQueryBuilder {
       let string = '(';
 
       for (let i = 0; i < dto.ownerOperator.length; i++) {
-        const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
+        const regex = Regex.pipeDelimited(dto.ownerOperator[i].toUpperCase());
 
         if (i === 0) {
           string += `(UPPER(${characteristicAlias}.ownerOperator) ~* ${regex}) `;
@@ -136,7 +136,7 @@ export class AccountQueryBuilder {
       let string = '(';
 
       for (let i = 0; i < dto.ownerOperator.length; i++) {
-        const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
+        const regex = Regex.pipeDelimited(dto.ownerOperator[i].toUpperCase());
 
         if (i === 0) {
           string += `(UPPER(${alias}.buyOwner) ~* ${regex} OR UPPER(${alias}.sellOwner)  ~* ${regex} ) `;
@@ -206,7 +206,7 @@ export class AccountQueryBuilder {
       let string = '(';
 
       for (let i = 0; i < dto.ownerOperator.length; i++) {
-        const regex = Regex.commaDelimited(dto.ownerOperator[i].toUpperCase());
+        const regex = Regex.pipeDelimited(dto.ownerOperator[i].toUpperCase());
 
         if (i === 0) {
           string += `(UPPER(${ownerAlias}.owner) ~* ${regex} OR UPPER(${ownerAlias}.operator) ~* ${regex}) `;
