@@ -1326,7 +1326,7 @@
     webpack "5.103.0"
     webpack-node-externals "3.0.0"
 
-"@nestjs/common@^11.1.8", "@nestjs/common@^11.1.9":
+"@nestjs/common@^11.1.9":
   version "11.1.9"
   resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.1.9.tgz#8b8a29931040b6c65943337b3ca9cdf42dc31282"
   integrity sha512-zDntUTReRbAThIfSp3dQZ9kKqI+LjgLp5YZN5c1bgNRDuoeLySAoZg46Bg1a+uV8TMgIRziHocglKGNzr6l+bQ==
@@ -1346,7 +1346,7 @@
     dotenv-expand "12.0.1"
     lodash "4.17.21"
 
-"@nestjs/core@^11.1.8", "@nestjs/core@^11.1.9":
+"@nestjs/core@^11.1.9":
   version "11.1.9"
   resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.1.9.tgz#7a77ded789709e194c4f118e3d9bf5182136b076"
   integrity sha512-a00B0BM4X+9z+t3UxJqIZlemIwCQdYoPKrMcM+ky4z3pkqqG1eTWexjs+YXpGObnLnjtMPVKWlcZHp3adDYvUw==
@@ -1385,7 +1385,7 @@
     jsonc-parser "3.3.1"
     pluralize "8.0.0"
 
-"@nestjs/swagger@^11.2.1", "@nestjs/swagger@^11.2.3":
+"@nestjs/swagger@^11.2.3":
   version "11.2.3"
   resolved "https://registry.yarnpkg.com/@nestjs/swagger/-/swagger-11.2.3.tgz#979fbc87fedee0b71d9af181cafe9dbe3e4bd976"
   integrity sha512-a0xFfjeqk69uHIUpP8u0ryn4cKuHdra2Ug96L858i0N200Hxho+n3j+TlQXyOF4EstLSGjTfxI1Xb2E1lUxeNg==
@@ -2007,23 +2007,23 @@
   resolved "https://registry.yarnpkg.com/@unrs/resolver-binding-win32-x64-msvc/-/resolver-binding-win32-x64-msvc-1.11.1.tgz#538b1e103bf8d9864e7b85cc96fa8d6fb6c40777"
   integrity sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==
 
-"@us-epa-camd/easey-common@21.4.1":
-  version "21.4.1"
-  resolved "https://npm.pkg.github.com/download/@US-EPA-CAMD/easey-common/21.4.1/b3213dadf59fe501179c0ca7ec13700718211b41#b3213dadf59fe501179c0ca7ec13700718211b41"
-  integrity sha512-fPmmb4UM3Ywc1QE+QXuiH90Sx/HogT0dTcweX8k21ZZqTVdoymYEpkf6HYlD3u71la/qnWcW5rPzNzsr+DF1MA==
+"@us-epa-camd/easey-common@21.4.4":
+  version "21.4.4"
+  resolved "https://npm.pkg.github.com/download/@US-EPA-CAMD/easey-common/21.4.4/89c39b3b0552e4e1a64d7ef9ab27a63e08073a0d#89c39b3b0552e4e1a64d7ef9ab27a63e08073a0d"
+  integrity sha512-3Ym1ou9WQ4n2Z8ydlqTHcqsBXE8ORFRvc36O/AtdbsrlPQhGbhtVkxzp66pXDVWYVv5fArg1SYpGDyujshJ/eA==
   dependencies:
     "@golevelup/ts-jest" "^0.7.0"
     "@nestjs/axios" "4.0.1"
-    "@nestjs/common" "^11.1.8"
+    "@nestjs/common" "^11.1.9"
     "@nestjs/config" "^4.0.2"
-    "@nestjs/core" "^11.1.8"
-    "@nestjs/swagger" "^11.2.1"
+    "@nestjs/core" "^11.1.9"
+    "@nestjs/swagger" "^11.2.3"
     "@nestjs/terminus" "^11.0.0"
     "@nestjs/typeorm" "^11.0.0"
-    axios "^1.13.1"
-    class-validator "^0.14.2"
+    axios "^1.13.2"
+    class-validator "^0.14.3"
     dotenv "^16.5.0"
-    express "^5.1.0"
+    express "^5.2.1"
     helmet "^8.1.0"
     json2csv "^5.0.7"
     pg "^8.16.3"
@@ -2474,10 +2474,10 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-axios@^1.13.1:
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.13.1.tgz#45b62dc8fe04e0e92274e08b98e910ba3d7963a7"
-  integrity sha512-hU4EGxxt+j7TQijx1oYdAjw4xuIp1wRQSsbMFwSthCWeBQur1eF+qJ5iQ5sN3Tw8YRzQNKb8jszgBdMDVqwJcw==
+axios@^1.13.2:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.13.2.tgz#9ada120b7b5ab24509553ec3e40123521117f687"
+  integrity sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.4"
@@ -2826,7 +2826,7 @@ class-transformer@0.5.1:
   resolved "https://registry.npmjs.org/class-transformer/-/class-transformer-0.5.1.tgz#24147d5dffd2a6cea930a3250a677addf96ab336"
   integrity sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw==
 
-class-validator@^0.14.2, class-validator@^0.14.3:
+class-validator@^0.14.3:
   version "0.14.3"
   resolved "https://registry.yarnpkg.com/class-validator/-/class-validator-0.14.3.tgz#834a4caafa8359aed73d7708badb4cf271be50fe"
   integrity sha512-rXXekcjofVN1LTOSw+u4u9WXVEUvNBVjORW154q/IdmYWy1nMbOU9aNtZB0t8m+FJQ9q91jlr2f9CwwUFdFMRA==
@@ -3811,7 +3811,7 @@ express@5.1.0:
     type-is "^2.0.1"
     vary "^1.1.2"
 
-express@^5.1.0, express@^5.2.1:
+express@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/express/-/express-5.2.1.tgz#8f21d15b6d327f92b4794ecf8cb08a72f956ac04"
   integrity sha512-hIS4idWWai69NezIdRt2xFVofaF4j+6INOpJlVOLDO8zXGpUVEVzIYk12UUi2JzjEzWL3IOAxcTubgz9Po0yXw==
