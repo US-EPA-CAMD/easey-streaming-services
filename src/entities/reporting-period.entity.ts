@@ -17,12 +17,14 @@ export class ReportingPeriod extends BaseEntity {
   @PrimaryColumn({
     name: 'rpt_period_id',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   id: number;
 
   @Column({
     name: 'calendar_year',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: false,
   })
   year: number;
@@ -30,6 +32,7 @@ export class ReportingPeriod extends BaseEntity {
   @Column({
     name: 'quarter',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: false,
   })
   quarter: number;
@@ -64,6 +67,7 @@ export class ReportingPeriod extends BaseEntity {
     name: 'archive_ind',
     nullable: false,
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   archiveInd: number;
 

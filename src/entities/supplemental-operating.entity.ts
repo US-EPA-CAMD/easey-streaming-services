@@ -48,17 +48,11 @@ export class SupplementalOperating extends BaseEntity {
   @Column({ name: 'update_date' })
   updateDate: string;
 
-  @ManyToOne(
-    () => MonitorLocation,
-    o => o.summaryValues,
-  )
+  @ManyToOne(() => MonitorLocation, (o) => o.summaryValues)
   @JoinColumn({ name: 'mon_loc_id' })
   monitorLocation: MonitorLocation;
 
-  @ManyToOne(
-    () => ReportingPeriod,
-    o => o.summaryValues,
-  )
+  @ManyToOne(() => ReportingPeriod, (o) => o.summaryValues)
   @JoinColumn({ name: 'rpt_period_id' })
   reportingPeriod: ReportingPeriod;
 }

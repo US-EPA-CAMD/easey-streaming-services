@@ -23,6 +23,7 @@ export class HrlyOpData extends BaseEntity {
   @Column({
     name: 'rpt_period_id',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: false,
   })
   reportPeriodId: number;
@@ -33,6 +34,7 @@ export class HrlyOpData extends BaseEntity {
   @Column({
     name: 'begin_hour',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: false,
   })
   beginHour: number;
@@ -40,6 +42,7 @@ export class HrlyOpData extends BaseEntity {
   @Column({
     name: 'op_time',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: true,
   })
   operatingTime: number;
@@ -47,6 +50,7 @@ export class HrlyOpData extends BaseEntity {
   @Column({
     name: 'hr_load',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
     nullable: true,
   })
   hourLoad: number;

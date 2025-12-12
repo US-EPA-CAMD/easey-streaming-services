@@ -30,24 +30,28 @@ export class AllowanceHoldingDim extends BaseEntity {
   @PrimaryColumn({
     name: 'vintage_year',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   vintageYear: number;
 
   @Column({
     name: 'total_block',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   totalBlock: number;
 
   @PrimaryColumn({
     name: 'start_block',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   startBlock: number;
 
   @Column({
     name: 'end_block',
     transformer: new NumericColumnTransformer(),
+    type: 'numeric',
   })
   endBlock: number;
 
