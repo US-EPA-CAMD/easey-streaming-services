@@ -32,6 +32,11 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       ? false
       : rawLogging.split(',').map(level => level.trim()) as LoggerOptions;
 
+    const host = this.configService.get<string>('database.host');
+    const replicaHost = this.configService.get<string>('database.replicaHost');
+
+    // Only enable replication if replica host exists and differs from primary host
+    if (replicaHost && replicaHost !== host) {
     return {
       type: 'postgres',
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
@@ -55,7 +60,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         defaultMode: 'slave',
         master: {
           applicationName: this.configService.get<string>('app.name'),
-          host: this.configService.get<string>('database.host'),
+          host: host,
           port: this.configService.get<number>('database.port'),
           username: this.configService.get<string>('database.user'),
           password: this.configService.get<string>('database.pwd'),
@@ -65,7 +70,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         slaves: [
           {
             applicationName: this.configService.get<string>('app.name'),
-            host: this.configService.get<string>('database.replicaHost'),
+            host: replicaHost,
             port: this.configService.get<number>('database.port'),
             username: this.configService.get<string>('database.user'),
             password: this.configService.get<string>('database.pwd'),
@@ -74,7 +79,34 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
           },
         ],
       },
-
     };
+    } else {
+      // Fallback to single connection mode when no replica or replica same as primary
+      return {
+        type: 'postgres',
+        applicationName: this.configService.get<string>('app.name'),
+        host: host,
+        port: this.configService.get<number>('database.port'),
+        username: this.configService.get<string>('database.user'),
+        password: this.configService.get<string>('database.pwd'),
+        database: this.configService.get<string>('database.name'),
+        entities: [__dirname + '/../**/*.entity.{js,ts}'],
+        synchronize: false,
+        ssl: this.tlsOptions,
+
+        // Database specific (Postgres) settings.
+        extra: {
+          max: this.configService.get<number>('app.maxPoolSize'),  // Max connections in pool
+          idleTimeoutMillis: this.configService.get<number>('app.idleTimeout'), // Close idle connections
+          connectionTimeoutMillis: this.configService.get<number>('app.connectionTimeout'), // Maximum time (ms) to wait for a new connection before timing out.
+          statement_timeout: this.configService.get<number>('app.statementTimeout'),                    // Terminates queries that exceed the timeout (in ms).
+          idle_in_transaction_session_timeout: this.configService.get<number>('app.idleInTransactionSessionTimeout'), // Terminates idle transactions after the specified time (in ms).
+          maxUses: this.configService.get<number>('app.maxUsesBeforeRecreatingConnection'),  //Recreate connections after 'n' uses
+        },
+        logging: sqlLogging,
+        // Logs queries exceeding this limit (does not terminate, 'statement_timeout' terminates them).
+        maxQueryExecutionTime: this.configService.get<number>('app.maxQueryExecutionTime'),
+      };
+    }
   }
 }
