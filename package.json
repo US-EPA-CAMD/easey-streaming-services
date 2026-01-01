@@ -41,7 +41,7 @@
     "class-transformer": "0.5.1",
     "class-validator": "^0.14.3",
     "dotenv": "^16.5.0",
-    "esquery": "1.6.0",
+    "esquery": "1.7.0",
     "express": "^5.2.1",
     "json2csv": "^5.0.7",
     "moment": "^2.30.1",
