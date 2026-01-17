@@ -51,6 +51,9 @@ export default registerAs('app', () => ({
     'EASEY_STREAMING_SERVICES_ENABLE_GLOBAL_VALIDATION_PIPE',
     true,
   ),
+  enableReplicaDbAccess: getConfigValueBoolean(
+    'EASEY_STREAMING_SERVICES_ENABLE_REPLICA_DB_ACCESS',
+  ),
   version: getConfigValue('EASEY_STREAMING_SERVICES_VERSION', 'v0.0.0'),
   published: getConfigValue('EASEY_STREAMING_SERVICES_PUBLISHED', 'local'),
   streamBatchSize: getConfigValueNumber(

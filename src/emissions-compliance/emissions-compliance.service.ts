@@ -42,20 +42,21 @@ export class EmissionsComplianceService {
         delete data.id;
         delete data.programCodeInfo;
 
-        const ownOprArray = [data.ownerOperator, data.operator];
+        const splitOwnWithPipe:string[] = data.ownerOperator?.split('|') ?? [];
+        const splitOprWithPipe:string[] = data.operator?.split('|') ?? [];
+        
         delete data.operator;
         if (
           !params.exclude?.includes(ExcludeEmissionsCompliance.OWNER_OPERATOR)
         ) {
-          const ownOprList = ownOprArray
-            .filter(e => e)
-            .join(',')
-            .slice(0, -1)
-            .split('),');
-          const ownOprUniqueList = [...new Set(ownOprList)];
-          const ownerOperator = ownOprUniqueList.join('),');
+          const uniqueOwn = [...new Set(splitOwnWithPipe.map(String))].join('|');
+          const uniqueOpr = [...new Set(splitOprWithPipe.map(String))].join('|');
+
+          const uniqueOwnOprList = [uniqueOwn, uniqueOpr];
+          const ownerOperator = uniqueOwnOprList.filter(Boolean).join('|');
+
           data.ownerOperator =
-            ownerOperator.length > 0 ? `${ownerOperator})` : null;
+            ownerOperator.length > 0 ? `${ownerOperator}` : null;
         }
         const dto = plainToClass(EmissionsComplianceDTO, data, {
           enableImplicitConversion: true,
