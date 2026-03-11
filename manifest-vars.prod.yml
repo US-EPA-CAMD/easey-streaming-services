@@ -12,4 +12,4 @@ sqlLogging: "error"
 maxQueryExecutionTime: 30000
 healthCheckInterval: 30
 healthCheckInvocationTimeout: 60
-dbHealthTimeout: 5000
+dbHealthTimeout: 300000
