@@ -1028,10 +1028,10 @@
     jsonc-parser "3.3.1"
     pluralize "8.0.0"
 
-"@nestjs/swagger@^11.2.7", "@nestjs/swagger@^11.4.0":
-  version "11.4.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/swagger/-/swagger-11.4.0.tgz#9de606952b44580e82bfc6e6eb2961fc1e711108"
-  integrity sha512-iczXApVnHSsVtmvEY9NWtEjjCa7duZUAHUEKsF66MsWv019JFDCApHH5rvnZvNesiMNugJmpIdmpZZFwocuR3A==
+"@nestjs/swagger@^11.2.7", "@nestjs/swagger@^11.4.1":
+  version "11.4.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/swagger/-/swagger-11.4.1.tgz#046f2831732bc15c724e50534836c5f505236b43"
+  integrity sha512-GuGzs8F1Cb3n+eEarmOqB4nt2ai+x4XGOYUXNYplOtDeB59DaFY5E16bsHsBWXiWgD1ywbyKQ5OVv02bQtB1Dw==
   dependencies:
     "@microsoft/tsdoc" "0.16.0"
     "@nestjs/mapped-types" "2.1.1"
