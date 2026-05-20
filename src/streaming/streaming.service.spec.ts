@@ -19,7 +19,7 @@ describe('-- Streaming Service --', () => {
     on: jest.fn(),
   });
 
-  // `dtoTransform` is supplied by the calling service in production; an
+  // `dtoTransform` is supplied by the calling service; an
   // object-mode passthrough is enough to stand in for it here.
   const callGetStream = (req: any) =>
     service.getStream(
@@ -75,8 +75,7 @@ describe('-- Streaming Service --', () => {
     const req = mockRequest();
     await callGetStream(req);
 
-    // Simulate the statement_timeout cancellation seen in production. Before the
-    // Defect 1 fix this unhandled 'error' became an uncaughtException.
+    // Simulate a statement_timeout cancellation
     dbStream.emit(
       'error',
       new Error('canceling statement due to statement timeout'),
