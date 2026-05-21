@@ -32,58 +32,26 @@ export class StreamingService {
     });
 
     const dbClient = await this.dbPool.connect();
+    const dbStream = dbClient.query(queryStream).pipe(dtoTransform);
 
-    // Release the pooled client exactly once, regardless of how the stream ends.
-    let released = false;
-    const releaseClient = () => {
-      if (released) return;
-      released = true;
-      dbClient.release();
-      this.logger.log('Client Released');
-    };
+      req.on('close', () => {
+        dbClient.release();
+        this.logger.log('Client Released');
+      });
 
-    const isCsv = req.headers.accept === 'text/csv';
-    const finalTransform = isCsv
-      ? new Json2CSV(fieldMappings)
-      : JSONStream.stringify();
+      req.res.setHeader('X-Field-Mappings', JSON.stringify(fieldMappings));
 
-    const startTime = Date.now();
-    const dbQueryStream = dbClient.query(queryStream);
-    const outStream = dbQueryStream.pipe(dtoTransform).pipe(finalTransform);
-
-    // A DB stream error (e.g. a statement_timeout cancellation) must be handled here.
-    // log the error with how long it ran and the SQL, release the client, and propagate
-    // the error to the response stream so only this request fails.
-    let errored = false;
-    const onStreamError = (err: Error) => {
-      if (errored) return;
-      errored = true;
-      this.logger.error(
-        `Stream query failed after ${Date.now() - startTime}ms: ` + `${err?.stack ?? err}. SQL: ${sql} -- params: ${JSON.stringify(params)}`,
-      );
-      releaseClient();
-      if (!outStream.destroyed) {
-        outStream.destroy(err);
+      if (req.headers.accept === 'text/csv') {
+        const json2Csv = new Json2CSV(fieldMappings);
+        return new StreamableFile(dbStream.pipe(json2Csv), {
+          type: req.headers.accept,
+          disposition: `${disposition}.csv`,
+        });
       }
-    };
 
-    dbQueryStream.on('error', onStreamError);
-    dtoTransform.on('error', onStreamError);
-    finalTransform.on('error', onStreamError);
-
-    // Release the client when the request is aborted or the stream finishes.
-    req.on('close', releaseClient);
-    outStream.on('close', releaseClient);
-    outStream.on('end', () => {
-      this.logger.log(`Stream query completed in ${Date.now() - startTime}ms`);
-      releaseClient();
-    });
-
-    req.res.setHeader('X-Field-Mappings', JSON.stringify(fieldMappings));
-
-    return new StreamableFile(outStream, {
-      type: req.headers.accept,
-      disposition: isCsv ? `${disposition}.csv` : `${disposition}.json`,
-    });
+      return new StreamableFile(dbStream.pipe(JSONStream.stringify()), {
+        type: req.headers.accept,
+        disposition: `${disposition}.json`,
+      });
   }
 }
