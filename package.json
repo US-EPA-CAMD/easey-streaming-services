@@ -30,10 +30,10 @@
     "xml2js": "^0.5.0"
   },
   "dependencies": {
-    "@nestjs/common": "^11.1.27",
+    "@nestjs/common": "^11.1.28",
     "@nestjs/config": "^4.0.4",
-    "@nestjs/core": "^11.1.27",
-    "@nestjs/platform-express": "^11.1.27",
+    "@nestjs/core": "^11.1.28",
+    "@nestjs/platform-express": "^11.1.28",
     "@nestjs/swagger": "^11.4.5",
     "@nestjs/typeorm": "^11.0.3",
     "@us-epa-camd/easey-common": "21.5.7",
@@ -58,7 +58,7 @@
   "devDependencies": {
     "@nestjs/cli": "^11.0.23",
     "@nestjs/schematics": "^11.1.0",
-    "@nestjs/testing": "^11.1.27",
+    "@nestjs/testing": "^11.1.28",
     "@types/express": "^5.0.6",
     "@types/jest": "30.0.0",
     "@types/json2csv": "^5.0.7",
@@ -75,7 +75,7 @@
     "eslint-plugin-import": "^2.32.0",
     "jest": "^30.4.2",
     "jest-sonar-reporter": "^2.0.0",
-    "prettier": "^3.9.4",
+    "prettier": "^3.9.5",
     "sinon": "^22.0.0",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.11",
