@@ -5,7 +5,8 @@ apiHost: api.epa.gov/easey/beta
 maxPoolSize: 15
 idleTimeout: 30000
 connectionTimeout: 10000
-statementTimeout: 1800000
+statementTimeout: 300000
+streamStatementTimeout: 1800000
 idleInTransactionSessionTimeout: 300000
 maxUsesBeforeRecreatingConnection: 500
 sqlLogging: "error"
