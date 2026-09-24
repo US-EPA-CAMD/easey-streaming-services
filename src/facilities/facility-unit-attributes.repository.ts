@@ -156,7 +156,7 @@ export class FacilityUnitAttributesRepository extends Repository<
       let string = '(';
 
       for (let i = 0; i < params.controlTechnologies.length; i++) {
-        const regex = Regex.commaDelimited(
+        const regex = Regex.pipeDelimited(
           params.controlTechnologies[i].toUpperCase(),
         );
 
