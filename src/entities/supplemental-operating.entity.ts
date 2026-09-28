@@ -21,7 +21,7 @@ export class SupplementalOperating extends BaseEntity {
 
   @Column({
     name: 'rpt_period_id',
-    type: 'bigint',
+    type: 'numeric',
     transformer: new NumericColumnTransformer(),
   })
   reportPeriodId: number;
