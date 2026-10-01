@@ -10,73 +10,24 @@ describe('EmissionsQueryBuilder.whereControlTech', () => {
     andWhere: jest.fn().mockReturnThis(),
   });
 
-  const extractPatterns = (sql: string): RegExp[] => {
-    const out: RegExp[] = [];
-    let i = 0;
+  const extractPatterns = (query: ReturnType<typeof makeQuery>): RegExp[] =>
+    Object.values(query.andWhere.mock.calls[0][1]).map(
+      (pattern) => new RegExp(pattern as string, 'i'),
+    );
 
-    while (i < sql.length) {
-      const idx = sql.indexOf('~*', i);
-      if (idx === -1) break;
-
-      let j = idx + 2;
-      while (j < sql.length && sql[j] === ' ') j++;
-      if (j < sql.length && sql[j] === "'") j++;
-      if (j >= sql.length || sql[j] !== '(') {
-        i = j;
-        continue;
-      }
-
-      let depth = 0;
-      let inClass = false;
-      const start = j;
-      let end = -1;
-
-      for (; j < sql.length; j++) {
-        const c = sql[j];
-        if (inClass) {
-          if (c === ']') inClass = false;
-          continue;
-        }
-        if (c === '[') {
-          inClass = true;
-        } else if (c === '(') {
-          depth++;
-        } else if (c === ')') {
-          depth--;
-          if (depth === 0) {
-            end = j + 1;
-            break;
-          }
-        }
-      }
-
-      if (end > 0) {
-        try {
-          out.push(new RegExp(sql.substring(start, end), 'i'));
-        } catch {
-          // ignore non-JS-compatible regex syntax
-        }
-        i = end < sql.length && sql[end] === "'" ? end + 1 : end;
-      } else {
-        i = j;
-      }
-    }
-
-    return out;
-  };
-
-  const matchesAny = (sql: string, data: string): boolean =>
-    extractPatterns(sql).some(regex => regex.test(data));
+  const matchesAny = (
+    query: ReturnType<typeof makeQuery>,
+    data: string,
+  ): boolean => extractPatterns(query).some((regex) => regex.test(data));
 
   it('matches SNCR in the end position of a pipe-delimited string', () => {
     const query = makeQuery();
 
     EmissionsQueryBuilder.whereControlTech(query, [sncr], params, alias);
 
-    const sql = query.andWhere.mock.calls[0][0];
     expect(
       matchesAny(
-        sql,
+        query,
         'Low NOx Burner Technology w/ Closed-coupled OFA|Selective Non-catalytic Reduction',
       ),
     ).toBe(true);
@@ -87,10 +38,9 @@ describe('EmissionsQueryBuilder.whereControlTech', () => {
 
     EmissionsQueryBuilder.whereControlTech(query, [sncr], params, alias);
 
-    const sql = query.andWhere.mock.calls[0][0];
     expect(
       matchesAny(
-        sql,
+        query,
         'Selective Non-catalytic Reduction|Low NOx Burner Technology w/ Separated OFA',
       ),
     ).toBe(true);
@@ -101,8 +51,7 @@ describe('EmissionsQueryBuilder.whereControlTech', () => {
 
     EmissionsQueryBuilder.whereControlTech(query, [sncr], params, alias);
 
-    const sql = query.andWhere.mock.calls[0][0];
-    expect(matchesAny(sql, 'Selective Non-catalytic Reduction')).toBe(true);
+    expect(matchesAny(query, 'Selective Non-catalytic Reduction')).toBe(true);
   });
 
   it('does not match SNCR against an SCR-only pipe-delimited string', () => {
@@ -110,9 +59,8 @@ describe('EmissionsQueryBuilder.whereControlTech', () => {
 
     EmissionsQueryBuilder.whereControlTech(query, [sncr], params, alias);
 
-    const sql = query.andWhere.mock.calls[0][0];
     expect(
-      matchesAny(sql, 'Dry Low NOx Burners|Selective Catalytic Reduction'),
+      matchesAny(query, 'Dry Low NOx Burners|Selective Catalytic Reduction'),
     ).toBe(false);
   });
 
@@ -121,10 +69,9 @@ describe('EmissionsQueryBuilder.whereControlTech', () => {
 
     EmissionsQueryBuilder.whereControlTech(query, [scr, sncr], params, alias);
 
-    const sql = query.andWhere.mock.calls[0][0];
     expect(
       matchesAny(
-        sql,
+        query,
         'Low NOx Burner Technology w/ Closed-coupled OFA|Selective Non-catalytic Reduction',
       ),
     ).toBe(true);
@@ -149,5 +96,29 @@ describe('EmissionsQueryBuilder.whereControlTech', () => {
     expect(sql).toContain('noxControlInfo');
     expect(sql).toContain('pmControlInfo');
     expect(sql).toContain('hgControlInfo');
+  });
+
+  it('binds control-technology text instead of adding it to SQL', () => {
+    const query = makeQuery();
+    const payload = "' OR TRUE OR control_info LIKE '";
+
+    EmissionsQueryBuilder.whereControlTech(query, [payload], params, alias);
+
+    const [sql, parameters] = query.andWhere.mock.calls[0];
+    expect(sql).toContain(':controlTechnologyRegex0');
+    expect(sql).not.toContain(payload.toUpperCase());
+    expect(parameters.controlTechnologyRegex0).toContain(payload.toUpperCase());
+  });
+
+  it('binds location names instead of adding them to SQL', () => {
+    const query = makeQuery();
+    const payload = "' OR TRUE --";
+
+    EmissionsQueryBuilder.whereLocationName(query, [payload], alias);
+
+    const [sql, parameters] = query.andWhere.mock.calls[0];
+    expect(sql).toContain(':...locationNames');
+    expect(sql).not.toContain(payload);
+    expect(parameters).toEqual({ locationNames: [payload] });
   });
 });

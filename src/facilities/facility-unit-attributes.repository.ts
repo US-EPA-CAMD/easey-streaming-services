@@ -4,11 +4,10 @@ import { EntityManager, Repository } from 'typeorm';
 
 import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
 import { FacilityUnitAttributes } from '../entities/vw-facility-unit-attributes.entity';
+import { toRegexParameter } from '../utils/regex-parameter';
 
 @Injectable()
-export class FacilityUnitAttributesRepository extends Repository<
-  FacilityUnitAttributes
-> {
+export class FacilityUnitAttributesRepository extends Repository<FacilityUnitAttributes> {
   constructor(entityManager: EntityManager) {
     super(FacilityUnitAttributes, entityManager);
   }
@@ -51,7 +50,7 @@ export class FacilityUnitAttributesRepository extends Repository<
       'fua.otherNameplateCapacity',
     ];
 
-    return columns.map(col => {
+    return columns.map((col) => {
       if (col === 'fua.ownDisplay') {
         return `${col} AS "ownerOperator"`;
       }
@@ -69,42 +68,46 @@ export class FacilityUnitAttributesRepository extends Repository<
 
     if (params.unitFuelType) {
       let string = '(';
+      const parameters: Record<string, string> = {};
 
       for (let i = 0; i < params.unitFuelType.length; i++) {
-        const regex = Regex.commaDelimited(
-          params.unitFuelType[i].toUpperCase(),
+        const parameterName = `facilityUnitFuelRegex${i}`;
+        parameters[parameterName] = toRegexParameter(
+          Regex.commaDelimited(params.unitFuelType[i].toUpperCase()),
         );
 
         if (i === 0) {
-          string += `(UPPER(fua.primaryFuelInfo) ~* ${regex}) `;
+          string += `(UPPER(fua.primaryFuelInfo) ~* :${parameterName}) `;
         } else {
-          string += `OR (UPPER(fua.primaryFuelInfo) ~* ${regex}) `;
+          string += `OR (UPPER(fua.primaryFuelInfo) ~* :${parameterName}) `;
         }
 
-        string += `OR (UPPER(fua.secondaryFuelInfo) ~* ${regex}) `;
+        string += `OR (UPPER(fua.secondaryFuelInfo) ~* :${parameterName}) `;
       }
 
       string += ')';
-      query.andWhere(string);
+      query.andWhere(string, parameters);
     }
 
     if (params.programCodeInfo) {
       let string = '(';
+      const parameters: Record<string, string> = {};
 
       for (let i = 0; i < params.programCodeInfo.length; i++) {
-        const regex = Regex.commaDelimited(
-          params.programCodeInfo[i].toUpperCase(),
+        const parameterName = `facilityProgramCodeRegex${i}`;
+        parameters[parameterName] = toRegexParameter(
+          Regex.commaDelimited(params.programCodeInfo[i].toUpperCase()),
         );
 
         if (i === 0) {
-          string += `(UPPER(fua.programCodeInfo) ~* ${regex}) `;
+          string += `(UPPER(fua.programCodeInfo) ~* :${parameterName}) `;
         } else {
-          string += `OR (UPPER(fua.programCodeInfo) ~* ${regex}) `;
+          string += `OR (UPPER(fua.programCodeInfo) ~* :${parameterName}) `;
         }
       }
 
       string += ')';
-      query.andWhere(string);
+      query.andWhere(string, parameters);
     }
 
     if (params.sourceCategory) {
@@ -137,45 +140,51 @@ export class FacilityUnitAttributesRepository extends Repository<
 
     if (params.unitType) {
       let string = '(';
+      const parameters: Record<string, string> = {};
 
       for (let i = 0; i < params.unitType.length; i++) {
-        const regex = Regex.commaDelimited(params.unitType[i].toUpperCase());
+        const parameterName = `facilityUnitTypeRegex${i}`;
+        parameters[parameterName] = toRegexParameter(
+          Regex.commaDelimited(params.unitType[i].toUpperCase()),
+        );
 
         if (i === 0) {
-          string += `(UPPER(fua.unitType) ~* ${regex}) `;
+          string += `(UPPER(fua.unitType) ~* :${parameterName}) `;
         } else {
-          string += `OR (UPPER(fua.unitType) ~* ${regex}) `;
+          string += `OR (UPPER(fua.unitType) ~* :${parameterName}) `;
         }
       }
 
       string += ')';
-      query.andWhere(string);
+      query.andWhere(string, parameters);
     }
 
     if (params.controlTechnologies) {
       let string = '(';
+      const parameters: Record<string, string> = {};
 
       for (let i = 0; i < params.controlTechnologies.length; i++) {
-        const regex = Regex.pipeDelimited(
-          params.controlTechnologies[i].toUpperCase(),
+        const parameterName = `facilityControlTechnologyRegex${i}`;
+        parameters[parameterName] = toRegexParameter(
+          Regex.pipeDelimited(params.controlTechnologies[i].toUpperCase()),
         );
 
         if (i === 0) {
-          string += `(UPPER (fua.so2ControlInfo) ~* ${regex}) `;
+          string += `(UPPER (fua.so2ControlInfo) ~* :${parameterName}) `;
         } else {
-          string += `OR (UPPER(fua.so2ControlInfo) ~* ${regex}) `;
+          string += `OR (UPPER(fua.so2ControlInfo) ~* :${parameterName}) `;
         }
 
-        string += `OR (UPPER(fua.noxControlInfo) ~* ${regex}) `;
+        string += `OR (UPPER(fua.noxControlInfo) ~* :${parameterName}) `;
 
-        string += `OR (UPPER(fua.pmControlInfo) ~* ${regex}) `;
+        string += `OR (UPPER(fua.pmControlInfo) ~* :${parameterName}) `;
 
-        string += `OR (UPPER(fua.hgControlInfo) ~* ${regex}) `;
+        string += `OR (UPPER(fua.hgControlInfo) ~* :${parameterName}) `;
       }
 
       string += ')';
 
-      query.andWhere(string);
+      query.andWhere(string, parameters);
     }
 
     query

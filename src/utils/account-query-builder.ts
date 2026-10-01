@@ -1,5 +1,7 @@
 import { Regex } from '@us-epa-camd/easey-common/utilities';
 
+import { toRegexParameter } from './regex-parameter';
+
 export class AccountQueryBuilder {
   private static paginationHelper(query: any, page: number, perPage: number) {
     query.skip((page - 1) * perPage).take(perPage);
@@ -40,19 +42,23 @@ export class AccountQueryBuilder {
 
     if (param.includes('ownerOperator') && dto.ownerOperator) {
       let string = '(';
+      const parameters: Record<string, string> = {};
 
       for (let i = 0; i < dto.ownerOperator.length; i++) {
-        const regex = Regex.pipeDelimited(dto.ownerOperator[i].toUpperCase());
+        const parameterName = `accountOwnerOperator${i}`;
+        parameters[parameterName] = toRegexParameter(
+          Regex.pipeDelimited(dto.ownerOperator[i].toUpperCase()),
+        );
 
         if (i === 0) {
-          string += `(UPPER(${characteristicAlias}.ownerOperator) ~* ${regex}) `;
+          string += `(UPPER(${characteristicAlias}.ownerOperator) ~* :${parameterName}) `;
         } else {
-          string += `OR (UPPER(${characteristicAlias}.ownerOperator) ~* ${regex}) `;
+          string += `OR (UPPER(${characteristicAlias}.ownerOperator) ~* :${parameterName}) `;
         }
       }
 
       string += ')';
-      query.andWhere(string);
+      query.andWhere(string, parameters);
     }
 
     if (param.includes('stateCode') && dto.stateCode) {
@@ -134,19 +140,23 @@ export class AccountQueryBuilder {
 
     if (param.includes('ownerOperator') && dto.ownerOperator) {
       let string = '(';
+      const parameters: Record<string, string> = {};
 
       for (let i = 0; i < dto.ownerOperator.length; i++) {
-        const regex = Regex.pipeDelimited(dto.ownerOperator[i].toUpperCase());
+        const parameterName = `transactionOwnerOperator${i}`;
+        parameters[parameterName] = toRegexParameter(
+          Regex.pipeDelimited(dto.ownerOperator[i].toUpperCase()),
+        );
 
         if (i === 0) {
-          string += `(UPPER(${alias}.buyOwner) ~* ${regex} OR UPPER(${alias}.sellOwner)  ~* ${regex} ) `;
+          string += `(UPPER(${alias}.buyOwner) ~* :${parameterName} OR UPPER(${alias}.sellOwner)  ~* :${parameterName} ) `;
         } else {
-          string += `OR (UPPER(${alias}.buyOwner) ~* ${regex} OR UPPER(${alias}.sellOwner)  ~* ${regex}) `;
+          string += `OR (UPPER(${alias}.buyOwner) ~* :${parameterName} OR UPPER(${alias}.sellOwner)  ~* :${parameterName}) `;
         }
       }
 
       string += ')';
-      query.andWhere(string);
+      query.andWhere(string, parameters);
     }
 
     if (param.includes('stateCode') && dto.stateCode) {
@@ -204,18 +214,22 @@ export class AccountQueryBuilder {
 
     if (param.includes('ownerOperator') && dto.ownerOperator) {
       let string = '(';
+      const parameters: Record<string, string> = {};
 
       for (let i = 0; i < dto.ownerOperator.length; i++) {
-        const regex = Regex.pipeDelimited(dto.ownerOperator[i].toUpperCase());
+        const parameterName = `complianceOwnerOperator${i}`;
+        parameters[parameterName] = toRegexParameter(
+          Regex.pipeDelimited(dto.ownerOperator[i].toUpperCase()),
+        );
 
         if (i === 0) {
-          string += `(UPPER(${ownerAlias}.owner) ~* ${regex} OR UPPER(${ownerAlias}.operator) ~* ${regex}) `;
+          string += `(UPPER(${ownerAlias}.owner) ~* :${parameterName} OR UPPER(${ownerAlias}.operator) ~* :${parameterName}) `;
         } else {
-          string += `OR (UPPER(${ownerAlias}.owner) ~* ${regex} OR UPPER(${ownerAlias}.operator) ~* ${regex}) `;
+          string += `OR (UPPER(${ownerAlias}.owner) ~* :${parameterName} OR UPPER(${ownerAlias}.operator) ~* :${parameterName}) `;
         }
       }
       string += ')';
-      query.andWhere(string);
+      query.andWhere(string, parameters);
     }
 
     if (dto.page && dto.perPage) {
