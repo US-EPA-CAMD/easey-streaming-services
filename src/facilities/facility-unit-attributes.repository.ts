@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Regex } from '@us-epa-camd/easey-common/utilities';
+import { Regex, toRegexParameter } from '@us-epa-camd/easey-common/utilities';
 import { EntityManager, Repository } from 'typeorm';
 
 import { StreamFacilityAttributesParamsDTO } from '../dto/facility-attributes-params.dto';
 import { FacilityUnitAttributes } from '../entities/vw-facility-unit-attributes.entity';
-import { toRegexParameter } from '../utils/regex-parameter';
 
 @Injectable()
 export class FacilityUnitAttributesRepository extends Repository<FacilityUnitAttributes> {
