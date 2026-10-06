@@ -32,10 +32,10 @@ export class SupplementalOperatingRepository extends Repository<
 
   async buildQuery(params: OrisQuarterParamsDto): Promise<[string, any[]]> {
     const reportingPeriodConditions = `
-        reportingPeriod.calendar_year >= ${params.beginYear} AND
-        reportingPeriod.quarter >= ${params.beginQuarter} AND
-        reportingPeriod.calendar_year <= ${params.endYear} AND
-        reportingPeriod.quarter <= ${params.endQuarter}
+        reportingPeriod.calendar_year >= :beginYear AND
+        reportingPeriod.quarter >= :beginQuarter AND
+        reportingPeriod.calendar_year <= :endYear AND
+        reportingPeriod.quarter <= :endQuarter
       `;
 
     const query = this.createQueryBuilder('so')
@@ -44,17 +44,23 @@ export class SupplementalOperatingRepository extends Repository<
         'so.reportingPeriod',
         'reportingPeriod',
         reportingPeriodConditions,
+        {
+          beginYear: params.beginYear,
+          beginQuarter: params.beginQuarter,
+          endYear: params.endYear,
+          endQuarter: params.endQuarter,
+        },
       );
 
     if (params.orisCode) {
-      const plantConditions = `plant.oris_code IN (${params.orisCode.join(
-        ', ',
-      )})`;
+      const plantConditions = 'plant.oris_code IN (:...orisCodes)';
       query
         .innerJoin('so.monitorLocation', 'ml')
         .leftJoin('ml.unit', 'unit')
         .leftJoin('ml.stackPipe', 'stackPipe')
-        .innerJoin('unit.plant', 'plant', plantConditions);
+        .innerJoin('unit.plant', 'plant', plantConditions, {
+          orisCodes: params.orisCode,
+        });
     }
 
     return query.getQueryAndParameters();
