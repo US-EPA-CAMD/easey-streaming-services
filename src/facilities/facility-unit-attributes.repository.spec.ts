@@ -73,26 +73,23 @@ describe('FacilityUnitAttributesRepository', () => {
   });
 
   describe('buildQuery — control-technology SQL composition', () => {
-    const findControlTechClause = (): string | undefined =>
-      queryBuilder.andWhere.mock.calls
-        .map((call: any[]) => call[0])
-        .find(
-          (arg: any) =>
-            typeof arg === 'string' && arg.includes('so2ControlInfo'),
-        );
+    const findControlTechCall = (): any[] | undefined =>
+      queryBuilder.andWhere.mock.calls.find(
+        (call: any[]) =>
+          typeof call[0] === 'string' && call[0].includes('so2ControlInfo'),
+      );
 
     it('emits pipe-delimited regex for a single control-tech filter and never comma-delimited', async () => {
       const filters = new StreamFacilityAttributesParamsDTO();
-      filters.controlTechnologies = [
-        ControlTechnology.SELECTIVE_NON_CATALYTIC,
-      ];
+      filters.controlTechnologies = [ControlTechnology.SELECTIVE_NON_CATALYTIC];
 
       await facilityUnitAttributesRepository.buildQuery(filters);
 
-      const clause = findControlTechClause();
-      expect(clause).toBeDefined();
-      expect(clause).toContain('[|]');
-      expect(clause).not.toContain('[,]');
+      const [clause, parameters] = findControlTechCall()!;
+      const patterns = Object.values(parameters).join(' ');
+      expect(clause).toContain(':facilityControlTechnologyRegex0');
+      expect(patterns).toContain('[|]');
+      expect(patterns).not.toContain('[,]');
     });
 
     it('emits pipe-delimited alternation for every value in a multi-select union', async () => {
@@ -104,13 +101,15 @@ describe('FacilityUnitAttributesRepository', () => {
 
       await facilityUnitAttributesRepository.buildQuery(filters);
 
-      const clause = findControlTechClause();
-      expect(clause).toBeDefined();
-      expect(clause).toContain('SELECTIVE NON-CATALYTIC REDUCTION');
-      expect(clause).toContain('SELECTIVE CATALYTIC REDUCTION');
-      expect(clause).toContain('[|]');
-      expect(clause).not.toContain('[,]');
-      const trimmed = clause!.trim();
+      const [clause, parameters] = findControlTechCall()!;
+      const patterns = Object.values(parameters).join(' ');
+      expect(clause).not.toContain('SELECTIVE NON-CATALYTIC REDUCTION');
+      expect(clause).not.toContain('SELECTIVE CATALYTIC REDUCTION');
+      expect(patterns).toContain('SELECTIVE NON-CATALYTIC REDUCTION');
+      expect(patterns).toContain('SELECTIVE CATALYTIC REDUCTION');
+      expect(patterns).toContain('[|]');
+      expect(patterns).not.toContain('[,]');
+      const trimmed = clause.trim();
       expect(trimmed.startsWith('(')).toBe(true);
       expect(trimmed.endsWith(')')).toBe(true);
       expect(clause).toContain(' OR ');
@@ -121,23 +120,34 @@ describe('FacilityUnitAttributesRepository', () => {
         new StreamFacilityAttributesParamsDTO(),
       );
 
-      expect(findControlTechClause()).toBeUndefined();
+      expect(findControlTechCall()).toBeUndefined();
     });
 
     it('references all four control info columns in the emitted clause', async () => {
       const filters = new StreamFacilityAttributesParamsDTO();
-      filters.controlTechnologies = [
-        ControlTechnology.SELECTIVE_NON_CATALYTIC,
-      ];
+      filters.controlTechnologies = [ControlTechnology.SELECTIVE_NON_CATALYTIC];
 
       await facilityUnitAttributesRepository.buildQuery(filters);
 
-      const clause = findControlTechClause();
-      expect(clause).toBeDefined();
+      const [clause] = findControlTechCall()!;
       expect(clause).toContain('fua.so2ControlInfo');
       expect(clause).toContain('fua.noxControlInfo');
       expect(clause).toContain('fua.pmControlInfo');
       expect(clause).toContain('fua.hgControlInfo');
+    });
+
+    it('binds control-technology text instead of adding it to SQL', async () => {
+      const payload = "' OR TRUE OR control_info LIKE '";
+      const filters = new StreamFacilityAttributesParamsDTO();
+      filters.controlTechnologies = [payload as ControlTechnology];
+
+      await facilityUnitAttributesRepository.buildQuery(filters);
+
+      const [clause, parameters] = findControlTechCall()!;
+      expect(clause).not.toContain(payload.toUpperCase());
+      expect(parameters.facilityControlTechnologyRegex0).toContain(
+        payload.toUpperCase(),
+      );
     });
   });
 

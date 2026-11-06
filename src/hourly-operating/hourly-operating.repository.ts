@@ -31,18 +31,19 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
   }
 
   async buildQuery(params: HourlyParamsDto): Promise<[string, any[]]> {
-    const dateCondition = `ho.beginDate BETWEEN '${params.beginDate}' AND '${params.endDate}'`;
+    const dateCondition = 'ho.beginDate BETWEEN :beginDate AND :endDate';
 
     let query = this.createQueryBuilder('ho')
       .select(this.getColumns())
-      .where(dateCondition);
+      .where(dateCondition, {
+        beginDate: params.beginDate,
+        endDate: params.endDate,
+      });
 
-    const unitPlantConditions = `unitPlant.orisCode IN (${params.orisCode.join(
-      ', ',
-    )}) AND unitPlant.orisCode NOTNULL`;
-    const stackPipePlantConditions = `stackPipePlant.orisCode IN (${params.orisCode.join(
-      ', ',
-    )}) AND stackPipePlant.orisCode NOTNULL`;
+    const unitPlantConditions =
+      'unitPlant.orisCode IN (:...orisCodes) AND unitPlant.orisCode NOTNULL';
+    const stackPipePlantConditions =
+      'stackPipePlant.orisCode IN (:...orisCodes) AND stackPipePlant.orisCode NOTNULL';
 
     query = query
       .innerJoin('ho.monitorLocation', 'ml')
@@ -52,18 +53,19 @@ export class HourlyOperatingRepository extends Repository<HrlyOpData> {
       .leftJoin('stackPipe.plant', 'stackPipePlant')
       .andWhere(
         new Brackets(qb => {
-          qb.where(unitPlantConditions).orWhere(stackPipePlantConditions);
+          qb.where(unitPlantConditions, {
+            orisCodes: params.orisCode,
+          }).orWhere(stackPipePlantConditions, {
+            orisCodes: params.orisCode,
+          });
         }),
       );
 
     if (params.locationName) {
-      const locationStrings = params.locationName
-        .map(location => `'${location}'`)
-        .join(', ');
-
-      const locationCondition = `(stackPipe.stack_name IN (${locationStrings}) OR unit.unitid IN (${locationStrings}))`;
-
-      query = query.andWhere(locationCondition);
+      query = query.andWhere(
+        '(stackPipe.stack_name IN (:...locationNames) OR unit.unitid IN (:...locationNames))',
+        { locationNames: params.locationName },
+      );
     }
 
     return query.getQueryAndParameters();
